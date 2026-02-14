@@ -57,6 +57,7 @@ interface RootState {
   }
 }
 
+
 export default function Onboarding() {
   const { isFlavie, themeMode } = useSelector((state: RootState) => state.theme)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -91,17 +92,17 @@ export default function Onboarding() {
   return (
     <View className='w-screen h-screen bg-scaffold flex flex-col overflow-hidden relative' data-theme={themeMode}>
       {/* Header */}
-      <View className='flex items-center justify-between px-page pt-6 pb-3 relative z-10'>
-        <View className='flex items-center gap-3'>
-          <Text className='text-xl text-text-primary leading-none'>‹</Text>
-          <Text className='text-[22px] font-normal italic text-text-brand font-heading'>{brandName}</Text>
+      <View className='flex items-center justify-between px-page pt-6 pb-2 relative z-10'>
+        <View className='flex items-center gap-2'>
+          <Text className='text-l text-text-primary leading-none'>‹</Text>
+          <Text className='text-[24px] font-medium text-text-brand font-heading'>{brandName}</Text>
           
         </View>
-        <View className='flex gap-1.5 items-center'>
+        <View className='flex gap-1 items-center'>
           {slides.map((_, idx) => (
             <View
               key={idx}
-              className={`w-2 h-2 rounded-full transition-colors duration-300 ${idx === currentIndex ? 'bg-primary' : 'bg-surface-secondary'}`}
+              className={`w-1 h-1 rounded-full transition-colors duration-300 ${idx === currentIndex ? 'bg-primary' : 'bg-surface-secondary'}`}
             />
           ))}
         </View>
@@ -115,24 +116,24 @@ export default function Onboarding() {
         duration={300}
       >
         {slides.map((slide, idx) => (
-          <SwiperItem key={idx}>
+          <SwiperItem key={idx} className='w-full h-full'>
             <View className='flex flex-col h-full px-page'>
-              <View className='w-full flex-1 min-h-0 overflow-hidden mb-6'>
+              <View className='w-full flex-1 min-h-0 overflow-hidden mb-2'>
                 <Image
                   className='w-full h-full object-cover block'
                   src={slide.image}
                   mode='aspectFill'
                 />
               </View>
-              <Text className='text-headline-lg font-normal leading-[1.2] text-text-primary mb-2 font-headline-lg'>{t(slide.titleKey)}</Text>
-              <Text className='text-body-lg font-normal text-text-secondary mb-5 leading-[1.4] font-body-lg'>{t(slide.subtitleKey)}</Text>
+              <Text className='text-32 font-normal leading-[1.2] text-text-primary mb-1 font-headline-lg whitespace-pre-wrap'>{t(slide.titleKey)}</Text>
+              <Text className='text-body-lg font-normal text-text-secondary mb-2 leading-[1.4] font-body-lg'>{t(slide.subtitleKey)}</Text>
             </View>
           </SwiperItem>
         ))}
       </Swiper>
 
       {/* Bottom Button */}
-      <View className='px-page pb-10 flex-shrink-0'>
+      <View className='px-page pb-0 flex-shrink-0'>
         <View className='w-full h-btn border-none bg-button-bg text-button-text text-btn font-semibold flex items-center justify-center transition-opacity active:opacity-85 font-btn rounded-btn' onClick={handleNext}>
           <Text>{isLastSlide ? t('onboarding.finish') : t('onboarding.next')}</Text>
         </View>

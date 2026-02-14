@@ -45,6 +45,7 @@ module.exports = {
       },
       spacing: {
         'page': 'var(--spacing-page)',
+        'xl': 'var(--spacing-xl)',
       },
       height: {
         'btn': 'var(--btn-height)',
@@ -62,6 +63,7 @@ module.exports = {
         'headline-lg': 'var(--text-headline-lg)',
         'headline-md': 'var(--text-headline-md)',
         'headline-sm': 'var(--text-headline-sm)',
+        'display-sm': 'var(--text-display-sm)',
         'title-lg': 'var(--text-title-lg)',
         'title-md': 'var(--text-title-md)',
         'title-sm': 'var(--text-title-sm)',
@@ -92,6 +94,7 @@ module.exports = {
         '19': '19px',
         '20': '20px',
         '24': '24px',
+        '32': '32px',
       },
       borderWidth: {
         'thin': '0.5px',

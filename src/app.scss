@@ -13,6 +13,7 @@ html, body, #app, page {
   margin: 0;
   padding: 0;
   overscroll-behavior-y: none;
+  touch-action: pan-x pan-y;
 }
 
 // Manual overrides for missing Tailwind classes
