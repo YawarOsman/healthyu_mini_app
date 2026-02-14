@@ -1,0 +1,202 @@
+// ─── Theme CSS Custom Properties ───
+// Applied via [data-theme] attribute on root element
+
+:root {
+  // ── Global Tokens ──
+  --spacing-page: 20px;
+  --btn-height: 48px;
+  --btn-height-sm: 42px;
+  
+  // ── Typography Tokens (from Flutter) ──
+  // Font Families
+  --font-juana: 'Juana', serif;
+  --font-lato: 'Lato', sans-serif;
+  
+  // Dynamic Font Logic (Default to Lato for English)
+  --font-locale-body: var(--font-lato);
+
+  // Headlines (Always Juana)
+  --font-family-headline-lg: var(--font-juana);
+  --font-family-headline-md: var(--font-juana);
+  --font-family-headline-sm: var(--font-juana);
+  --text-headline-lg: 24px;
+  --text-headline-md: 20px;
+  --text-headline-sm: 18px;
+  
+  // Titles (Mixed)
+  --font-family-title-lg: var(--font-juana);       // 20px SemiBold -> Juana
+  --font-family-title-md: var(--font-locale-body); // 16px SemiBold -> Lato
+  --font-family-title-sm: var(--font-locale-body); // 14px Regular  -> Lato
+  --text-title-lg: 20px;
+  --text-title-md: 16px;
+  --text-title-sm: 14px;
+  
+  // Bodies (Always Locale Dependent)
+  --font-family-body-lg: var(--font-locale-body);
+  --font-family-body-md: var(--font-locale-body);
+  --font-family-body-sm: var(--font-locale-body);
+  --text-body-lg: 16px;
+  --text-body-md: 14px;
+  --text-body-sm: 12px;
+  
+  // Labels (Always Locale Dependent)
+  --font-family-label-lg: var(--font-locale-body);
+  --font-family-label-md: var(--font-locale-body);
+  --font-family-label-sm: var(--font-locale-body);
+  --text-label-lg: 16px;
+  --text-label-md: 14px;
+  --text-label-sm: 12px;
+
+  // Components
+  --font-family-btn: var(--font-juana); // Buttons use Juana
+  --text-btn: 19px;          // Filled/Elevated/Outlined
+  --text-btn-text: 16px;     // TextButton (Check if this also uses Juana? Assumed yes for consistency, or check spec)
+  --text-appbar: 18px;       
+  --text-tab: 13px;
+  --text-input-hint: 16px;
+  --text-input-error: 14px;
+  --text-bottom-nav: 15px;
+  --text-snackbar: 16px;
+  --text-dialog-title: 18px;
+  --text-dialog-confirm: 16px;
+  --text-dialog-cancel: 15px;
+  --text-picker-header: 16px;
+  --text-picker-item: 14px;
+  
+  // Radius
+  --radius-none: 0px;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 50px;
+
+  // Component Radius Mappings
+  --radius-btn: var(--radius-none);
+  --radius-card: var(--radius-none);
+  --radius-input: var(--radius-none);
+}
+
+// ── Flavie Dark (default) ──
+[data-theme="flavie-dark"] {
+  --scaffold-bg: #000000;
+  --primary: #EB9E74;
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.56);
+  --text-brand: #EB9E74;
+  --text-accent: rgba(255, 255, 255, 0.56);
+  --text-inverse: rgba(255, 255, 255, 0.4);
+  --text-placeholder: #D4D4D4;
+  --surface-primary: #FBF8F9;
+  --surface-secondary: #FAFAFA;
+  --surface-accent: #F5F5F5;
+  --surface-brand: #EB9E74;
+  --surface-inverse: #141414;
+  --border-primary: #F0DAE3;
+  --border-secondary: #D4D4D4;
+  --border-brand: #EB9E74;
+  --button-bg: #EB9E74;
+  --button-text: #000000;
+  --button-outlined-border: #D4D4D4;
+  --error: #E25C5C;
+  --icon-primary: #0A0A0A;
+  --icon-secondary: rgba(255, 255, 255, 0.24);
+  --icon-accent: #8F8F8F;
+  --icon-brand: #EB9E74;
+  --icon-inverse: #FFFFFF;
+  --font-heading: 'Juana', serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+// ── Flavie Light ──
+[data-theme="flavie-light"] {
+  --scaffold-bg: #000000;
+  --primary: #EB9E74;
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.56);
+  --text-brand: #EB9E74;
+  --text-accent: rgba(255, 255, 255, 0.56);
+  --text-inverse: rgba(255, 255, 255, 0.4);
+  --text-placeholder: #D4D4D4;
+  --surface-primary: #FBF8F9;
+  --surface-secondary: #FAFAFA;
+  --surface-accent: #F5F5F5;
+  --surface-brand: #EB9E74;
+  --surface-inverse: #141414;
+  --border-primary: #F0DAE3;
+  --border-secondary: #D4D4D4;
+  --border-brand: #EB9E74;
+  --button-bg: #EB9E74;
+  --button-text: #000000;
+  --button-outlined-border: #D4D4D4;
+  --error: #E25C5C;
+  --icon-primary: #0A0A0A;
+  --icon-secondary: rgba(255, 255, 255, 0.24);
+  --icon-accent: #8F8F8F;
+  --icon-brand: #EB9E74;
+  --icon-inverse: #FFFFFF;
+  --font-heading: 'Juana', serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+// ── Mann Dark ──
+[data-theme="mann-dark"] {
+  --scaffold-bg: #000000;
+  --primary: #FFFFFF;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A3A3A3;
+  --text-brand: #FFFFFF;
+  --text-accent: rgba(255, 255, 255, 0.56);
+  --text-inverse: rgba(255, 255, 255, 0.4);
+  --text-placeholder: #A3A3A3;
+  --surface-primary: #F7F7F6;
+  --surface-secondary: #FAFAFA;
+  --surface-accent: #E5E4E2;
+  --surface-brand: #FFFFFF;
+  --surface-inverse: #141414;
+  --border-primary: #CAC9C5;
+  --border-secondary: #D4D4D4;
+  --border-brand: #FFFFFF;
+  --button-bg: #FFFFFF;
+  --button-text: #000000;
+  --button-outlined-border: #D4D4D4;
+  --error: #E25C5C;
+  --icon-primary: #0A0A0A;
+  --icon-secondary: #525252;
+  --icon-accent: #8F8F8F;
+  --icon-brand: #FFFFFF;
+  --icon-inverse: #FFFFFF;
+  --font-heading: 'Lato', sans-serif;
+  --font-body: 'Lato', sans-serif;
+}
+
+// ── Mann Light ──
+[data-theme="mann-light"] {
+  --scaffold-bg: #000000;
+  --primary: #FFFFFF;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A3A3A3;
+  --text-brand: #FFFFFF;
+  --text-accent: rgba(255, 255, 255, 0.56);
+  --text-inverse: rgba(255, 255, 255, 0.4);
+  --text-placeholder: #A3A3A3;
+  --surface-primary: #F7F7F6;
+  --surface-secondary: #FAFAFA;
+  --surface-accent: #E5E4E2;
+  --surface-brand: #FFFFFF;
+  --surface-inverse: #141414;
+  --border-primary: #CAC9C5;
+  --border-secondary: #D4D4D4;
+  --border-brand: #FFFFFF;
+  --button-bg: #FFFFFF;
+  --button-text: #000000;
+  --button-outlined-border: #D4D4D4;
+  --error: #E25C5C;
+  --icon-primary: #0A0A0A;
+  --icon-secondary: #525252;
+  --icon-accent: #8F8F8F;
+  --icon-brand: #FFFFFF;
+  --icon-inverse: #FFFFFF;
+  --font-heading: 'Lato', sans-serif;
+  --font-body: 'Lato', sans-serif;
+}
