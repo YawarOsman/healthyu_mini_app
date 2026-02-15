@@ -6,9 +6,11 @@ export default defineAppConfig({
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#000000',
-    navigationBarTitleText: 'HealthyU',
+    navigationBarTitleText: 'Flavie',
     navigationBarTextStyle: 'white',
     navigationStyle: 'custom',
-    backgroundColor: '#000000', // Default background color for pull-to-refresh/overscroll area
+    backgroundColor: '#F44336',
+    transparentTitle: 'always',
+    titlePenetrate: 'YES',
   },
 })

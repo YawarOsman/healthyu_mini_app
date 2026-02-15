@@ -80,7 +80,7 @@
 }
 
 // ── Flavie Dark (default) ──
-[data-theme="flavie-dark"] {
+[data-theme="flavie-dark"], .flavie-dark {
   --scaffold-bg: #000000;
   --primary: #EB9E74;
   --text-primary: #FFFFFF;
@@ -111,7 +111,7 @@
 }
 
 // ── Flavie Light ──
-[data-theme="flavie-light"] {
+[data-theme="flavie-light"], .flavie-light {
   --scaffold-bg: #000000;
   --primary: #EB9E74;
   --text-primary: #FFFFFF;
@@ -142,7 +142,7 @@
 }
 
 // ── Mann Dark ──
-[data-theme="mann-dark"] {
+[data-theme="mann-dark"], .mann-dark {
   --scaffold-bg: #000000;
   --primary: #FFFFFF;
   --text-primary: #FFFFFF;
@@ -173,7 +173,7 @@
 }
 
 // ── Mann Light ──
-[data-theme="mann-light"] {
+[data-theme="mann-light"], .mann-light {
   --scaffold-bg: #000000;
   --primary: #FFFFFF;
   --text-primary: #FFFFFF;

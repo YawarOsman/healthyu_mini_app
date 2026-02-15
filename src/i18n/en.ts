@@ -4,7 +4,7 @@ const en = {
   'onboarding.flavie.subtitle1': 'We will find the right plan for you.',
   'onboarding.flavie.title2': 'Track your progress\nfor Flavie boxes.',
   'onboarding.flavie.subtitle2': 'Analyze your trends, usage, and time.',
-  'onboarding.flavie.title3': 'Get professional check ups\nwith us.',
+  'onboarding.flavie.title3': 'Get professional\ncheck ups with us.',
   'onboarding.flavie.subtitle3': 'Weekly check-ins are reviewed.',
 
   // Onboarding - Mann

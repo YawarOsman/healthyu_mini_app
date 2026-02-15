@@ -1,14 +1,14 @@
 {
-  "miniprogramRoot": "./dist",
+  "miniprogramRoot": "./dist/alipay",
   "projectname": "healthyu_mini_app",
   "description": "Healthy U",
   "appid": "touristappid",
   "setting": {
     "urlCheck": true,
-    "es6": false,
-    "enhance": false,
+    "es6": true,
+    "enhance": true,
     "compileHotReLoad": false,
-    "postcss": false,
+    "postcss": true,
     "minified": false
   },
   "compileType": "miniprogram"

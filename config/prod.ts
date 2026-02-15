@@ -8,13 +8,13 @@ export default {
      */
     // webpackChain (chain) {
     //   /**
-    //    * 如果 h5 端编译后体积过大，可以使用 webpack-bundle-analyzer 插件对打包体积进行分析。
+    //    * If the compilation size on the h5 side is too large, you can use the webpack-bundle-analyzer plugin to analyze the bundle size.
     //    * @docs https://github.com/webpack-contrib/webpack-bundle-analyzer
     //    */
     //   chain.plugin('analyzer')
     //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
     //   /**
-    //    * 如果 h5 端首屏加载时间过长，可以使用 prerender-spa-plugin 插件预加载首页。
+    //    * If the h5 side first screen loading time is too long, you can use the prerender-spa-plugin plugin to preload the home page.
     //    * @docs https://github.com/chrisvfritz/prerender-spa-plugin
     //    */
     //   const path = require('path')

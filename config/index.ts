@@ -5,7 +5,7 @@ import { UnifiedViteWeappTailwindcssPlugin as uvtw } from 'weapp-tailwindcss/vit
 import devConfig from './dev'
 import prodConfig from './prod'
 
-// https://taro-docs.jd.com/docs/next/config#defineconfig-辅助函数
+// https://taro-docs.jd.com/docs/next/config#defineconfig-helper-function
 export default defineConfig<'vite'>(async (merge, { command, mode }) => {
   const baseConfig: UserConfigExport<'vite'> = {
     projectName: 'healthyu_mini_app',
@@ -18,13 +18,13 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
       828: 1.81 / 2
     },
     sourceRoot: 'src',
-    outputRoot: 'dist',
+    outputRoot: `dist/${process.env.TARO_ENV}`,
     plugins: [],
     defineConstants: {
     },
     copy: {
       patterns: [
-        { from: 'public/fonts', to: 'dist/fonts' }
+        { from: 'public/fonts', to: `dist/${process.env.TARO_ENV}/fonts` }
       ],
       options: {
       }
@@ -33,6 +33,94 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
     compiler: {
       type: 'vite',
       vitePlugins: [
+        {
+          name: 'force-es5',
+          config() {
+            return {
+              build: {
+                target: 'esnext', // Bypass esbuild transpilation, let terser handle it
+                minify: 'terser',
+                terserOptions: {
+                  ecma: 5,
+                  compress: {
+                    ecma: 5,
+                    arrows: false,
+                    drop_console: false,
+                  },
+                  output: {
+                    ecma: 5,
+                    comments: false,
+                  },
+                },
+              }
+            }
+          }
+        },
+        {
+          name: 'manual-babel-transpile',
+          // Use transform to handle source files before bundling
+          // Use renderChunk to handle the final output
+          // Use renderChunk to handle the final output
+          // Use renderChunk to handle the final output
+          renderChunk(code, chunk) {
+            // Only transpile .js files
+            if (!chunk.fileName.endsWith('.js')) return null;
+            
+            try {
+              const babel = require('@babel/core');
+              const presetPath = require.resolve('@babel/preset-env');
+              
+              const result = babel.transformSync(code, {
+                presets: [
+                  [presetPath, {
+                    targets: {
+                      ios: '8' // Force ES5 for Alipay
+                    },
+                    modules: 'commonjs' 
+                  }]
+                ],
+                filename: chunk.fileName,
+                sourceMaps: false,
+                configFile: false,
+                babelrc: false
+              });
+              return { code: result.code, map: null };
+            } catch (e) {
+              console.error('Babel transpilation failed for ' + chunk.fileName, e);
+              return null;
+            }
+          }
+        },
+        {
+          name: 'fix-browserslist-crash',
+          enforce: 'pre',
+          generateBundle() {
+            this.emitFile({
+              type: 'asset',
+              fileName: '.browserslistrc',
+              source: 'defaults\nmaintained node versions'
+            })
+          }
+        },
+        {
+          name: 'fix-css-import',
+          enforce: 'post',
+          generateBundle(options, bundle) {
+            // Fix app.acss import path
+            const appAcss = bundle['app.acss'];
+            if (appAcss && appAcss.type === 'asset' && typeof appAcss.source === 'string') {
+              appAcss.source = appAcss.source.replace('@import "app-origin.acss";', '@import "./app-origin.acss";');
+            }
+            
+            // Fix font paths in app-origin.acss
+            const appOriginAcss = bundle['app-origin.acss'];
+            if (appOriginAcss && appOriginAcss.type === 'asset' && typeof appOriginAcss.source === 'string') {
+              // Replace @/assets/fonts/ with ./fonts/
+              appOriginAcss.source = appOriginAcss.source.replace(/@\/assets\/fonts\//g, './fonts/');
+              // Also inspect for other potential variations if needed
+            }
+          }
+        },
         {
           // Load postcss via vite plugin
           name: 'postcss-config-loader-plugin',
@@ -66,9 +154,9 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
           }
         },
         cssModules: {
-          enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
+          enable: false, // Default is false, set to true if you want to use css modules
           config: {
-            namingPattern: 'module', // 转换模式，取值为 global/module
+            namingPattern: 'module', // Transformation pattern, values: global/module
             generateScopedName: '[name]__[local]___[hash:base64:5]'
           }
         }
@@ -93,9 +181,9 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
           config: {}
         },
         cssModules: {
-          enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
+          enable: false, // Default is false, set to true if you want to use css modules
           config: {
-            namingPattern: 'module', // 转换模式，取值为 global/module
+            namingPattern: 'module', // Transformation pattern, values: global/module
             generateScopedName: '[name]__[local]___[hash:base64:5]'
           }
         }
@@ -105,15 +193,15 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
       appName: 'taroDemo',
       postcss: {
         cssModules: {
-          enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
+          enable: false, // Default is false, set to true if you want to use css modules
         }
       }
     }
   }
   if (process.env.NODE_ENV === 'development') {
-    // 本地开发构建配置（不混淆压缩）
+    // Local development build configuration (no obfuscation/compression)
     return merge({}, baseConfig, devConfig)
   }
-  // 生产构建配置（默认开启压缩混淆等）
+  // Production build configuration (compression and obfuscation enabled by default)
   return merge({}, baseConfig, prodConfig)
 })

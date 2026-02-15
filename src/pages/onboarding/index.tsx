@@ -63,7 +63,6 @@ export default function Onboarding() {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const slides = isFlavie ? flavieSlides : mannSlides
-  const brandName = isFlavie ? t('onboarding.brandFlavie') : t('onboarding.brandMann')
   const isLastSlide = currentIndex === slides.length - 1
 
   const handleFinish = useCallback(() => {
@@ -90,19 +89,19 @@ export default function Onboarding() {
   }, [])
 
   return (
-    <View className='w-screen h-screen bg-scaffold flex flex-col overflow-hidden relative' data-theme={themeMode}>
+    <View className={`w-screen h-screen bg-scaffold flex flex-col overflow-hidden relative ${themeMode}`} data-theme={themeMode}>
       {/* Header */}
-      <View className='flex items-center justify-between px-page pt-6 pb-2 relative z-10'>
-        <View className='flex items-center gap-2'>
-          <Text className='text-l text-text-primary leading-none'>‹</Text>
-          <Text className='text-[24px] font-medium text-text-brand font-heading'>{brandName}</Text>
-          
-        </View>
+      <View 
+        className='flex items-center justify-center px-page pb-4 relative z-10 bg-primary mb-6'
+        style={{ 
+          paddingTop: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + 20}px`,
+        }}
+      >
         <View className='flex gap-1 items-center'>
           {slides.map((_, idx) => (
             <View
               key={idx}
-              className={`w-1 h-1 rounded-full transition-colors duration-300 ${idx === currentIndex ? 'bg-primary' : 'bg-surface-secondary'}`}
+              className={`w-1 h-1 rounded-full transition-colors duration-300 ${idx === currentIndex ? 'bg-white' : 'bg-white/50'}`}
             />
           ))}
         </View>
@@ -133,7 +132,7 @@ export default function Onboarding() {
       </Swiper>
 
       {/* Bottom Button */}
-      <View className='px-page pb-0 flex-shrink-0'>
+      <View className='px-page pb-0 flex-shrink-0 mb-8'>
         <View className='w-full h-btn border-none bg-button-bg text-button-text text-btn font-semibold flex items-center justify-center transition-opacity active:opacity-85 font-btn rounded-btn' onClick={handleNext}>
           <Text>{isLastSlide ? t('onboarding.finish') : t('onboarding.next')}</Text>
         </View>
