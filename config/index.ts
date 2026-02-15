@@ -14,17 +14,18 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
     deviceRatio: {
       640: 2.34 / 2,
       750: 1,
-      375: 1,
+      375: 2 / 1,
       828: 1.81 / 2
     },
     sourceRoot: 'src',
-    outputRoot: `dist/${process.env.TARO_ENV}`,
+    outputRoot: `dist`,
     plugins: [],
     defineConstants: {
     },
     copy: {
       patterns: [
-        { from: 'public/fonts', to: `dist/${process.env.TARO_ENV}/fonts` }
+        { from: 'src/assets/fonts', to: `dist/fonts` },
+        { from: 'src/assets/images', to: `dist/images` }
       ],
       options: {
       }
