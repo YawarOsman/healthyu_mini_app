@@ -1,5 +1,8 @@
 export default defineAppConfig({
   pages: [
+    'pages/register/name_dob/index',
+    'pages/register/setup_account/index',
+    'pages/register/otp_verification/index',
     'pages/index/index',
     'pages/onboarding/index',
   ],

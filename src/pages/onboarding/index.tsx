@@ -77,7 +77,13 @@ export default function Onboarding() {
 
   const handleNext = useCallback(() => {
     if (isLastSlide) {
-      handleFinish()
+      // Proceed to registration
+      Taro.navigateTo({
+        url: '/pages/register/name_dob/index'
+      }).catch(err => {
+        console.error('Navigation failed:', JSON.stringify(err))
+        Taro.showToast({ title: 'Nav failed: ' + JSON.stringify(err), icon: 'none', duration: 5000 })
+      })
     } else {
       setCurrentIndex((prev) => Math.min(prev + 1, slides.length - 1))
     }
@@ -92,7 +98,7 @@ export default function Onboarding() {
     <View className={`w-screen h-screen bg-scaffold flex flex-col overflow-hidden relative ${themeMode}`} data-theme={themeMode}>
       {/* Header */}
       <View 
-        className='flex items-center justify-center px-page pb-4 relative z-10 bg-primary mb-6'
+        className='flex items-center justify-center px-page pb-4 relative z-10 mb-6'
         style={{ 
           paddingTop: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + 20}px`,
         }}

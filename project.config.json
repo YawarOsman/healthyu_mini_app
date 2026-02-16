@@ -1,5 +1,5 @@
 {
-  "miniprogramRoot": "./dist/alipay",
+  "miniprogramRoot": "./dist",
   "projectname": "healthyu_mini_app",
   "description": "Healthy U",
   "appid": "touristappid",
