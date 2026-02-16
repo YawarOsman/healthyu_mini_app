@@ -1,6 +1,7 @@
 import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { ReactNode } from 'react'
+import arrowLeft from '../assets/svg/arrow_left.svg'
 
 
 interface RefinedAppBarProps {
@@ -45,13 +46,25 @@ export default function RefinedAppBar({
         {/* Left: Back Button */}
         {showBack && (
           <View 
-            className='absolute left-4 h-full flex items-center justify-center cursor-pointer'
+            className='absolute left-2 h-full flex items-center justify-center cursor-pointer'
             onClick={handleBack}
           >
             {/* Simple Back Arrow SVG or Icon */}
-            <View className={`w-6 h-6 flex items-center justify-center`}>
-              <Text className={`font-body-lg ${textColor} text-24`}>←</Text>
-            </View>
+            {/* Back Arrow SVG */}
+            <View 
+              className={`${textColor} w-4 h-4`}
+              style={{
+                backgroundColor: 'currentColor',
+                maskImage: `url(${arrowLeft})`,
+                WebkitMaskImage: `url(${arrowLeft})`,
+                maskSize: 'contain',
+                WebkitMaskSize: 'contain',
+                maskRepeat: 'no-repeat',
+                WebkitMaskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                WebkitMaskPosition: 'center',
+              }}
+            />
           </View>
         )}
 

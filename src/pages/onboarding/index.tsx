@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { View, Swiper, SwiperItem, Image, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { t } from '../../i18n'
+import { ROUTES } from '../../constants/routes'
  // Keeping for now if there are specific overrides, but mostly moving to tailwind
 
 import flavie1 from '../../assets/images/flavie_onboarding_1.png'
@@ -69,7 +70,7 @@ export default function Onboarding() {
     try {
       Taro.setStorageSync('hasOnboarded', 'true')
       // Redirect to home page
-      Taro.redirectTo({ url: '/pages/index/index' })
+      Taro.redirectTo({ url: ROUTES.HOME })
     } catch (e) {
       console.error('Failed to set storage', e)
     }
@@ -79,7 +80,7 @@ export default function Onboarding() {
     if (isLastSlide) {
       // Proceed to registration
       Taro.navigateTo({
-        url: '/pages/register/name_dob/index'
+        url: ROUTES.REGISTER_NAME_DOB
       }).catch(err => {
         console.error('Navigation failed:', JSON.stringify(err))
         Taro.showToast({ title: 'Nav failed: ' + JSON.stringify(err), icon: 'none', duration: 5000 })

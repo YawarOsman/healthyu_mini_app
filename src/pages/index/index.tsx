@@ -7,6 +7,7 @@ import { t } from '../../i18n'
 import { RootState } from '../../reducers'
 import BottomNavBar from '../../components/BottomNavBar'
 import cameraIcon from '../../assets/svg/camera.svg'
+import { ROUTES } from '../../constants/routes'
 
 export default function Index() {
   const [checking, setChecking] = useState(true)
@@ -18,6 +19,10 @@ export default function Index() {
 
   useDidShow(() => {
     checkOnboarding()
+    Taro.setNavigationBarTitle({
+      title: ''
+    })
+    Taro.hideHomeButton()
   })
 
   useEffect(() => {
@@ -28,12 +33,12 @@ export default function Index() {
     try {
       const hasOnboarded = Taro.getStorageSync('hasOnboarded')
       if (!hasOnboarded) {
-        Taro.redirectTo({ url: '/pages/onboarding/index' })
+        Taro.redirectTo({ url: ROUTES.ONBOARDING })
       } else {
         setChecking(false)
       }
     } catch (e) {
-      Taro.redirectTo({ url: '/pages/onboarding/index' })
+      Taro.redirectTo({ url: ROUTES.ONBOARDING })
     }
   }
 

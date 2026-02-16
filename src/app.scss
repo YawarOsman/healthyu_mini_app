@@ -47,6 +47,7 @@ html, body, #app, page {
   color: var(--text-primary);
   border: none;
   border-radius: 0px;
+  box-sizing: border-box;
 }
 
 // Input placeholder style
@@ -133,6 +134,7 @@ html, body, #app, page {
   padding-left: 16px;
   padding-right: 16px;
   border-radius: 0px;
+  box-sizing: border-box;
 }
 
 // Error text - matches Flutter errorStyle

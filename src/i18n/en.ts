@@ -62,6 +62,7 @@ const en = {
   'selfie_subtitle': 'A selfie a day, keeps the doctor away.',
   'take_a_selfie': 'Take a Selfie',
   'profile_complete': 'Your profile is {percent}% complete.',
+  'please_select_date_of_birth': 'Please select your date of birth',
 }
 
 export default en

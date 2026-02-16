@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { View, Text, Input } from '@tarojs/components'
-import Taro, { useRouter } from '@tarojs/taro'
+import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { useSelector } from 'react-redux'
 import RefinedAppBar from '../../../components/RefinedAppBar'
 import { t } from '../../../i18n'
 import { RootState } from '../../../reducers'
+import { ROUTES } from '../../../constants/routes'
 
 const OTP_LENGTH = 6
 const RESEND_SECONDS = 42
@@ -12,6 +13,12 @@ const RESEND_SECONDS = 42
 export default function OtpVerificationScreen() {
   const router = useRouter()
   const phoneNumber = decodeURIComponent(router.params.phone || '0772 127 0202')
+  
+  useDidShow(() => {
+    Taro.setNavigationBarTitle({
+      title: ''
+    })
+  })
 
   const [otpValue, setOtpValue] = useState('')
   const [otpFocused, setOtpFocused] = useState(false)
@@ -57,26 +64,26 @@ export default function OtpVerificationScreen() {
       return
     }
     setOtpError('')
-    console.log('OTP verified:', otpValue)
-    
+
     // Set onboarding complete
     Taro.setStorageSync('hasOnboarded', true)
     
     // Navigate to Home Screen (relaunch clears the stack)
-    Taro.reLaunch({ url: '/pages/index/index' })
+    Taro.reLaunch({ url: ROUTES.HOME })
   }, [otpValue])
 
   return (
     <View className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`} data-theme={themeMode}>
-      <RefinedAppBar
-        actions={
-          <View className='flex gap-1 items-center'>
-            <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
-            <View className='w-1.5 h-1.5 rounded-full bg-primary' />
-            <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
-          </View>
-        }
-      />
+     <RefinedAppBar
+            showBack={false}
+            title={
+              <View className='flex gap-1 items-center'>
+                <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
+                <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
+                <View className='w-1.5 h-1.5 rounded-full bg-primary' />
+              </View>
+            }
+          />
 
       <View
         className='flex-1 flex flex-col px-page'

@@ -116,9 +116,9 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
             // Fix font paths in app-origin.acss
             const appOriginAcss = bundle['app-origin.acss'];
             if (appOriginAcss && appOriginAcss.type === 'asset' && typeof appOriginAcss.source === 'string') {
-              // Replace @/assets/fonts/ with ./fonts/
+              // Replace @/assets/fonts/ or ../assets/fonts/ with ./fonts/
               appOriginAcss.source = appOriginAcss.source.replace(/@\/assets\/fonts\//g, './fonts/');
-              // Also inspect for other potential variations if needed
+              appOriginAcss.source = appOriginAcss.source.replace(/\.\.\/assets\/fonts\//g, './fonts/');
             }
           }
         },

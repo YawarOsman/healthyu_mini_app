@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { View, Text, Input, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { useSelector } from 'react-redux'
 import RefinedAppBar from '../../../components/RefinedAppBar'
 import { t } from '../../../i18n'
@@ -9,7 +9,14 @@ import facebookIcon from '../../../assets/svg/facebook_icon.svg'
 import googleIcon from '../../../assets/svg/google_icon.svg'
 import appleIcon from '../../../assets/svg/apple_icon.svg'
 
+import { ROUTES } from '../../../constants/routes'
+
 export default function SetupAccountScreen() {
+  useDidShow(() => {
+    Taro.setNavigationBarTitle({
+      title: ''
+    })
+  })
   const [loginMethod, setLoginMethod] = useState(0) // 0 = phone, 1 = email
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
@@ -34,24 +41,24 @@ export default function SetupAccountScreen() {
     setPhoneError('')
     setEmailError('')
     if (loginMethod === 0) {
-      Taro.navigateTo({ url: `/pages/register/otp_verification/index?phone=${encodeURIComponent(phone)}` })
+      Taro.navigateTo({ url: `${ROUTES.REGISTER_OTP_VERIFICATION}?phone=${encodeURIComponent(phone)}` })
     } else {
-      Taro.navigateTo({ url: `/pages/register/otp_verification/index?email=${encodeURIComponent(email)}` })
+      Taro.navigateTo({ url: `${ROUTES.REGISTER_OTP_VERIFICATION}?email=${encodeURIComponent(email)}` })
     }
   }, [loginMethod, phone, email])
 
   return (
     <View className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`} data-theme={themeMode}>
-      <RefinedAppBar
-        actions={
-          <View className='flex gap-1 items-center'>
-            <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
-            <View className='w-1.5 h-1.5 rounded-full bg-primary' />
-            <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
-          </View>
-        }
-      />
-
+    <RefinedAppBar
+           showBack={false}
+           title={
+             <View className='flex gap-1 items-center'>
+               <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
+               <View className='w-1.5 h-1.5 rounded-full bg-primary' />
+               <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
+             </View>
+           }
+         />
       <View
         className='flex-1 flex flex-col px-page'
         style={{ paddingTop: `${appBarTotalHeight + 8}px` }}

@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { View, Text, Input, Image } from '@tarojs/components'
-import Taro from '@tarojs/taro'
-import { useSelector } from 'react-redux'
+import Taro, { useDidShow } from '@tarojs/taro'
 import RefinedAppBar from '../../../components/RefinedAppBar'
 import CustomDatePicker from '../../../components/CustomDatePicker'
 import { t } from '../../../i18n'
+import { useDispatch, useSelector } from 'react-redux'
+import { setRegistrationData } from '../../../actions/registration'
 import { RootState } from '../../../reducers'
 import calendarIcon from '../../../assets/svg/calendar.svg'
+
+import { ROUTES } from '../../../constants/routes'
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -14,9 +17,17 @@ const MONTHS = [
 ]
 
 export default function NameAndDOBEntryScreen() {
+  const dispatch = useDispatch()
+
+  useDidShow(() => {
+    Taro.setNavigationBarTitle({
+      title: ''
+    })
+  })
   const [name, setName] = useState('')
   const [dob, setDob] = useState('')
   const [nameError, setNameError] = useState('')
+  const [dobError, setDobError] = useState('')
   const [showDatePicker, setShowDatePicker] = useState(false)
 
   const themeMode = useSelector((state: RootState) => state.theme.themeMode)
@@ -45,14 +56,22 @@ export default function NameAndDOBEntryScreen() {
       setNameError(t('please_enter_your_name'))
       return
     }
+    if (!dob) {
+      setDobError(t('please_select_date_of_birth'))
+      return
+    }
     setNameError('')
-    Taro.navigateTo({ url: '/pages/register/setup_account/index' })
+    setDobError('')
+    dispatch(setRegistrationData({ name, dob }))
+
+    Taro.navigateTo({ url: ROUTES.REGISTER_SETUP_ACCOUNT })
   }
 
   return (
     <View className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`} data-theme={themeMode}>
       <RefinedAppBar
-        actions={
+        showBack={false}
+        title={
           <View className='flex gap-1 items-center'>
             <View className='w-1.5 h-1.5 rounded-full bg-primary' />
             <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
@@ -99,6 +118,7 @@ export default function NameAndDOBEntryScreen() {
               {dob ? formatDate(dob) : t('date_of_birth')}
             </Text>
           </View>
+          {dobError && <Text className='block text-error mt-1'>{dobError}</Text>}
         </View>
 
         {/* Next Button */}
@@ -116,6 +136,7 @@ export default function NameAndDOBEntryScreen() {
         maxYear={new Date().getFullYear()}
         onConfirm={(date) => {
           setDob(date)
+          setDobError('')
           setShowDatePicker(false)
         }}
         onCancel={() => setShowDatePicker(false)}
