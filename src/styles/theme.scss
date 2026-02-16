@@ -83,6 +83,7 @@
 [data-theme="flavie-dark"], .flavie-dark {
   --scaffold-bg: #000000;
   --primary: #EB9E74;
+  --primary-rgb: 235, 158, 116;
   --text-primary: #FFFFFF;
   --text-secondary: #A3A3A3;
   --text-brand: #EB9E74;
@@ -114,6 +115,7 @@
 [data-theme="flavie-light"], .flavie-light {
   --scaffold-bg: #000000;
   --primary: #EB9E74;
+  --primary-rgb: 235, 158, 116;
   --text-primary: #FFFFFF;
   --text-secondary: #A3A3A3;
   --text-brand: #EB9E74;
@@ -145,6 +147,7 @@
 [data-theme="mann-dark"], .mann-dark {
   --scaffold-bg: #000000;
   --primary: #FFFFFF;
+  --primary-rgb: 255, 255, 255;
   --text-primary: #FFFFFF;
   --text-secondary: #A3A3A3;
   --text-brand: #FFFFFF;
@@ -176,6 +179,7 @@
 [data-theme="mann-light"], .mann-light {
   --scaffold-bg: #000000;
   --primary: #FFFFFF;
+  --primary-rgb: 255, 255, 255;
   --text-primary: #FFFFFF;
   --text-secondary: #A3A3A3;
   --text-brand: #FFFFFF;

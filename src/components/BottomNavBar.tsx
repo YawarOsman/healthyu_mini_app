@@ -1,4 +1,4 @@
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import careIcon from '../assets/svg/care.svg'
 import boxesIcon from '../assets/svg/boxes.svg'
@@ -55,15 +55,29 @@ export default function BottomNavBar({ activeIndex = 0, lockedTabs = true }: Bot
               overflow: 'hidden',
             }}
           >
-            <Image
-              src={tab.icon}
+            <View
               style={{
                 width: '22px',
                 height: '22px',
-                opacity: isActive ? 1 : 0.4,
                 filter: isLocked ? 'blur(3px)' : 'none',
               }}
-            />
+            >
+              <View
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: isActive ? 'var(--primary)' : 'rgba(255,255,255,0.4)',
+                  maskImage: `url(${tab.icon})`,
+                  WebkitMaskImage: `url(${tab.icon})`,
+                  maskSize: 'contain',
+                  WebkitMaskSize: 'contain',
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskPosition: 'center',
+                  WebkitMaskPosition: 'center',
+                }}
+              />
+            </View>
             <Text
               style={{
                 fontSize: '11px',

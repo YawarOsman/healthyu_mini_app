@@ -90,22 +90,21 @@ export default function Index() {
         {/* Camera Icon with dashed border */}
         <View
           style={{
-            width: '80px',
-            height: '80px',
+            width: '72px',
+            height: '72px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            border: '2px dashed var(--primary)',
-            borderRadius: '8px',
             marginBottom: '28px',
+            backgroundColor: 'rgba(var(--primary-rgb), 0.08)',
           }}
+          className='custom-dashed-border'
         >
           <Image
             src={cameraIcon}
             style={{
-              width: '36px',
-              height: '36px',
-              opacity: 0.9,
+              width: '48px',
+              height: '48px',
             }}
           />
         </View>
@@ -154,7 +153,16 @@ export default function Index() {
             marginTop: '20px',
           }}
         >
-          {t('profile_complete').replace('{percent}', '84')}
+          {t('profile_complete')
+            .split('{percent}%')
+            .map((part, index, array) => (
+              <>
+                {part}
+                {index < array.length - 1 && (
+                  <Text style={{ color: 'var(--text-primary)' }}>84%</Text>
+                )}
+              </>
+            ))}
         </Text>
 
         {/* Debug buttons */}

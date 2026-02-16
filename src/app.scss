@@ -155,3 +155,59 @@ html, body, #app, page {
   50% { opacity: 0; }
 }
 
+
+/* Custom dashed border with wider spacing */
+/* Custom dashed border with wider spacing */
+.custom-dashed-border {
+  --dash-width: 1px;
+  --dash-color: var(--primary);
+
+  position: relative;
+  /* 
+     Pattern for 72px width (7 dashes total per side):
+     7 dashes * 6px = 42px
+     6 gaps * 5px = 30px
+     Total = 72px
+  */
+  background-image: 
+    linear-gradient(to right, 
+      var(--dash-color) 0px 6px, transparent 6px 11px, 
+      var(--dash-color) 11px 17px, transparent 17px 22px, 
+      var(--dash-color) 22px 28px, transparent 28px 33px, 
+      var(--dash-color) 33px 39px, transparent 39px 44px, 
+      var(--dash-color) 44px 50px, transparent 50px 55px, 
+      var(--dash-color) 55px 61px, transparent 61px 66px, 
+      var(--dash-color) 66px 72px),
+    linear-gradient(to bottom, 
+      var(--dash-color) 0px 6px, transparent 6px 11px, 
+      var(--dash-color) 11px 17px, transparent 17px 22px, 
+      var(--dash-color) 22px 28px, transparent 28px 33px, 
+      var(--dash-color) 33px 39px, transparent 39px 44px, 
+      var(--dash-color) 44px 50px, transparent 50px 55px, 
+      var(--dash-color) 55px 61px, transparent 61px 66px, 
+      var(--dash-color) 66px 72px),
+    linear-gradient(to left, 
+      var(--dash-color) 0px 6px, transparent 6px 11px, 
+      var(--dash-color) 11px 17px, transparent 17px 22px, 
+      var(--dash-color) 22px 28px, transparent 28px 33px, 
+      var(--dash-color) 33px 39px, transparent 39px 44px, 
+      var(--dash-color) 44px 50px, transparent 50px 55px, 
+      var(--dash-color) 55px 61px, transparent 61px 66px, 
+      var(--dash-color) 66px 72px),
+    linear-gradient(to top, 
+      var(--dash-color) 0px 6px, transparent 6px 11px, 
+      var(--dash-color) 11px 17px, transparent 17px 22px, 
+      var(--dash-color) 22px 28px, transparent 28px 33px, 
+      var(--dash-color) 33px 39px, transparent 39px 44px, 
+      var(--dash-color) 44px 50px, transparent 50px 55px, 
+      var(--dash-color) 55px 61px, transparent 61px 66px, 
+      var(--dash-color) 66px 72px);
+    
+  background-position: top left, top right, bottom right, bottom left;
+  background-repeat: no-repeat;
+  background-size: 
+    100% var(--dash-width),
+    var(--dash-width) 100%,
+    100% var(--dash-width),
+    var(--dash-width) 100%;
+}
