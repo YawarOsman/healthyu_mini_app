@@ -6,6 +6,9 @@ import {
   SET_STREET_ADDRESS,
   SET_FULL_ADDRESS,
   SUBMIT_SHIPPING_FORM,
+  FETCH_CITIES_REQUEST,
+  FETCH_CITIES_SUCCESS,
+  FETCH_CITIES_FAILURE,
 } from './constants'
 import type { BoxEntity } from './types'
 
@@ -14,6 +17,10 @@ export interface OrderState {
   box: BoxEntity | null
   loading: boolean
   error: string | null
+
+  // Cities
+  cities: string[]
+  citiesLoading: boolean
 
   // Shipping form
   city: string
@@ -26,6 +33,9 @@ const INITIAL_STATE: OrderState = {
   box: null,
   loading: false,
   error: null,
+
+  cities: [],
+  citiesLoading: false,
 
   city: '',
   streetAddress: '',
@@ -41,6 +51,13 @@ export default function order(state = INITIAL_STATE, action: { type: string; pay
       return { ...state, loading: false, box: action.payload, error: null }
     case FETCH_BOX_FAILURE:
       return { ...state, loading: false, error: action.payload }
+
+    case FETCH_CITIES_REQUEST:
+      return { ...state, citiesLoading: true }
+    case FETCH_CITIES_SUCCESS:
+      return { ...state, citiesLoading: false, cities: action.payload }
+    case FETCH_CITIES_FAILURE:
+      return { ...state, citiesLoading: false }
 
     case SET_CITY:
       return { ...state, city: action.payload }

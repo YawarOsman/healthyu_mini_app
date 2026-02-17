@@ -6,8 +6,11 @@ import {
   SET_STREET_ADDRESS,
   SET_FULL_ADDRESS,
   SUBMIT_SHIPPING_FORM,
+  FETCH_CITIES_REQUEST,
+  FETCH_CITIES_SUCCESS,
+  FETCH_CITIES_FAILURE,
 } from './constants'
-import { fetchBoxData } from './api'
+import { fetchBoxData, fetchCitiesData } from './api'
 
 // ─── Box Fetch ───
 export const fetchBox = () => async (dispatch: any) => {
@@ -21,6 +24,21 @@ export const fetchBox = () => async (dispatch: any) => {
     }
   } catch (error: any) {
     dispatch({ type: FETCH_BOX_FAILURE, payload: error.message || 'Network error' })
+  }
+}
+
+// ─── Cities Fetch ───
+export const fetchCities = () => async (dispatch: any) => {
+  dispatch({ type: FETCH_CITIES_REQUEST })
+  try {
+    const response = await fetchCitiesData()
+    if (response.success && response.data) {
+      dispatch({ type: FETCH_CITIES_SUCCESS, payload: response.data })
+    } else {
+      dispatch({ type: FETCH_CITIES_FAILURE, payload: response.error || 'Failed to fetch cities' })
+    }
+  } catch (error: any) {
+    dispatch({ type: FETCH_CITIES_FAILURE, payload: error.message || 'Network error' })
   }
 }
 

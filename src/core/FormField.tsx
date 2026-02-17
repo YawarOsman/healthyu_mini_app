@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { View, Text, Input, ITouchEvent } from '@tarojs/components'
 
 // ─── Reusable Form Field ───
@@ -44,7 +44,8 @@ export function FormField({ label, value, placeholder, onInput, error }: FormFie
         placeholder={placeholder}
         placeholderStyle='color: var(--text-placeholder); font-size: 16px;'
         style={{
-          height: '48px',
+          height: 'var(--btn-height)',
+          lineHeight: 'var(--btn-height)',
           border: `1px solid ${borderColor}`,
           paddingLeft: '12px',
           paddingRight: '12px',
@@ -87,6 +88,18 @@ interface DropdownFieldProps {
 
 export function DropdownField({ label, value, placeholder, options, onSelect, error }: DropdownFieldProps) {
   const [open, setOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [open])
 
   const borderColor = error
     ? 'var(--error)'
@@ -95,7 +108,7 @@ export function DropdownField({ label, value, placeholder, options, onSelect, er
       : 'transparent'
 
   return (
-    <View style={{ flex: 1, position: 'relative' }}>
+    <View ref={containerRef as any} style={{ flex: 1, position: 'relative' }}>
       <Text
         style={{
           fontSize: '14px',
@@ -111,7 +124,7 @@ export function DropdownField({ label, value, placeholder, options, onSelect, er
       <View
         onClick={() => setOpen(!open)}
         style={{
-          height: '48px',
+          height: 'var(--btn-height)',
           border: `1px solid ${borderColor}`,
           display: 'flex',
           alignItems: 'center',
@@ -168,9 +181,12 @@ export function DropdownField({ label, value, placeholder, options, onSelect, er
                 setOpen(false)
               }}
               style={{
-                padding: '12px',
+                padding: '2px 12px',
                 cursor: 'pointer',
                 backgroundColor: opt === value ? 'rgba(235, 158, 116, 0.15)' : 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                minHeight: '36px',
               }}
               className='active:opacity-70'
             >

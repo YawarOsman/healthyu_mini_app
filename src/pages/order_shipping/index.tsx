@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { View, Text } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
@@ -10,26 +11,21 @@ import {
   setStreetAddress,
   setFullAddress,
   submitShippingForm,
+  fetchCities,
 } from '../../features/order/actions'
-
-// ─── Cities list (replace with API later) ───
-const CITIES = [
-  'Baghdad',
-  'Erbil',
-  'Sulaymaniyah',
-  'Basra',
-  'Duhok',
-  'Kirkuk',
-  'Najaf',
-  'Karbala',
-]
 
 export default function OrderShippingPage() {
   const dispatch = useDispatch()
   const { themeMode } = useSelector((state: RootState) => state.theme)
-  const { city, streetAddress, fullAddress, isFormSubmitted } = useSelector(
+  const { city, streetAddress, fullAddress, isFormSubmitted, cities } = useSelector(
     (state: RootState) => state.order,
   )
+
+  useEffect(() => {
+    if (cities.length === 0) {
+      dispatch(fetchCities() as any)
+    }
+  }, [])
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
@@ -101,7 +97,7 @@ export default function OrderShippingPage() {
               label={t('city')}
               value={city}
               placeholder={t('select_city')}
-              options={CITIES}
+              options={cities}
               onSelect={(c) => dispatch(setCity(c))}
               error={isFormSubmitted && !city ? t('please_select_a_city') : null}
             />

@@ -60,7 +60,7 @@ html, body, #app, page {
 // height: 57px, no border radius, Juana font 19px semibold
 .btn-filled {
   width: 100%;
-  height: 57px;
+  height: var(--btn-height);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,7 +79,7 @@ html, body, #app, page {
 // Elevated Button - matches Flutter ElevatedButtonTheme
 .btn-elevated {
   width: 100%;
-  height: 57px;
+  height: var(--btn-height);
   display: flex;
   align-items: center;
   justify-content: center;
