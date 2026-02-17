@@ -11,12 +11,14 @@ interface RefinedAppBarProps {
   onBack?: () => void
   backgroundColor?: string
   textColor?: string
+  centerActions?: boolean
 }
 
 export default function RefinedAppBar({
   title,
   actions,
   showBack = true,
+  centerActions = true,
   onBack,
   backgroundColor = 'transparent',
   textColor = 'text-text-primary'
@@ -38,7 +40,7 @@ export default function RefinedAppBar({
 
   return (
     <View 
-      className={`w-full fixed top-0 left-0 z-50 transition-colors duration-300 ${backgroundColor}`}
+      className={`w-full fixed top-0 left-0 z-50 transition-colors duration-300 ${backgroundColor} ${centerActions ? 'justify-center' : 'justify-start'}`}
       style={{ paddingTop: `${statusBarHeight}px`, height: `${statusBarHeight + navBarHeight}px` }}
     >
       <View className='relative w-full h-full flex items-center justify-center px-4'>
@@ -51,7 +53,7 @@ export default function RefinedAppBar({
           >
             {/* Simple Back Arrow SVG or Icon */}
             {/* Back Arrow SVG */}
-            <View 
+            <View
               className={`${textColor} w-4 h-4`}
               style={{
                 backgroundColor: 'currentColor',
@@ -68,7 +70,7 @@ export default function RefinedAppBar({
           </View>
         )}
 
-        {/* Center: Title */}
+        {/* Center: Title and/or centered actions */}
         <View className='flex items-center justify-center'>
           {typeof title === 'string' ? (
             <Text className={`font-headline-sm ${textColor} font-bold`}>
@@ -77,10 +79,11 @@ export default function RefinedAppBar({
           ) : (
             title
           )}
+          {centerActions && actions}
         </View>
 
-        {/* Right: Actions */}
-        {actions && (
+        {/* Right: Actions (only when not centered) */}
+        {!centerActions && actions && (
           <View className='absolute right-4 h-full flex items-center'>
             {actions}
           </View>

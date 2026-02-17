@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import RefinedAppBar from '../../../components/RefinedAppBar'
 import { t } from '../../../i18n'
 import { RootState } from '../../../reducers'
+import PaginationDots from '../../../components/PaginationDots'
 import { ROUTES } from '../../../constants/routes'
 
 const OTP_LENGTH = 6
@@ -77,11 +78,7 @@ export default function OtpVerificationScreen() {
      <RefinedAppBar
             showBack={false}
             title={
-              <View className='flex gap-1 items-center'>
-                <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
-                <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
-                <View className='w-1.5 h-1.5 rounded-full bg-primary' />
-              </View>
+              <PaginationDots total={3} current={2} />
             }
           />
 

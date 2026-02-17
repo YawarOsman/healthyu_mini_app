@@ -4,4 +4,7 @@ export const ROUTES = {
   REGISTER_NAME_DOB: '/pages/register/name_dob/index',
   REGISTER_SETUP_ACCOUNT: '/pages/register/setup_account/index',
   REGISTER_OTP_VERIFICATION: '/pages/register/otp_verification/index',
+  CAMERA: '/pages/camera/index',
+  ORDER: '/pages/order/index',
+  ORDER_SHIPPING: '/pages/order_shipping/index',
 } as const;

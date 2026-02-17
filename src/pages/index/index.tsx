@@ -6,7 +6,7 @@ import { setIsFlavie } from '../../actions/theme'
 import { t } from '../../i18n'
 import { RootState } from '../../reducers'
 import BottomNavBar from '../../components/BottomNavBar'
-import cameraIcon from '../../assets/svg/camera.svg'
+import boxIcon from '../../assets/svg/box.svg'
 import { ROUTES } from '../../constants/routes'
 
 export default function Index() {
@@ -30,21 +30,24 @@ export default function Index() {
   }, [])
 
   const checkOnboarding = () => {
-    try {
-      const hasOnboarded = Taro.getStorageSync('hasOnboarded')
-      if (!hasOnboarded) {
-        Taro.redirectTo({ url: ROUTES.ONBOARDING })
-      } else {
-        setChecking(false)
-      }
-    } catch (e) {
-      Taro.redirectTo({ url: ROUTES.ONBOARDING })
-    }
+    // try {
+    //   const hasOnboarded = Taro.getStorageSync('hasOnboarded')
+    //   if (!hasOnboarded) {
+    //     Taro.redirectTo({ url: ROUTES.ONBOARDING })
+    //   } else {
+    //     setChecking(false)
+    //   }
+    // } catch (e) {
+    //   Taro.redirectTo({ url: ROUTES.ONBOARDING })
+    // }
+    setChecking(false) // Bypass onboarding for development
   }
 
   if (checking) {
     return <View className='w-screen h-screen bg-scaffold' />
   }
+
+  const brandName = isFlavie ? 'Flavie' : 'Mann'
 
   return (
     <View
@@ -69,12 +72,12 @@ export default function Index() {
               fontFamily: 'var(--font-juana)',
             }}
           >
-            {isFlavie ? 'Flavie' : 'Mann'}
+            {brandName}
           </Text>
           <Text
             style={{
-              fontSize: '11px',
-              fontWeight: '500',
+              fontSize: '12px',
+              fontWeight: '400',
               color: 'var(--text-secondary)',
               fontFamily: 'var(--font-locale-body)',
               marginLeft: '10px',
@@ -87,29 +90,29 @@ export default function Index() {
         </View>
       </View>
 
-      {/* Body — Selfie Not Taken State */}
+      {/* Body — User Without Box State */}
       <View
         className='flex-1 flex flex-col items-center justify-center px-page'
         style={{ paddingBottom: '40px' }}
       >
-        {/* Camera Icon with dashed border */}
+        {/* Box Icon with dashed border */}
         <View
           style={{
-            width: '72px',
-            height: '72px',
+            width: '56px',
+            height: '56px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            marginBottom: '28px',
+            marginBottom: '27px',
             backgroundColor: 'rgba(var(--primary-rgb), 0.08)',
           }}
-          className='custom-dashed-border'
+          className='custom-dashed-border-sm'
         >
           <Image
-            src={cameraIcon}
+            src={boxIcon}
             style={{
-              width: '48px',
-              height: '48px',
+              width: '32px',
+              height: '32px',
             }}
           />
         </View>
@@ -117,58 +120,69 @@ export default function Index() {
         {/* Title */}
         <Text
           style={{
-            fontSize: '26px',
+            fontSize: '28px',
             fontWeight: '500',
             color: 'var(--text-primary)',
             fontFamily: 'var(--font-juana)',
             textAlign: 'center',
-            marginBottom: '12px',
+            marginBottom: '8px',
           }}
         >
-          {t('lets_see_your_smile')}
+          {t('last_step_lets_get_you_a_box')}
         </Text>
 
         {/* Subtitle */}
         <Text
           style={{
-            fontSize: '16px',
+            fontSize: '20px',
             color: 'var(--text-secondary)',
             fontFamily: 'var(--font-locale-body)',
             textAlign: 'center',
-            marginBottom: '32px',
+            marginBottom: '24px',
           }}
         >
-          {t('selfie_subtitle')}
+          {t('order_box_subtitle').replace('{brand}', brandName)}
         </Text>
 
-        {/* Take a Selfie Button */}
+        {/* Start my experience Button */}
         <View style={{ width: '100%' }}>
-          <View className='btn-filled active:opacity-85'>
-            <Text className='btn-filled-text'>{t('take_a_selfie')}</Text>
+          <View
+            className='btn-filled active:opacity-85'
+            onClick={() => {
+              Taro.navigateTo({ url: ROUTES.ORDER })
+            }}
+          >
+            <Text className='btn-filled-text'>{t('start_my_experience')}</Text>
           </View>
         </View>
 
-        {/* Profile Completion */}
-        <Text
+        {/* I already have a box Button */}
+        <View
           style={{
-            fontSize: '14px',
-            color: 'var(--text-secondary)',
-            fontFamily: 'var(--font-locale-body)',
-            textAlign: 'center',
-            marginTop: '20px',
+            width: '100%',
+            marginTop: '12px',
           }}
         >
-          {t('profile_complete')
-            .split('{percent}%')
-            .map((part, index, array) => (
-              <>
-                {part}
-                {index < array.length - 1 && (
-                  <Text style={{ color: 'var(--text-primary)' }}>84%</Text>
-                )}
-              </>
-            ))}
-        </Text>
+          <View
+            className='btn-dashed active:opacity-85'
+            onClick={() => {
+              // Navigate to scan box page
+              // Taro.navigateTo({ url: ROUTES.SCAN_BOX })
+            }}
+          >
+            <Text
+              style={{
+                fontSize: '18px',
+                fontWeight: '500',
+                color: 'var(--text-secondary)',
+                fontFamily: 'var(--font-locale-body)',
+                textAlign: 'center',
+              }}
+            >
+              {t('i_already_have_a_box')}
+            </Text>
+          </View>
+        </View>
 
         {/* Debug buttons */}
         <View style={{ marginTop: '40px', opacity: 0.3 }}>

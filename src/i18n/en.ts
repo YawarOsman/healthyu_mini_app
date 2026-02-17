@@ -63,6 +63,36 @@ const en = {
   'take_a_selfie': 'Take a Selfie',
   'profile_complete': 'Your profile is {percent}% complete.',
   'please_select_date_of_birth': 'Please select your date of birth',
+  'last_step_lets_get_you_a_box': "Last step, let's get you a box.",
+  'order_box_subtitle': 'You can order a {brand} Box here.',
+  'start_my_experience': 'Start my experience',
+  'i_already_have_a_box': 'I already have a box.',
+  'box_registration': 'Box Registration',
+  'contents': 'Contents',
+  'interested': 'Interested',
+
+  // Shipping Address
+  'lovely_you_will_look_great': "Lovely, you'll look great!",
+  'city': 'City',
+  'select_city': 'Select city',
+  'street': 'Street',
+  'street_address': 'Street address',
+  'full_address': 'Full Address',
+  'complete_address': 'Complete address',
+  'we_will_call': 'We will call',
+  'on_delivery': 'on delivery.',
+  'change_phone_number': 'Change Phone Number',
+  'checkout': 'Checkout',
+  'please_select_a_city': 'Please select a city',
+  'please_enter_street': 'Please enter street address',
+
+  // Camera
+  'selfie': 'Selfie',
+  'align_your_face': 'Align your face with the lines',
+  'camera_permission_required': 'Camera Permission Required',
+  'please_grant_camera_permission': 'Please grant camera permission to take a selfie.',
+  'settings': 'Settings',
+  'cancel': 'Cancel',
 }
 
 export default en

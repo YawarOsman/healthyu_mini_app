@@ -4,7 +4,7 @@ import { View, Swiper, SwiperItem, Image, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { t } from '../../i18n'
 import { ROUTES } from '../../constants/routes'
- // Keeping for now if there are specific overrides, but mostly moving to tailwind
+import PaginationDots from '../../components/PaginationDots'
 
 import flavie1 from '../../assets/images/flavie_onboarding_1.png'
 import flavie2 from '../../assets/images/flavie_onboarding_2.png'
@@ -104,14 +104,7 @@ export default function Onboarding() {
           paddingTop: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + 20}px`,
         }}
       >
-        <View className='flex gap-1 items-center'>
-          {slides.map((_, idx) => (
-            <View
-              key={idx}
-              className={`w-1 h-1 rounded-full transition-colors duration-300 ${idx === currentIndex ? 'bg-white' : 'bg-white/50'}`}
-            />
-          ))}
-        </View>
+        <PaginationDots total={slides.length} current={currentIndex} />
       </View>
 
       {/* Swiper */}

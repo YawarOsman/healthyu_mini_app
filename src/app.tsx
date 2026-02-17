@@ -3,6 +3,7 @@ import Taro from '@tarojs/taro'
 import { Provider } from 'react-redux'
 
 import configStore from './store'
+import { fetchBox } from './features/order/actions'
 
 import './app.scss'
 import './styles/theme.scss'
@@ -11,6 +12,9 @@ const store = configStore()
 
 class App extends Component<PropsWithChildren> {
   componentDidMount() {
+    // Fetch box data on app load
+    store.dispatch(fetchBox() as any)
+
     // Apply theme to document root
     const state = store.getState()
     const themeMode = state.theme?.themeMode || 'flavie-dark'

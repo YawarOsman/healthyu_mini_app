@@ -5,6 +5,8 @@ export default defineAppConfig({
     'pages/register/setup_account/index',
     'pages/register/otp_verification/index',
     'pages/onboarding/index',
+    'pages/order/index',
+    'pages/order_shipping/index',
   ],
   window: {
     backgroundTextStyle: 'light',

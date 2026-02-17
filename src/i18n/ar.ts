@@ -63,6 +63,36 @@ const ar = {
   'selfie_subtitle': 'صورة سيلفي يومية تبقيك بعيداً عن الطبيب.',
   'take_a_selfie': 'التقط صورة سيلفي',
   'profile_complete': 'ملفك الشخصي مكتمل بنسبة {percent}%.',
+  'last_step_lets_get_you_a_box': 'الخطوة الأخيرة، دعنا نحصل لك على صندوق.',
+  'order_box_subtitle': 'يمكنك طلب صندوق {brand} من هنا.',
+  'start_my_experience': 'ابدأ تجربتي',
+  'i_already_have_a_box': 'لدي صندوق بالفعل.',
+  'box_registration': 'تسجيل الصندوق',
+  'contents': 'المحتويات',
+  'interested': 'مهتم',
+
+  // Shipping Address
+  'lovely_you_will_look_great': 'رائعة، ستبدين رائعة!',
+  'city': 'المدينة',
+  'select_city': 'اختر المدينة',
+  'street': 'الشارع',
+  'street_address': 'عنوان الشارع',
+  'full_address': 'العنوان الكامل',
+  'complete_address': 'العنوان الكامل',
+  'we_will_call': 'سنتصل',
+  'on_delivery': 'عند التوصيل.',
+  'change_phone_number': 'تغيير رقم الهاتف',
+  'checkout': 'إتمام الشراء',
+  'please_select_a_city': 'الرجاء اختيار مدينة',
+  'please_enter_street': 'الرجاء إدخال عنوان الشارع',
+  
+  // Camera
+  'selfie': 'سيلفي',
+  'align_your_face': 'حاذِ وجهك مع الخطوط',
+  'camera_permission_required': 'إذن الكاميرا مطلوب',
+  'please_grant_camera_permission': 'يرجى منح إذن الكاميرا لالتقاط صورة شخصية.',
+  'settings': 'الإعدادات',
+  'cancel': 'إلغاء',
 }
 
 export default ar

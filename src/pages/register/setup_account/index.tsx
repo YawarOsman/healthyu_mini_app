@@ -8,6 +8,7 @@ import { RootState } from '../../../reducers'
 import facebookIcon from '../../../assets/svg/facebook_icon.svg'
 import googleIcon from '../../../assets/svg/google_icon.svg'
 import appleIcon from '../../../assets/svg/apple_icon.svg'
+import PaginationDots from '../../../components/PaginationDots'
 
 import { ROUTES } from '../../../constants/routes'
 
@@ -52,11 +53,7 @@ export default function SetupAccountScreen() {
     <RefinedAppBar
            showBack={false}
            title={
-             <View className='flex gap-1 items-center'>
-               <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
-               <View className='w-1.5 h-1.5 rounded-full bg-primary' />
-               <View className='w-1.5 h-1.5 rounded-full opacity-40 bg-primary' />
-             </View>
+             <PaginationDots total={3} current={1} />
            }
          />
       <View
