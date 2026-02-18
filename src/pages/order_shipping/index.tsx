@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { t } from '../../i18n'
@@ -34,8 +34,13 @@ export default function OrderShippingPage() {
   const navBarHeight = 44
 
   const handleCheckout = () => {
+    console.log('handleCheckout called')
+    Taro.showToast({ title: 'Processing...', icon: 'loading' })
     dispatch(submitShippingForm())
+    console.log('Form submitted. City:', city, 'Street:', streetAddress)
+    
     if (city && streetAddress.trim()) {
+      console.log('Validation passed, proceeding to checkout')
       // Mark box as ordered with estimated delivery
       const deliveryDate = new Date()
       deliveryDate.setDate(deliveryDate.getDate() + 7) // ~1 week
@@ -45,7 +50,10 @@ export default function OrderShippingPage() {
       dispatch(setEstimatedDelivery(dateStr))
 
       // Go back to home
+      console.log('Navigating to home...')
       Taro.reLaunch({ url: '/pages/index/index' })
+    } else {
+      console.log('Validation failed. City or Street is missing.')
     }
   }
 
@@ -186,12 +194,21 @@ export default function OrderShippingPage() {
             backgroundColor: 'var(--scaffold-bg)',
           }}
         >
-          <View
+          <Button
             className='btn-filled active:opacity-85'
             onClick={handleCheckout}
+            style={{
+              border: 'none',
+              backgroundColor: 'var(--button-bg)',
+              color: 'var(--button-text)',
+              borderRadius: '0px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
           >
             <Text className='btn-filled-text'>{t('checkout')}</Text>
-          </View>
+          </Button>
         </View>
       </View>
     </View>

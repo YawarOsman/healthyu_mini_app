@@ -7,6 +7,7 @@ export default defineAppConfig({
     'pages/onboarding/index',
     'pages/order/index',
     'pages/order_shipping/index',
+    'pages/scan_box/index',
   ],
   window: {
     backgroundTextStyle: 'light',

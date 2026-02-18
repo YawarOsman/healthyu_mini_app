@@ -10,6 +10,7 @@ import { ROUTES } from '../../constants/routes'
 
 
 export default function OrderPage() {
+  console.log('OrderPage: Rendering...')
   const { themeMode, locale } = useSelector((state: RootState) => state.theme)
   const { box, loading, error } = useSelector((state: RootState) => state.order)
 

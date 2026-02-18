@@ -7,4 +7,5 @@ export const ROUTES = {
   CAMERA: '/pages/camera/index',
   ORDER: '/pages/order/index',
   ORDER_SHIPPING: '/pages/order_shipping/index',
+  SCAN_BOX: '/pages/scan_box/index',
 } as const;

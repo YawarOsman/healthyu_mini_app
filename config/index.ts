@@ -57,41 +57,41 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
             }
           }
         },
-        {
-          name: 'manual-babel-transpile',
-          // Use transform to handle source files before bundling
-          // Use renderChunk to handle the final output
-          // Use renderChunk to handle the final output
-          // Use renderChunk to handle the final output
-          renderChunk(code, chunk) {
-            // Only transpile .js files
-            if (!chunk.fileName.endsWith('.js')) return null;
+        // {
+        //   name: 'manual-babel-transpile',
+        //   // Use transform to handle source files before bundling
+        //   // Use renderChunk to handle the final output
+        //   // Use renderChunk to handle the final output
+        //   // Use renderChunk to handle the final output
+        //   renderChunk(code, chunk) {
+        //     // Only transpile .js files
+        //     if (!chunk.fileName.endsWith('.js')) return null;
             
-            try {
-              const babel = require('@babel/core');
-              const presetPath = require.resolve('@babel/preset-env');
+        //     try {
+        //       const babel = require('@babel/core');
+        //       const presetPath = require.resolve('@babel/preset-env');
               
-              const result = babel.transformSync(code, {
-                presets: [
-                  [presetPath, {
-                    targets: {
-                      ios: '8' // Force ES5 for Alipay
-                    },
-                    modules: 'commonjs' 
-                  }]
-                ],
-                filename: chunk.fileName,
-                sourceMaps: false,
-                configFile: false,
-                babelrc: false
-              });
-              return { code: result.code, map: null };
-            } catch (e) {
-              console.error('Babel transpilation failed for ' + chunk.fileName, e);
-              return null;
-            }
-          }
-        },
+        //       const result = babel.transformSync(code, {
+        //         presets: [
+        //           [presetPath, {
+        //             targets: {
+        //               ios: '8' // Force ES5 for Alipay
+        //             },
+        //             modules: 'commonjs' 
+        //           }]
+        //         ],
+        //         filename: chunk.fileName,
+        //         sourceMaps: false,
+        //         configFile: false,
+        //         babelrc: false
+        //       });
+        //       return { code: result.code, map: null };
+        //     } catch (e) {
+        //       console.error('Babel transpilation failed for ' + chunk.fileName, e);
+        //       return null;
+        //     }
+        //   }
+        // },
         {
           name: 'fix-browserslist-crash',
           enforce: 'pre',
@@ -136,6 +136,15 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
             }
           },
         },
+        {
+          name: 'configure-history-fallback',
+          configureServer(server) {
+            server.middlewares.use(require('connect-history-api-fallback')({
+              index: '/index.html', // Ensure this matches the publicPath or output structure
+              htmlAcceptHeaders: ['text/html', 'application/xhtml+xml']
+            }));
+          }
+        },
         uvtw({
           // rem to rpx
           rem2rpx: true,
@@ -166,6 +175,19 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
     h5: {
       publicPath: '/',
       staticDirectory: 'static',
+      router: {
+        mode: 'browser', // Use browser history mode (removes #)
+        customRoutes: {
+          'pages/index/index': '/',
+          'pages/order/index': '/order',
+          'pages/order_shipping/index': '/shipping',
+          'pages/scan_box/index': '/scan',
+          'pages/onboarding/index': '/onboarding',
+          'pages/register/name_dob/index': '/register/name',
+          'pages/register/setup_account/index': '/register/setup',
+          'pages/register/otp_verification/index': '/register/verify',
+        }
+      },
 
       miniCssExtractPluginOption: {
         ignoreOrder: true,

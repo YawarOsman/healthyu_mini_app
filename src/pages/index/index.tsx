@@ -274,7 +274,12 @@ function BoxOrderedWidget({
             className='btn-filled active:opacity-85'
             onClick={() => {
               // Navigate to QR scanner
-              // Taro.navigateTo({ url: ROUTES.SCAN_BOX })
+              console.log('Attempting to navigate to:', ROUTES.SCAN_BOX)
+              Taro.navigateTo({
+                url: ROUTES.SCAN_BOX,
+                success: () => console.log('Navigation success'),
+                fail: (err) => console.error('Navigation failed', err)
+              })
             }}
           >
             <View className='flex items-center justify-center' style={{ gap: '8px' }}>
@@ -390,7 +395,12 @@ function UserWithoutBoxWidget({
           className='btn-dashed active:opacity-85'
           onClick={() => {
             // Navigate to scan box page
-            // Taro.navigateTo({ url: ROUTES.SCAN_BOX })
+            console.log('Attempting to navigate to:', ROUTES.SCAN_BOX)
+            Taro.navigateTo({
+              url: ROUTES.SCAN_BOX,
+              success: () => console.log('Navigation success'),
+              fail: (err) => console.error('Navigation failed', err)
+            })
           }}
         >
           <Text
