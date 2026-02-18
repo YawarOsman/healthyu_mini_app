@@ -13,6 +13,7 @@ import {
   submitShippingForm,
   fetchCities,
 } from '../../features/order/actions'
+import { setUserOrderedBox, setEstimatedDelivery } from '../../features/auth/actions'
 
 export default function OrderShippingPage() {
   const dispatch = useDispatch()
@@ -20,6 +21,7 @@ export default function OrderShippingPage() {
   const { city, streetAddress, fullAddress, isFormSubmitted, cities } = useSelector(
     (state: RootState) => state.order,
   )
+  const { phone } = useSelector((state: RootState) => state.auth)
 
   useEffect(() => {
     if (cities.length === 0) {
@@ -31,14 +33,19 @@ export default function OrderShippingPage() {
   const statusBarHeight = systemInfo.statusBarHeight || 0
   const navBarHeight = 44
 
-  // Mock phone number (would come from auth state in real app)
-  const phoneNumber = '+964 772 128 7272'
-
   const handleCheckout = () => {
     dispatch(submitShippingForm())
     if (city && streetAddress.trim()) {
-      // Navigate to bank account / next step
-      // Taro.navigateTo({ url: ROUTES.ORDER_BANK_ACCOUNT })
+      // Mark box as ordered with estimated delivery
+      const deliveryDate = new Date()
+      deliveryDate.setDate(deliveryDate.getDate() + 7) // ~1 week
+      const dateStr = deliveryDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+
+      dispatch(setUserOrderedBox(true))
+      dispatch(setEstimatedDelivery(dateStr))
+
+      // Go back to home
+      Taro.reLaunch({ url: '/pages/index/index' })
     }
   }
 
@@ -140,7 +147,7 @@ export default function OrderShippingPage() {
                 fontFamily: 'var(--font-locale-body)',
               }}
             >
-              {phoneNumber}
+              {phone}
             </Text>
             <Text
               style={{

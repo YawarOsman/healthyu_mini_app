@@ -86,6 +86,15 @@ const en = {
   'please_select_a_city': 'Please select a city',
   'please_enter_street': 'Please enter street address',
 
+  // Box Ordered Home Widget
+  'photo_saved': 'Photo Saved',
+  'you_are_ready_to_get_started': 'You are ready to get started.',
+  'box_ordered': 'Box Ordered',
+  'your_order_will_arrive_in': 'Your order will arrive in',
+  'begin_your_journey': 'Begin your journey.',
+  'scan_the_qr_on_the_box': 'Scan the QR on the box to get started.',
+  'scan_box': 'Scan Box',
+
   // Camera
   'selfie': 'Selfie',
   'align_your_face': 'Align your face with the lines',

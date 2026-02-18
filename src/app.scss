@@ -157,113 +157,12 @@ html, body, #app, page {
   50% { opacity: 0; }
 }
 
-
-/* Custom dashed border with wider spacing */
-/* Custom dashed border with wider spacing */
-.custom-dashed-border {
-  --dash-width: 1px;
-  --dash-color: var(--primary);
-
+.custom-dotted-border {
+  border: 1px solid var(--primary);
   position: relative;
-  /* 
-     Pattern for 72px width (7 dashes total per side):
-     7 dashes * 6px = 42px
-     6 gaps * 5px = 30px
-     Total = 72px
-  */
-  background-image: 
-    linear-gradient(to right, 
-      var(--dash-color) 0px 6px, transparent 6px 11px, 
-      var(--dash-color) 11px 17px, transparent 17px 22px, 
-      var(--dash-color) 22px 28px, transparent 28px 33px, 
-      var(--dash-color) 33px 39px, transparent 39px 44px, 
-      var(--dash-color) 44px 50px, transparent 50px 55px, 
-      var(--dash-color) 55px 61px, transparent 61px 66px, 
-      var(--dash-color) 66px 72px),
-    linear-gradient(to bottom, 
-      var(--dash-color) 0px 6px, transparent 6px 11px, 
-      var(--dash-color) 11px 17px, transparent 17px 22px, 
-      var(--dash-color) 22px 28px, transparent 28px 33px, 
-      var(--dash-color) 33px 39px, transparent 39px 44px, 
-      var(--dash-color) 44px 50px, transparent 50px 55px, 
-      var(--dash-color) 55px 61px, transparent 61px 66px, 
-      var(--dash-color) 66px 72px),
-    linear-gradient(to left, 
-      var(--dash-color) 0px 6px, transparent 6px 11px, 
-      var(--dash-color) 11px 17px, transparent 17px 22px, 
-      var(--dash-color) 22px 28px, transparent 28px 33px, 
-      var(--dash-color) 33px 39px, transparent 39px 44px, 
-      var(--dash-color) 44px 50px, transparent 50px 55px, 
-      var(--dash-color) 55px 61px, transparent 61px 66px, 
-      var(--dash-color) 66px 72px),
-    linear-gradient(to top, 
-      var(--dash-color) 0px 6px, transparent 6px 11px, 
-      var(--dash-color) 11px 17px, transparent 17px 22px, 
-      var(--dash-color) 22px 28px, transparent 28px 33px, 
-      var(--dash-color) 33px 39px, transparent 39px 44px, 
-      var(--dash-color) 44px 50px, transparent 50px 55px, 
-      var(--dash-color) 55px 61px, transparent 61px 66px, 
-      var(--dash-color) 66px 72px);
-    
-  background-position: top left, top right, bottom right, bottom left;
-  background-repeat: no-repeat;
-  background-size: 
-    100% var(--dash-width),
-    var(--dash-width) 100%,
-    100% var(--dash-width),
-    var(--dash-width) 100%;
+  box-sizing: border-box;
 }
 
-/* Custom dashed border — 56px variant for box icon */
-.custom-dashed-border-sm {
-  --dash-width: 1px;
-  --dash-color: var(--primary);
-
-  position: relative;
-  /* 
-     Pattern for 56px width:
-     6 dashes * 5px = 30px
-     5 gaps * 5.2px ≈ 26px
-     Total ≈ 56px
-  */
-  background-image: 
-    linear-gradient(to right, 
-      var(--dash-color) 0px 5px, transparent 5px 10.2px, 
-      var(--dash-color) 10.2px 15.2px, transparent 15.2px 20.4px, 
-      var(--dash-color) 20.4px 25.4px, transparent 25.4px 30.6px, 
-      var(--dash-color) 30.6px 35.6px, transparent 35.6px 40.8px, 
-      var(--dash-color) 40.8px 45.8px, transparent 45.8px 51px, 
-      var(--dash-color) 51px 56px),
-    linear-gradient(to bottom, 
-      var(--dash-color) 0px 5px, transparent 5px 10.2px, 
-      var(--dash-color) 10.2px 15.2px, transparent 15.2px 20.4px, 
-      var(--dash-color) 20.4px 25.4px, transparent 25.4px 30.6px, 
-      var(--dash-color) 30.6px 35.6px, transparent 35.6px 40.8px, 
-      var(--dash-color) 40.8px 45.8px, transparent 45.8px 51px, 
-      var(--dash-color) 51px 56px),
-    linear-gradient(to left, 
-      var(--dash-color) 0px 5px, transparent 5px 10.2px, 
-      var(--dash-color) 10.2px 15.2px, transparent 15.2px 20.4px, 
-      var(--dash-color) 20.4px 25.4px, transparent 25.4px 30.6px, 
-      var(--dash-color) 30.6px 35.6px, transparent 35.6px 40.8px, 
-      var(--dash-color) 40.8px 45.8px, transparent 45.8px 51px, 
-      var(--dash-color) 51px 56px),
-    linear-gradient(to top, 
-      var(--dash-color) 0px 5px, transparent 5px 10.2px, 
-      var(--dash-color) 10.2px 15.2px, transparent 15.2px 20.4px, 
-      var(--dash-color) 20.4px 25.4px, transparent 25.4px 30.6px, 
-      var(--dash-color) 30.6px 35.6px, transparent 35.6px 40.8px, 
-      var(--dash-color) 40.8px 45.8px, transparent 45.8px 51px, 
-      var(--dash-color) 51px 56px);
-    
-  background-position: top left, top right, bottom right, bottom left;
-  background-repeat: no-repeat;
-  background-size: 
-    100% var(--dash-width),
-    var(--dash-width) 100%,
-    100% var(--dash-width),
-    var(--dash-width) 100%;
-}
 
 /* Dashed outline button — matches Flutter DottedBorder for "I already have a box" */
 .btn-dashed {
@@ -273,6 +172,6 @@ html, body, #app, page {
   align-items: center;
   justify-content: center;
   background-color: transparent;
-  border: 1px dashed var(--border-secondary);
+  border: 1px solid var(--border-secondary);
   border-radius: 0px;
 }

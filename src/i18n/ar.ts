@@ -86,6 +86,15 @@ const ar = {
   'please_select_a_city': 'الرجاء اختيار مدينة',
   'please_enter_street': 'الرجاء إدخال عنوان الشارع',
   
+  // Box Ordered Home Widget
+  'photo_saved': 'تم حفظ الصورة',
+  'you_are_ready_to_get_started': 'أنتِ مستعدة للبدء.',
+  'box_ordered': 'تم طلب الصندوق',
+  'your_order_will_arrive_in': 'سيصل طلبك في',
+  'begin_your_journey': 'ابدئي رحلتك.',
+  'scan_the_qr_on_the_box': 'امسحي رمز QR على الصندوق للبدء.',
+  'scan_box': 'مسح الصندوق',
+
   // Camera
   'selfie': 'سيلفي',
   'align_your_face': 'حاذِ وجهك مع الخطوط',
