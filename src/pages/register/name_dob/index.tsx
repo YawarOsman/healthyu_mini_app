@@ -11,6 +11,7 @@ import calendarIcon from '../../../assets/svg/calendar.svg'
 import PaginationDots from '../../../components/PaginationDots'
 
 import { ROUTES } from '../../../constants/routes'
+import { navigateTo } from '../../../utils/navigation'
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -65,7 +66,7 @@ export default function NameAndDOBEntryScreen() {
     setDobError('')
     dispatch(setRegistrationData({ name, dob }))
 
-    Taro.navigateTo({ url: ROUTES.REGISTER_SETUP_ACCOUNT })
+    navigateTo(ROUTES.REGISTER_SETUP_ACCOUNT)
   }
 
   return (

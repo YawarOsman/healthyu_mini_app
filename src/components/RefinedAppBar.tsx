@@ -17,7 +17,7 @@ interface RefinedAppBarProps {
 export default function RefinedAppBar({
   title,
   actions,
-  showBack = true,
+  showBack = false,
   centerActions = true,
   onBack,
   backgroundColor = 'transparent',

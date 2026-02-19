@@ -5,6 +5,7 @@ import Taro from '@tarojs/taro'
 import { t } from '../../i18n'
 import { ROUTES } from '../../constants/routes'
 import PaginationDots from '../../components/PaginationDots'
+import { navigateTo, redirectTo } from '../../utils/navigation'
 
 import flavie1 from '../../assets/images/flavie_onboarding_1.png'
 import flavie2 from '../../assets/images/flavie_onboarding_2.png'
@@ -70,7 +71,7 @@ export default function Onboarding() {
     try {
       Taro.setStorageSync('hasOnboarded', 'true')
       // Redirect to home page
-      Taro.redirectTo({ url: ROUTES.HOME })
+      redirectTo(ROUTES.HOME)
     } catch (e) {
       console.error('Failed to set storage', e)
     }
@@ -79,9 +80,7 @@ export default function Onboarding() {
   const handleNext = useCallback(() => {
     if (isLastSlide) {
       // Proceed to registration
-      Taro.navigateTo({
-        url: ROUTES.REGISTER_NAME_DOB
-      }).catch(err => {
+      navigateTo(ROUTES.REGISTER_NAME_DOB).catch(err => {
         console.error('Navigation failed:', JSON.stringify(err))
         Taro.showToast({ title: 'Nav failed: ' + JSON.stringify(err), icon: 'none', duration: 5000 })
       })

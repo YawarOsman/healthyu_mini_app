@@ -39,7 +39,8 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
           config() {
             return {
               build: {
-                target: 'esnext', // Bypass esbuild transpilation, let terser handle it
+                // Keep Vite bundling stable, then transpile emitted JS to ES5 in a post step below.
+                target: 'esnext',
                 minify: 'terser',
                 terserOptions: {
                   ecma: 5,
@@ -55,6 +56,63 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
                 },
               }
             }
+          }
+        },
+        {
+          name: 'transpile-mini-js-to-es5',
+          enforce: 'post',
+          generateBundle(_options, bundle) {
+            const taroEnv = process.env.TARO_ENV
+            const shouldTranspile = taroEnv !== 'h5' && taroEnv !== 'rn' && taroEnv !== 'harmony'
+            if (!shouldTranspile) {
+              return
+            }
+
+            const babel = require('@babel/core')
+            const presetPath = require.resolve('@babel/preset-env')
+
+            Object.keys(bundle).forEach((fileName) => {
+              if (!fileName.endsWith('.js')) {
+                return
+              }
+
+              const output = bundle[fileName]
+              const source = output.type === 'chunk'
+                ? output.code
+                : (typeof output.source === 'string' ? output.source : '')
+
+              if (!source) {
+                return
+              }
+
+              const result = babel.transformSync(source, {
+                presets: [
+                  [presetPath, {
+                    targets: {
+                      ios: '8',
+                    },
+                    modules: false,
+                  }],
+                ],
+                filename: fileName,
+                sourceMaps: false,
+                babelrc: false,
+                configFile: false,
+                comments: false,
+                compact: true,
+                sourceType: 'unambiguous',
+              })
+
+              if (!result || !result.code) {
+                return
+              }
+
+              if (output.type === 'chunk') {
+                output.code = result.code
+              } else {
+                output.source = result.code
+              }
+            })
           }
         },
         // {
@@ -178,14 +236,14 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
       router: {
         mode: 'browser', // Use browser history mode (removes #)
         customRoutes: {
-          'pages/index/index': '/',
-          'pages/order/index': '/order',
-          'pages/order_shipping/index': '/shipping',
-          'pages/scan_box/index': '/scan',
-          'pages/onboarding/index': '/onboarding',
-          'pages/register/name_dob/index': '/register/name',
-          'pages/register/setup_account/index': '/register/setup',
-          'pages/register/otp_verification/index': '/register/verify',
+          '/pages/index/index': '/',
+          '/pages/order/index': '/order',
+          '/pages/order_shipping/index': '/shipping',
+          '/pages/scan_box/index': '/scan',
+          '/pages/onboarding/index': '/onboarding',
+          '/pages/register/name_dob/index': '/register/name',
+          '/pages/register/setup_account/index': '/register/setup',
+          '/pages/register/otp_verification/index': '/register/verify',
         }
       },
 

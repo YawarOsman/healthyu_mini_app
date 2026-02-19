@@ -7,6 +7,7 @@ import RefinedAppBar from '../../components/RefinedAppBar'
 import type { BoxItem } from '../../features/order/types'
 import flaskIcon from '../../assets/svg/boxes.svg'
 import { ROUTES } from '../../constants/routes'
+import { navigateTo } from '../../utils/navigation'
 
 
 export default function OrderPage() {
@@ -30,8 +31,6 @@ export default function OrderPage() {
         data-theme={themeMode}
       >
         <RefinedAppBar
-          showBack
-          
           actions={<ProgressDots current={0} total={3} />}
         />
         <View
@@ -53,7 +52,6 @@ export default function OrderPage() {
         data-theme={themeMode}
       >
         <RefinedAppBar
-          showBack
           actions={<ProgressDots current={0} total={3} />}
         />
         <View
@@ -78,7 +76,6 @@ export default function OrderPage() {
     >
       {/* App Bar with back + progress dots */}
       <RefinedAppBar
-        showBack
         actions={<ProgressDots current={0} total={3} />}
       />
 
@@ -232,7 +229,7 @@ export default function OrderPage() {
         <View
           className='btn-filled active:opacity-85'
           onClick={() => {
-            Taro.navigateTo({ url: ROUTES.ORDER_SHIPPING })
+            navigateTo(ROUTES.ORDER_SHIPPING)
           }}
         >
           <Text className='btn-filled-text'>{t('interested')}</Text>

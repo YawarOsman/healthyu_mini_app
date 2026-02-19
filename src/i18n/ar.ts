@@ -94,12 +94,18 @@ const ar = {
   'begin_your_journey': 'ابدئي رحلتك.',
   'scan_the_qr_on_the_box': 'امسحي رمز QR على الصندوق للبدء.',
   'scan_box': 'مسح الصندوق',
+  'qr_scan': 'مسح QR',
+  'fit_qr_code_within_box': 'ضعي رمز QR داخل الإطار',
+  'opening_camera': 'جاري فتح الكاميرا...',
+  'align_qr_with_frame': 'حاذي الرمز داخل الإطار للمسح',
+  'qr_detected': 'تم اكتشاف رمز QR',
 
   // Camera
   'selfie': 'سيلفي',
   'align_your_face': 'حاذِ وجهك مع الخطوط',
   'camera_permission_required': 'إذن الكاميرا مطلوب',
   'please_grant_camera_permission': 'يرجى منح إذن الكاميرا لالتقاط صورة شخصية.',
+  'please_grant_camera_permission_for_scan': 'يرجى منح إذن الكاميرا لمسح رمز QR الخاص بالصندوق.',
   'settings': 'الإعدادات',
   'cancel': 'إلغاء',
 }

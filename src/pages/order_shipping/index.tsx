@@ -14,6 +14,8 @@ import {
   fetchCities,
 } from '../../features/order/actions'
 import { setUserOrderedBox, setEstimatedDelivery } from '../../features/auth/actions'
+import { ROUTES } from '../../constants/routes'
+import { reLaunch } from '../../utils/navigation'
 
 export default function OrderShippingPage() {
   const dispatch = useDispatch()
@@ -51,7 +53,7 @@ export default function OrderShippingPage() {
 
       // Go back to home
       console.log('Navigating to home...')
-      Taro.reLaunch({ url: '/pages/index/index' })
+      reLaunch(ROUTES.HOME)
     } else {
       console.log('Validation failed. City or Street is missing.')
     }
@@ -64,7 +66,6 @@ export default function OrderShippingPage() {
     >
       {/* App Bar */}
       <RefinedAppBar
-        showBack
         actions={<ProgressDots current={1} total={3} />}
       />
 

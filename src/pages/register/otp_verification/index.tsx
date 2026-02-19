@@ -7,6 +7,7 @@ import { t } from '../../../i18n'
 import { RootState } from '../../../reducers'
 import PaginationDots from '../../../components/PaginationDots'
 import { ROUTES } from '../../../constants/routes'
+import { reLaunch } from '../../../utils/navigation'
 
 const OTP_LENGTH = 6
 const RESEND_SECONDS = 42
@@ -70,7 +71,7 @@ export default function OtpVerificationScreen() {
     Taro.setStorageSync('hasOnboarded', true)
     
     // Navigate to Home Screen (relaunch clears the stack)
-    Taro.reLaunch({ url: ROUTES.HOME })
+    reLaunch(ROUTES.HOME)
   }, [otpValue])
 
   return (

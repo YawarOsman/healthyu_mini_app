@@ -11,6 +11,7 @@ import appleIcon from '../../../assets/svg/apple_icon.svg'
 import PaginationDots from '../../../components/PaginationDots'
 
 import { ROUTES } from '../../../constants/routes'
+import { navigateTo } from '../../../utils/navigation'
 
 export default function SetupAccountScreen() {
   useDidShow(() => {
@@ -42,9 +43,9 @@ export default function SetupAccountScreen() {
     setPhoneError('')
     setEmailError('')
     if (loginMethod === 0) {
-      Taro.navigateTo({ url: `${ROUTES.REGISTER_OTP_VERIFICATION}?phone=${encodeURIComponent(phone)}` })
+      navigateTo(`${ROUTES.REGISTER_OTP_VERIFICATION}?phone=${encodeURIComponent(phone)}`)
     } else {
-      Taro.navigateTo({ url: `${ROUTES.REGISTER_OTP_VERIFICATION}?email=${encodeURIComponent(email)}` })
+      navigateTo(`${ROUTES.REGISTER_OTP_VERIFICATION}?email=${encodeURIComponent(email)}`)
     }
   }, [loginMethod, phone, email])
 

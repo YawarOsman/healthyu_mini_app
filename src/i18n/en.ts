@@ -94,12 +94,18 @@ const en = {
   'begin_your_journey': 'Begin your journey.',
   'scan_the_qr_on_the_box': 'Scan the QR on the box to get started.',
   'scan_box': 'Scan Box',
+  'qr_scan': 'QR Scan',
+  'fit_qr_code_within_box': 'Fit the QR Code within the box',
+  'opening_camera': 'Opening camera...',
+  'align_qr_with_frame': 'Align the code inside the frame to scan',
+  'qr_detected': 'QR detected',
 
   // Camera
   'selfie': 'Selfie',
   'align_your_face': 'Align your face with the lines',
   'camera_permission_required': 'Camera Permission Required',
   'please_grant_camera_permission': 'Please grant camera permission to take a selfie.',
+  'please_grant_camera_permission_for_scan': 'Please grant camera permission to scan your box QR code.',
   'settings': 'Settings',
   'cancel': 'Cancel',
 }

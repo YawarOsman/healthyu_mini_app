@@ -10,8 +10,11 @@ import { SvgIcons } from '../../assets/icons'
 import DottedCircle from '../../components/DottedCircle'
 import { ROUTES } from '../../constants/routes'
 import DashedBox from "../../components/DashedBox";
+import { navigateTo } from '../../utils/navigation'
+import { hideHomeButtonSafely } from '../../utils/ui'
 
 export default function Index() {
+  console.log('IndexPage: Rendering...')
   const [checking, setChecking] = useState(true)
   const { themeMode, isFlavie } = useSelector((state: RootState) => state.theme)
   const { isUserOrderedABox, boxes, estimatedDeliveryDate } = useSelector(
@@ -27,7 +30,7 @@ export default function Index() {
     Taro.setNavigationBarTitle({
       title: ''
     })
-    Taro.hideHomeButton()
+    void hideHomeButtonSafely()
   })
 
   useEffect(() => {
@@ -275,10 +278,10 @@ function BoxOrderedWidget({
             onClick={() => {
               // Navigate to QR scanner
               console.log('Attempting to navigate to:', ROUTES.SCAN_BOX)
-              Taro.navigateTo({
-                url: ROUTES.SCAN_BOX,
-                success: () => console.log('Navigation success'),
-                fail: (err) => console.error('Navigation failed', err)
+              navigateTo(ROUTES.SCAN_BOX).then(() => {
+                console.log('Navigation success')
+              }).catch((err) => {
+                console.error('Navigation failed', err)
               })
             }}
           >
@@ -377,7 +380,7 @@ function UserWithoutBoxWidget({
         <View
           className='btn-filled active:opacity-85'
           onClick={() => {
-            Taro.navigateTo({ url: ROUTES.ORDER })
+            navigateTo(ROUTES.ORDER)
           }}
         >
           <Text className='btn-filled-text'>{t('start_my_experience')}</Text>
@@ -396,10 +399,10 @@ function UserWithoutBoxWidget({
           onClick={() => {
             // Navigate to scan box page
             console.log('Attempting to navigate to:', ROUTES.SCAN_BOX)
-            Taro.navigateTo({
-              url: ROUTES.SCAN_BOX,
-              success: () => console.log('Navigation success'),
-              fail: (err) => console.error('Navigation failed', err)
+            navigateTo(ROUTES.SCAN_BOX).then(() => {
+              console.log('Navigation success')
+            }).catch((err) => {
+              console.error('Navigation failed', err)
             })
           }}
         >
