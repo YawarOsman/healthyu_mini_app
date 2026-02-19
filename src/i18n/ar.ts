@@ -69,6 +69,8 @@ const ar = {
   'i_already_have_a_box': 'لدي صندوق بالفعل.',
   'box_registration': 'تسجيل الصندوق',
   'contents': 'المحتويات',
+  'congratulations_on_your_purchase': 'تهانينا على شرائك!',
+  'start_using': 'ابدأ بالاستخدام',
   'interested': 'مهتم',
 
   // Shipping Address
@@ -97,15 +99,24 @@ const ar = {
   'qr_scan': 'مسح QR',
   'fit_qr_code_within_box': 'ضعي رمز QR داخل الإطار',
   'opening_camera': 'جاري فتح الكاميرا...',
+  'opening_scanner': 'جاري فتح الماسح...',
   'align_qr_with_frame': 'حاذي الرمز داخل الإطار للمسح',
   'qr_detected': 'تم اكتشاف رمز QR',
+  'scan_now': 'امسح الآن',
+  'try_again': 'حاول مرة أخرى',
+  'scan_tips_system_scanner': 'استخدمي ماسح النظام لالتقاط رمز QR.',
+  'scan_failed_try_again': 'فشل المسح. يرجى المحاولة مرة أخرى.',
 
   // Camera
   'selfie': 'سيلفي',
   'align_your_face': 'حاذِ وجهك مع الخطوط',
   'camera_permission_required': 'إذن الكاميرا مطلوب',
+  'scan_permission_required': 'إذن المسح مطلوب',
   'please_grant_camera_permission': 'يرجى منح إذن الكاميرا لالتقاط صورة شخصية.',
   'please_grant_camera_permission_for_scan': 'يرجى منح إذن الكاميرا لمسح رمز QR الخاص بالصندوق.',
+  'please_grant_scan_permission_for_scan': 'يرجى منح إذن المسح لمسح رمز QR الخاص بالصندوق.',
+  'camera_not_available_in_simulator': 'الكاميرا غير متاحة في المحاكي. يرجى المعاينة على جهاز حقيقي.',
+  'scan_not_available_in_simulator': 'الماسح غير متاح في المحاكي. يرجى المعاينة على جهاز حقيقي.',
   'settings': 'الإعدادات',
   'cancel': 'إلغاء',
 }

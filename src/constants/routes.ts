@@ -16,6 +16,7 @@ const MINI_ROUTES = {
   ORDER: `${MINI_ROUTE_PREFIX}pages/order/index`,
   ORDER_SHIPPING: `${MINI_ROUTE_PREFIX}pages/order_shipping/index`,
   SCAN_BOX: `${MINI_ROUTE_PREFIX}pages/scan_box/index`,
+  BOX_REGISTRATION: `${MINI_ROUTE_PREFIX}pages/scan_box/index`,
 } as const
 
 const H5_ROUTES = {
@@ -28,6 +29,7 @@ const H5_ROUTES = {
   ORDER: '/order',
   ORDER_SHIPPING: '/shipping',
   SCAN_BOX: '/scan',
+  BOX_REGISTRATION: '/scan',
 } as const
 
 const isH5 = process.env.TARO_ENV === 'h5'

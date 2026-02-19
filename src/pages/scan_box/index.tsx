@@ -1,24 +1,15 @@
-import { useRef, useState } from 'react'
-import { Camera, Image, Text, View } from '@tarojs/components'
+import { Image, Text, View } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useSelector } from 'react-redux'
-import { SvgIcons } from '../../assets/icons'
-import { ROUTES } from '../../constants/routes'
-import { t } from '../../i18n'
 import { RootState } from '../../reducers'
-import { reLaunch } from '../../utils/navigation'
+import { t } from '../../i18n'
+import { ROUTES } from '../../constants/routes'
 import { hideHomeButtonSafely } from '../../utils/ui'
-import './index.scss'
+import RefinedAppBar from '../../components/RefinedAppBar'
+import FlavieOnboarding1 from '../../assets/images/flavie_onboarding_1.png'
 
-const CAMERA_ID = 'scan-box-camera'
-const SCAN_SUCCESS_COOLDOWN_MS = 1500
-
-export default function ScanBox() {
+export default function BoxRegistration() {
   const { themeMode } = useSelector((state: RootState) => state.theme)
-  const [cameraReady, setCameraReady] = useState(false)
-  const [cameraError, setCameraError] = useState('')
-  const cameraContextRef = useRef<Taro.CameraContext | null>(null)
-  const lastScanTimestampRef = useRef(0)
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
@@ -26,28 +17,9 @@ export default function ScanBox() {
     ? Math.max(0, systemInfo.screenHeight - systemInfo.safeArea.bottom)
     : 0
 
-  const syncCameraPermissionState = () => {
-    return Taro.getSetting()
-      .then((settingRes) => {
-        const authSetting = settingRes && settingRes.authSetting ? settingRes.authSetting : {}
-        const cameraGranted = authSetting['scope.camera']
-        if (cameraGranted === false) {
-          setCameraError(t('please_grant_camera_permission_for_scan'))
-          setCameraReady(false)
-          return
-        }
-        setCameraError('')
-      })
-      .catch(() => {
-        // Some environments can fail silently for getSetting before first permission request.
-        setCameraError('')
-      })
-  }
-
   useDidShow(() => {
-    void syncCameraPermissionState()
     Taro.setNavigationBarTitle({
-      title: t('qr_scan'),
+      title: '',
     })
     void hideHomeButtonSafely()
   })
@@ -57,135 +29,96 @@ export default function ScanBox() {
       Taro.navigateBack()
       return
     }
-    reLaunch(ROUTES.HOME)
+    Taro.reLaunch({ url: ROUTES.HOME })
   }
 
-  const handleCameraReady = () => {
-    setCameraReady(true)
-    setCameraError('')
-    cameraContextRef.current = Taro.createCameraContext(CAMERA_ID)
+  const handleSetupRoutine = () => {
+    // Navigate to setup or home, logic TBD
+    // For now, go back to home or a specific setup page if exists
+    Taro.reLaunch({ url: ROUTES.HOME })
   }
-
-  const handleCameraError = (event: any) => {
-    const detail = event && event.detail ? event.detail : {}
-    const errMsg = detail.errMsg || t('please_grant_camera_permission_for_scan')
-    setCameraError(errMsg)
-    setCameraReady(false)
-  }
-
-  const handleScanCode = (event: any) => {
-    const detail = event && event.detail ? event.detail : {}
-    const result = detail.result || detail.fullResult
-    if (!result) {
-      return
-    }
-
-    const now = Date.now()
-    if (now - lastScanTimestampRef.current < SCAN_SUCCESS_COOLDOWN_MS) {
-      return
-    }
-
-    lastScanTimestampRef.current = now
-    Taro.showToast({
-      title: t('qr_detected'),
-      icon: 'none',
-      duration: 1200,
-    })
-    console.log('ScanBoxPage: QR scan result =>', result)
-  }
-
-  const handleOpenSettings = () => {
-    Taro.openSetting()
-      .then(() => {
-        setCameraError('')
-        return syncCameraPermissionState()
-      })
-      .catch(() => {
-        Taro.showToast({
-          title: t('please_grant_camera_permission_for_scan'),
-          icon: 'none',
-        })
-      })
-  }
-
-  const showCameraOverlay = !cameraReady && !cameraError
 
   return (
-    <View
-      className={`scan-box-page ${themeMode}`}
-      data-theme={themeMode}
-      style={{
-        paddingTop: `${statusBarHeight + 8}px`,
-        paddingBottom: `${Math.max(safeAreaBottom, 12)}px`,
-      }}
-    >
-      <Text className='scan-box-page__title'>{t('qr_scan')}</Text>
+    <View className={`min-h-screen flex flex-col bg-black px-6 box-border relative overflow-hidden text-white ${themeMode}`}>
+      {/* Background gradients */}
+      <View
+        className='absolute inset-0 pointer-events-none'
+        style={{
+          background: 'radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.06), transparent 48%)',
+          zIndex: 1,
+        }}
+      />
+      <View
+        className='absolute inset-0 pointer-events-none'
+        style={{
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.35) 36%, rgba(0,0,0,0.48) 66%, rgba(0,0,0,0.84) 100%)',
+          zIndex: 2,
+        }}
+      />
+      <View
+        className='absolute -inset-[20%] pointer-events-none'
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.04) 20%, rgba(0,0,0,0.72) 72%, rgba(0,0,0,0.95) 100%)',
+          zIndex: 3,
+        }}
+      />
 
-      <View className='scan-box-page__panel'>
-        {!cameraError && (
-          <Camera
-            id={CAMERA_ID}
-            className='scan-box-camera'
-            mode='scanCode'
-            devicePosition='back'
-            flash='off'
-            frameSize='large'
-            onReady={handleCameraReady}
-            onError={handleCameraError}
-            onScanCode={handleScanCode}
-          />
-        )}
+      <View
+        className='absolute inset-0 z-[10] flex flex-col box-border px-6'
+        style={{
+          paddingTop: `${statusBarHeight + 44 + 12}px`,
+          paddingBottom: `${Math.max(24, safeAreaBottom + 12)}px`,
+        }}
+      >
 
-        <View className='scan-box-panel__overlay' />
-        <View className='scan-box-panel__vignette' />
-
-        <View className='scan-box-panel__content'>
-          <View className='scan-box-panel__top-row'>
-            <View className='scan-box-panel__back' onClick={handleBack}>
-              <Image
-                className='scan-box-panel__back-icon'
-                src={SvgIcons.arrowLeft}
-                mode='aspectFit'
-              />
-            </View>
-
-            <View className='scan-box-panel__dots'>
-              <View className='scan-box-panel__dot scan-box-panel__dot--active' />
-              <View className='scan-box-panel__dot' />
-            </View>
-          </View>
-
-          <View className='scan-box-panel__copy'>
-            <Text className='scan-box-panel__kicker'>{t('box_registration')}</Text>
-            <Text className='scan-box-panel__heading'>{t('fit_qr_code_within_box')}</Text>
-          </View>
-
-          <View className='scan-box-panel__target' />
-
-          <Text
-            className='scan-box-panel__hint'
-            style={{ bottom: `${Math.max(24, safeAreaBottom + 10)}px` }}
-          >
-            {t('scan_the_qr_on_the_box')}
+        {/* Content */}
+        <View className='flex-1 flex flex-col items-center w-full'>
+          <Text className='text-base text-white/70 font-medium font-body self-start mb-2'>
+            {t('box_registration') || 'Box Registration'}
           </Text>
-        </View>
+          <Text className='text-[32px] font-medium leading-[1.2] text-white font-juana self-start mb-10'>
+            {t('congratulations_on_your_purchase') || 'Congratulations on your purchase!'}
+          </Text>
 
-        {showCameraOverlay && (
-          <View className='scan-box-panel__state scan-box-panel__state--loading'>
-            <Text className='scan-box-panel__state-title'>{t('opening_camera')}</Text>
-            <Text className='scan-box-panel__state-subtitle'>{t('align_qr_with_frame')}</Text>
+          {/* Product Image Placeholder */}
+          <View className='w-[200px] h-[200px] flex items-center justify-center mb-6'>
+             <Image
+              src={FlavieOnboarding1}
+              className='w-full h-full object-contain'
+              mode='aspectFit'
+            />
           </View>
-        )}
 
-        {!!cameraError && (
-          <View className='scan-box-panel__state scan-box-panel__state--error'>
-            <Text className='scan-box-panel__state-title'>{t('camera_permission_required')}</Text>
-            <Text className='scan-box-panel__state-subtitle'>{cameraError}</Text>
-            <View className='scan-box-panel__settings-btn' onClick={handleOpenSettings}>
-              <Text className='scan-box-panel__settings-text'>{t('settings')}</Text>
+          <Text className='text-base text-white/70 text-center mb-2'>
+            Flavie Box 1
+          </Text>
+          <View className='flex flex-col items-center mb-6'>
+             <Text className='text-[24px] font-medium text-white font-juana'>
+               Radiance - Start your glow.
+             </Text>
+          </View>
+
+          <View className='flex flex-col gap-3 mb-auto'>
+            <View className='flex items-center gap-2'>
+              <View className='w-4 h-4 rounded-full bg-[#E4D589]' /> {/* Placeholder color/icon */}
+              <Text className='text-base text-white/70'>Outer Beauty</Text>
+            </View>
+            <View className='flex items-center gap-2'>
+              <View className='w-4 h-4 rounded-full bg-[#3B82F6]' /> {/* Placeholder color/icon */}
+              <Text className='text-base text-white/70'>Hydration</Text>
             </View>
           </View>
-        )}
+
+          {/* Button */}
+          <View
+            className='w-full h-[56px] bg-[#E29B72] flex items-center justify-center active:opacity-90'
+            onClick={handleSetupRoutine}
+          >
+            <Text className='text-[#000000] text-lg font-semibold font-juana'>
+              {t('setup_routine') || 'Setup Routine'}
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
   )

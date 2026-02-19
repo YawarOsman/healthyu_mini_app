@@ -1,5 +1,5 @@
 
 export default definePageConfig({
-  navigationBarTitleText: 'Scan Box',
   enableShareAppMessage: true,
+  navigationStyle: 'custom',
 })

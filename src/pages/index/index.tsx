@@ -132,7 +132,7 @@ function BoxOrderedWidget({
         width="100%"
         dash={6}
         gap={6}
-        stroke={1}
+        
         color="var(--text-primary-16)"
         borderPosition="inside"
         style={{
@@ -227,9 +227,15 @@ function BoxOrderedWidget({
       <View className='flex-1 flex flex-col items-center justify-center' style={{ paddingBottom: '40px' }}>
         {/* QR Icon */}
         <DashedBox
+        width="56px"
+        height="56px"
+        dash={6}
+        gap={6}
+        
+        color="var(--primary)"
+        borderPosition="inside"
           style={{
-            width: '56px',
-            height: '56px',
+          
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -276,12 +282,19 @@ function BoxOrderedWidget({
           <View
             className='btn-filled active:opacity-85'
             onClick={() => {
-              // Navigate to QR scanner
-              console.log('Attempting to navigate to:', ROUTES.SCAN_BOX)
-              navigateTo(ROUTES.SCAN_BOX).then(() => {
-                console.log('Navigation success')
-              }).catch((err) => {
-                console.error('Navigation failed', err)
+              // Trigger native scan directly
+              Taro.scanCode({
+                onlyFromCamera: true,
+                scanType: ['qrCode', 'barCode'],
+                success: (res) => {
+                  console.log('Scan result:', res)
+                  const boxId = res.result // Assuming result is the ID
+                  navigateTo(`${ROUTES.SCAN_BOX}?boxId=${boxId}`)
+                },
+                fail: (err) => {
+                  console.error('Scan failed', err)
+                  // Optional: handle error or user cancellation
+                }
               })
             }}
           >
@@ -328,14 +341,18 @@ function UserWithoutBoxWidget({
     >
       {/* Box Icon with dashed border */}
       <DashedBox
-        style={{
-          width: '56px',
-          height: '56px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '27px',
-          backgroundColor: 'rgba(var(--primary-rgb), 0.08)',
+         width={56}
+         height={56}
+         dash={5}
+         gap={6}
+         color="var(--primary)"
+         borderPosition="inside"
+         style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '27px',
+            backgroundColor: 'rgba(var(--primary-rgb), 0.08)',
         }}
       >
         <Image
@@ -397,12 +414,18 @@ function UserWithoutBoxWidget({
         <View
           className='btn-dashed active:opacity-85'
           onClick={() => {
-            // Navigate to scan box page
-            console.log('Attempting to navigate to:', ROUTES.SCAN_BOX)
-            navigateTo(ROUTES.SCAN_BOX).then(() => {
-              console.log('Navigation success')
-            }).catch((err) => {
-              console.error('Navigation failed', err)
+            // Trigger native scan directly
+            Taro.scanCode({
+              onlyFromCamera: true,
+              scanType: ['qrCode', 'barCode'],
+              success: (res) => {
+                console.log('Scan result:', res)
+                const boxId = res.result
+                navigateTo(`${ROUTES.SCAN_BOX}?boxId=${boxId}`)
+              },
+              fail: (err) => {
+                console.error('Scan failed', err)
+              }
             })
           }}
         >

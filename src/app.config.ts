@@ -9,6 +9,11 @@ export default defineAppConfig({
     'pages/order_shipping/index',
     'pages/scan_box/index',
   ],
+  permission: {
+    'scope.scan': {
+      desc: 'Used to scan your box QR code',
+    },
+  },
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#000000',

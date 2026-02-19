@@ -69,6 +69,8 @@ const en = {
   'i_already_have_a_box': 'I already have a box.',
   'box_registration': 'Box Registration',
   'contents': 'Contents',
+  'congratulations_on_your_purchase': 'Congratulations on your purchase!',
+  'start_using': 'Start Using',
   'interested': 'Interested',
 
   // Shipping Address
@@ -97,15 +99,24 @@ const en = {
   'qr_scan': 'QR Scan',
   'fit_qr_code_within_box': 'Fit the QR Code within the box',
   'opening_camera': 'Opening camera...',
+  'opening_scanner': 'Opening scanner...',
   'align_qr_with_frame': 'Align the code inside the frame to scan',
   'qr_detected': 'QR detected',
+  'scan_now': 'Scan now',
+  'try_again': 'Try again',
+  'scan_tips_system_scanner': 'Use the system scanner to capture the QR code.',
+  'scan_failed_try_again': 'Scan failed. Please try again.',
 
   // Camera
   'selfie': 'Selfie',
   'align_your_face': 'Align your face with the lines',
   'camera_permission_required': 'Camera Permission Required',
+  'scan_permission_required': 'Scan Permission Required',
   'please_grant_camera_permission': 'Please grant camera permission to take a selfie.',
   'please_grant_camera_permission_for_scan': 'Please grant camera permission to scan your box QR code.',
+  'please_grant_scan_permission_for_scan': 'Please grant scan permission to scan your box QR code.',
+  'camera_not_available_in_simulator': 'Camera is unavailable in simulator. Please preview on a real device.',
+  'scan_not_available_in_simulator': 'Scanner is unavailable in simulator. Please preview on a real device.',
   'settings': 'Settings',
   'cancel': 'Cancel',
 }
