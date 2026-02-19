@@ -393,7 +393,7 @@ function UserWithoutBoxWidget({
       </Text>
 
       {/* Start my experience Button */}
-      <View style={{ width: '100%' }}>
+      <View style={{ width: '100%', marginBottom: '12px'}}>
         <View
           className='btn-filled active:opacity-85'
           onClick={() => {
@@ -405,14 +405,27 @@ function UserWithoutBoxWidget({
       </View>
 
       {/* I already have a box Button */}
-      <View
+      <DashedBox
+        height={56}
+        dash={5}
+        gap={6}
+        stroke={1}
+        color="var(--border-secondary)"
+        borderPosition="inside"
         style={{
-          width: '100%',
-          marginTop: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
+
         <View
-          className='btn-dashed active:opacity-85'
+        style={{
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
           onClick={() => {
             // Trigger native scan directly
             Taro.scanCode({
@@ -440,8 +453,9 @@ function UserWithoutBoxWidget({
           >
             {t('i_already_have_a_box')}
           </Text>
-        </View>
+
       </View>
+      </DashedBox>
 
       {/* Debug buttons */}
       <View style={{ marginTop: '40px', opacity: 0.3 }}>
