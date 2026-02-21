@@ -1,3 +1,5 @@
+import { BoxEntity } from "../order/types"
+
 export interface AuthState {
   // User info
   name: string
@@ -8,6 +10,6 @@ export interface AuthState {
 
   // Order tracking
   isUserOrderedABox: boolean
-  boxes: any[] // Will be BoxEntity[] once user receives and scans
+  boxes: BoxEntity[]
   estimatedDeliveryDate: string | null
 }

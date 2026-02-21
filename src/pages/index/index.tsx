@@ -2,22 +2,177 @@ import { useState, useEffect } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { useDidShow } from '@tarojs/taro'
-import { setIsFlavie } from '../../actions/theme'
+import { setUserInfo } from '../../features/auth/actions'
 import { t } from '../../i18n'
 import { RootState } from '../../reducers'
 import BottomNavBar from '../../components/BottomNavBar'
 import { SvgIcons } from '../../assets/icons'
-import DottedCircle from '../../components/DottedCircle'
-import { ROUTES } from '../../constants/routes'
-import DashedBox from "../../components/DashedBox";
-import { navigateTo } from '../../utils/navigation'
 import { hideHomeButtonSafely } from '../../utils/ui'
+
+// Page-level widget components
+import CareRoutineWidget from './components/CareRoutineWidget'
+import BoxOrderedWidget from './components/BoxOrderedWidget'
+import UserWithoutBoxWidget from './components/UserWithoutBoxWidget'
+
+type MiniAppApi = {
+  getAuthCode?: (options: {
+    scopes: string[]
+    success?: (res: any) => void
+    fail?: (err: any) => void
+    complete?: (res: any) => void
+  }) => void
+  getOpenUserInfo?: (options: {
+    success?: (res: any) => void
+    fail?: (err: any) => void
+  }) => void
+  getAppIdSync?: () => { appId?: string }
+  getSiteInfo?: (options: {
+    success?: (res: any) => void
+    fail?: (err: any) => void
+  }) => void
+}
+
+const MINI_AUTH_INFO_STORAGE_KEY = 'miniAuthInfo'
+const REQUESTED_AUTH_SCOPES = ['auth_base', 'USER_NAME']
+
+type AuthCodePayload = {
+  authCode: string | null
+  authSuccessScopes: string[]
+  authErrorScopes: Record<string, string> | null
+  authErrorMessage: string | null
+}
+
+const getMiniAppApi = (): MiniAppApi | null => {
+  const globalObj = typeof globalThis !== 'undefined' ? (globalThis as any) : {}
+  const maybeMy = globalObj.my
+  if (!maybeMy || typeof maybeMy !== 'object') {
+    return null
+  }
+  return maybeMy as MiniAppApi
+}
+
+const getAuthCode = (myApi: MiniAppApi): Promise<AuthCodePayload> => {
+  return new Promise((resolve) => {
+    if (typeof myApi.getAuthCode !== 'function') {
+      resolve({
+        authCode: null,
+        authSuccessScopes: [],
+        authErrorScopes: null,
+        authErrorMessage: 'my.getAuthCode is unavailable',
+      })
+      return
+    }
+
+    myApi.getAuthCode({
+      scopes: REQUESTED_AUTH_SCOPES,
+      success: (res) => {
+        resolve({
+          authCode: res?.authCode || null,
+          authSuccessScopes: Array.isArray(res?.authSuccessScopes) ? res.authSuccessScopes : [],
+          authErrorScopes: res?.authErrorScopes || null,
+          authErrorMessage: null,
+        })
+      },
+      fail: (err) => {
+        resolve({
+          authCode: null,
+          authSuccessScopes: [],
+          authErrorScopes: err?.authErrorScopes || null,
+          authErrorMessage: String(err?.errMsg || err?.message || err || ''),
+        })
+      },
+    })
+  })
+}
+
+const getSiteInfo = (myApi: MiniAppApi): Promise<any> => {
+  return new Promise((resolve) => {
+    if (typeof myApi.getSiteInfo !== 'function') {
+      resolve(null)
+      return
+    }
+    myApi.getSiteInfo({
+      success: (res) => resolve(res || null),
+      fail: () => resolve(null),
+    })
+  })
+}
+
+const getOpenUserInfo = (myApi: MiniAppApi): Promise<any> => {
+  return new Promise((resolve) => {
+    if (typeof myApi.getOpenUserInfo !== 'function') {
+      resolve(null)
+      return
+    }
+    myApi.getOpenUserInfo({
+      success: (res) => resolve(res || null),
+      fail: () => resolve(null),
+    })
+  })
+}
+
+const parseOpenUserInfoResponse = (raw: any): any => {
+  const payload = raw?.response
+  if (!payload || typeof payload !== 'string') {
+    return null
+  }
+
+  try {
+    const parsed = JSON.parse(payload)
+    return parsed?.response || parsed
+  } catch (_e) {
+    return null
+  }
+}
+
+async function fetchMiniAuthInfoOnLoad(dispatch: any) {
+  const myApi = getMiniAppApi()
+  if (!myApi) {
+    return
+  }
+
+  const appId = myApi.getAppIdSync?.()?.appId || null
+  const [siteInfo, authCodePayload] = await Promise.all([
+    getSiteInfo(myApi),
+    getAuthCode(myApi),
+  ])
+
+  if (authCodePayload.authErrorMessage) {
+    console.warn('getAuthCode did not return authCode', {
+      authErrorMessage: authCodePayload.authErrorMessage,
+      authErrorScopes: authCodePayload.authErrorScopes,
+    })
+  }
+
+  const openUserInfoRaw = await getOpenUserInfo(myApi)
+  const openUserInfo = parseOpenUserInfoResponse(openUserInfoRaw)
+  const authSnapshot = {
+    fetchedAt: Date.now(),
+    requestedScopes: REQUESTED_AUTH_SCOPES,
+    authCode: authCodePayload.authCode,
+    authSuccessScopes: authCodePayload.authSuccessScopes,
+    authErrorScopes: authCodePayload.authErrorScopes,
+    authErrorMessage: authCodePayload.authErrorMessage,
+    appId,
+    customerBelongsTo: siteInfo?.customerBelongsTo || null,
+    openUserInfo,
+  }
+
+  Taro.setStorageSync(MINI_AUTH_INFO_STORAGE_KEY, authSnapshot)
+  console.log('Mini app auth info fetched:', authSnapshot)
+
+  const nickName = openUserInfo?.nickName || openUserInfo?.nick_name || ''
+  if (nickName) {
+    dispatch(setUserInfo({ name: nickName }))
+  }
+}
 
 export default function Index() {
   console.log('IndexPage: Rendering...')
   const [checking, setChecking] = useState(true)
+  const [authInfoFetched, setAuthInfoFetched] = useState(false)
   const { themeMode, isFlavie } = useSelector((state: RootState) => state.theme)
-  const { isUserOrderedABox, boxes, estimatedDeliveryDate } = useSelector(
+  const { isUserOrderedABox, boxes, estimatedDeliveryDate, name } = useSelector(
     (state: RootState) => state.auth,
   )
   const dispatch = useDispatch()
@@ -27,10 +182,13 @@ export default function Index() {
 
   useDidShow(() => {
     checkOnboarding()
-    Taro.setNavigationBarTitle({
-      title: ''
-    })
+    Taro.setNavigationBarTitle({ title: '' })
     void hideHomeButtonSafely()
+
+    if (!authInfoFetched) {
+      setAuthInfoFetched(true)
+      void fetchMiniAuthInfoOnLoad(dispatch)
+    }
   })
 
   useEffect(() => {
@@ -38,16 +196,6 @@ export default function Index() {
   }, [])
 
   const checkOnboarding = () => {
-    // try {
-    //   const hasOnboarded = Taro.getStorageSync('hasOnboarded')
-    //   if (!hasOnboarded) {
-    //     Taro.redirectTo({ url: ROUTES.ONBOARDING })
-    //   } else {
-    //     setChecking(false)
-    //   }
-    // } catch (e) {
-    //   Taro.redirectTo({ url: ROUTES.ONBOARDING })
-    // }
     setChecking(false) // Bypass onboarding for development
   }
 
@@ -56,13 +204,12 @@ export default function Index() {
   }
 
   const brandName = isFlavie ? 'Flavie' : 'Mann'
-
-  // Determine home state
   const hasOrderedButNotReceived = isUserOrderedABox && boxes.length === 0
+  const hasBoxes = boxes.length > 0
 
   return (
     <View
-      className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`}
+      className={`h-screen bg-scaffold flex flex-col overflow-hidden ${themeMode}`}
       data-theme={themeMode}
     >
       {/* App Bar */}
@@ -72,6 +219,9 @@ export default function Index() {
           paddingLeft: '24px',
           paddingRight: '24px',
           paddingBottom: '12px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
         <View className='flex items-center'>
@@ -83,7 +233,7 @@ export default function Index() {
               fontFamily: 'var(--font-juana)',
             }}
           >
-            {brandName}
+            {t('hey')}, {!isFlavie ? 'Karo' : name ? name.split(' ')[0] : 'User'}
           </Text>
           <Text
             style={{
@@ -91,19 +241,27 @@ export default function Index() {
               fontWeight: '400',
               color: 'var(--text-secondary)',
               fontFamily: 'var(--font-locale-body)',
-              marginLeft: '10px',              textTransform: 'uppercase',
+              marginLeft: '10px',
+              textTransform: 'uppercase',
             }}
           >
             {isFlavie ? t('for_ladies') : t('for_men')}
           </Text>
         </View>
+
+        {hasBoxes && (
+          <View className='flex items-center gap-4' style={{ gap: '16px' }}>
+            <Image src={SvgIcons.calendar} style={{ width: '24px', height: '24px', opacity: 0.8 }} />
+            <Image src={SvgIcons.qrScan} style={{ width: '24px', height: '24px', opacity: 0.8 }} />
+          </View>
+        )}
       </View>
 
       {/* Body — Conditional on state */}
-      {hasOrderedButNotReceived ? (
-        <BoxOrderedWidget
-          estimatedDeliveryDate={estimatedDeliveryDate}
-        />
+      {hasBoxes ? (
+        <CareRoutineWidget boxes={boxes} />
+      ) : hasOrderedButNotReceived ? (
+        <BoxOrderedWidget estimatedDeliveryDate={estimatedDeliveryDate} />
       ) : (
         <UserWithoutBoxWidget
           brandName={brandName}
@@ -114,363 +272,6 @@ export default function Index() {
 
       {/* Bottom Navigation Bar */}
       <BottomNavBar activeIndex={0} lockedTabs={true} />
-    </View>
-  )
-}
-
-// ─── Box Ordered Widget ───
-// Shown when user has ordered a box but hasn't received it yet
-function BoxOrderedWidget({
-  estimatedDeliveryDate,
-}: {
-  estimatedDeliveryDate: string | null
-}) {
-  return (
-    <View className='flex-1 flex flex-col px-page' style={{ paddingBottom: '24px' }}>
-      {/* Status Cards */}
-        <DashedBox
-        width="100%"
-        dash={6}
-        gap={6}
-        
-        color="var(--text-primary-16)"
-        borderPosition="inside"
-        style={{
-          marginBottom: '40px',
-        }}
->
-  <View style={{
-    backgroundColor: 'var(--text-primary-4)',
-  }} >
-
-
-        {/* Box Ordered Card */}
-        <View
-          className='flex items-center'
-          style={{
-            padding: '16px',
-            gap: '16px',
-          }}
-        >
-          {/* Box icon */}
-          <DottedCircle
-            size={56}
-            color='var(--primary)'
-            gap={6}
-            dotSize={2}
-            strokeWidth={1.5}
-            style={{
-              minWidth: '56px',
-            }}
-          >
-            <View
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'rgba(var(--primary-rgb), 0.1)',
-              }}
-            >
-              <Image
-                src={SvgIcons.box}
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  opacity: 0.8,
-                }}
-              />
-            </View>
-          </DottedCircle>
-          <View>
-            <Text
-              style={{
-                fontSize: '16px',
-                fontWeight: '500',
-                color: 'var(--text-primary)',
-                fontFamily: 'var(--font-locale-body)',
-                display: 'block',
-              }}
-            >
-              {t('box_ordered')}
-            </Text>
-            <Text
-              style={{
-                fontSize: '16px',
-                color: 'var(--text-secondary)',
-                fontFamily: 'var(--font-locale-body)',
-                display: 'block',
-                marginTop: '2px',
-              }}
-            >
-              {t('your_order_will_arrive_in')}{' '}
-              <Text
-                style={{
-                  fontWeight: '500',
-                  color: 'var(--text-primary)',
-                  fontFamily: 'var(--font-locale-body)',
-                }}
-              >
-                {estimatedDeliveryDate || 'TBD'}
-              </Text>
-              .
-            </Text>
-          </View>
-        </View>
-      </View>
-
-
-      </DashedBox>
-      {/* QR Section */}
-      <View className='flex-1 flex flex-col items-center justify-center' style={{ paddingBottom: '40px' }}>
-        {/* QR Icon */}
-        <DashedBox
-        width="56px"
-        height="56px"
-        dash={6}
-        gap={6}
-        
-        color="var(--primary)"
-        borderPosition="inside"
-          style={{
-          
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '27px',
-            backgroundColor: 'rgba(var(--primary-rgb), 0.08)',
-          }}
-        >
-          <Image
-            src={SvgIcons.qr}
-            style={{
-              width: '32px',
-              height: '32px',
-            }}
-          />
-        </DashedBox>
-
-        <Text
-          style={{
-            fontSize: '28px',
-            fontWeight: '500',
-            color: 'var(--text-primary)',
-            fontFamily: 'var(--font-juana)',
-            textAlign: 'center',
-            marginBottom: '8px',
-          }}
-        >
-          {t('begin_your_journey')}
-        </Text>
-
-        <Text
-          style={{
-            fontSize: '20px',
-            color: 'var(--text-secondary)',
-            fontFamily: 'var(--font-locale-body)',
-            textAlign: 'center',
-            marginBottom: '24px',
-          }}
-        >
-          {t('scan_the_qr_on_the_box')}
-        </Text>
-
-        {/* Scan Box Button */}
-        <View style={{ width: '100%' }}>
-          <View
-            className='btn-filled active:opacity-85'
-            onClick={() => {
-              // Trigger native scan directly
-              Taro.scanCode({
-                onlyFromCamera: true,
-                scanType: ['qrCode', 'barCode'],
-                success: (res) => {
-                  console.log('Scan result:', res)
-                  const boxId = res.result // Assuming result is the ID
-                  navigateTo(`${ROUTES.SCAN_BOX}?boxId=${boxId}`)
-                },
-                fail: (err) => {
-                  console.error('Scan failed', err)
-                  // Optional: handle error or user cancellation
-                }
-              })
-            }}
-          >
-            <View className='flex items-center justify-center' style={{ gap: '8px' }}>
-              <View
-                style={{
-                  width: '20px',
-                  height: '20px',
-                  backgroundColor: 'var(--button-text)',
-                  maskImage: `url(${SvgIcons.qrScan})`,
-                  WebkitMaskImage: `url(${SvgIcons.qrScan})`,
-                  maskSize: 'contain',
-                  WebkitMaskSize: 'contain',
-                  maskRepeat: 'no-repeat',
-                  WebkitMaskRepeat: 'no-repeat',
-                  maskPosition: 'center',
-                  WebkitMaskPosition: 'center',
-                }}
-              />
-              <Text className='btn-filled-text'>{t('scan_box')}</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-  )
-}
-
-// ─── User Without Box Widget ───
-// Original home screen for users who haven't ordered yet
-function UserWithoutBoxWidget({
-  brandName,
-  isFlavie,
-  dispatch,
-}: {
-  brandName: string
-  isFlavie: boolean
-  dispatch: any
-}) {
-  return (
-    <View
-      className='flex-1 flex flex-col items-center justify-center px-page'
-      style={{ paddingBottom: '40px' }}
-    >
-      {/* Box Icon with dashed border */}
-      <DashedBox
-         width={56}
-         height={56}
-         dash={5}
-         gap={6}
-         color="var(--primary)"
-         borderPosition="inside"
-         style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '27px',
-            backgroundColor: 'rgba(var(--primary-rgb), 0.08)',
-        }}
-      >
-        <Image
-          src={SvgIcons.box}
-          style={{
-            width: '32px',
-            height: '32px',
-
-          }}
-        />
-      </DashedBox>
-
-      {/* Title */}
-      <Text
-        style={{
-          fontSize: '28px',
-          fontWeight: '500',
-          color: 'var(--text-primary)',
-          fontFamily: 'var(--font-juana)',
-          textAlign: 'center',
-          marginBottom: '8px',
-        }}
-      >
-        {t('last_step_lets_get_you_a_box')}
-      </Text>
-
-      {/* Subtitle */}
-      <Text
-        style={{
-          fontSize: '20px',
-          color: 'var(--text-secondary)',
-          fontFamily: 'var(--font-locale-body)',
-          textAlign: 'center',
-          marginBottom: '24px',
-        }}
-      >
-        {t('order_box_subtitle').replace('{brand}', brandName)}
-      </Text>
-
-      {/* Start my experience Button */}
-      <View style={{ width: '100%', marginBottom: '12px'}}>
-        <View
-          className='btn-filled active:opacity-85'
-          onClick={() => {
-            navigateTo(ROUTES.ORDER)
-          }}
-        >
-          <Text className='btn-filled-text'>{t('start_my_experience')}</Text>
-        </View>
-      </View>
-
-      {/* I already have a box Button */}
-      <DashedBox
-        height={56}
-        dash={5}
-        gap={6}
-        stroke={1}
-        color="var(--border-secondary)"
-        borderPosition="inside"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-
-        <View
-        style={{
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }}
-          onClick={() => {
-            // Trigger native scan directly
-            Taro.scanCode({
-              onlyFromCamera: true,
-              scanType: ['qrCode', 'barCode'],
-              success: (res) => {
-                console.log('Scan result:', res)
-                const boxId = res.result
-                navigateTo(`${ROUTES.SCAN_BOX}?boxId=${boxId}`)
-              },
-              fail: (err) => {
-                console.error('Scan failed', err)
-              }
-            })
-          }}
-        >
-          <Text
-            style={{
-              fontSize: '18px',
-              fontWeight: '500',
-              color: 'var(--text-secondary)',
-              fontFamily: 'var(--font-locale-body)',
-              textAlign: 'center',
-            }}
-          >
-            {t('i_already_have_a_box')}
-          </Text>
-
-      </View>
-      </DashedBox>
-
-      {/* Debug buttons */}
-      <View style={{ marginTop: '40px', opacity: 0.3 }}>
-        <Text
-          onClick={() => dispatch(setIsFlavie(!isFlavie))}
-          style={{
-            fontSize: '12px',
-            color: 'var(--text-secondary)',
-            fontFamily: 'var(--font-locale-body)',
-            textDecoration: 'underline',
-          }}
-        >
-          Switch to {isFlavie ? 'Mann' : 'Flavie'}
-        </Text>
-      </View>
     </View>
   )
 }

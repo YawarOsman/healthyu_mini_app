@@ -27,8 +27,16 @@ export interface BoxEntity {
   nameAr: string
   headlineEn: string
   headlineAr: string
+  image: string
+  isCurrent: boolean
   genres: BoxGenre[]
   videoUrl: string | null
   videoThumbnail: string | null
   items: BoxItem[]
+  // Dev-mode timeframe simulation flags (mirrors Flutter's RoutineTimeframeEnum)
+  isOverdue?: boolean
+  isLater?: boolean
+  isCompleted?: boolean
+  timeLabel?: string
+  productDisplayImage?: string
 }
