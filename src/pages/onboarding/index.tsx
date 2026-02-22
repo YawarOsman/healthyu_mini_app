@@ -65,7 +65,7 @@ export default function Onboarding() {
       // Proceed to registration
       navigateTo(ROUTES.REGISTER_NAME_DOB).catch(err => {
         console.error('Navigation failed:', JSON.stringify(err))
-        Taro.showToast({ title: 'Nav failed: ' + JSON.stringify(err), icon: 'none', duration: 5000 })
+        Taro.showToast({ title: `${t('navigation_failed')}: ${JSON.stringify(err)}`, icon: 'none', duration: 5000 })
       })
     } else {
       setCurrentIndex((prev) => Math.min(prev + 1, slides.length - 1))

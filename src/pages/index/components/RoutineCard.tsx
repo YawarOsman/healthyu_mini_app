@@ -1,6 +1,7 @@
 import { View, Text, Image } from '@tarojs/components'
 
 import { SvgIcons } from '@/assets/icons'
+import { t } from '@/i18n'
 
 /**
  * Mirrors Flutter's RoutineCard widget.
@@ -142,7 +143,7 @@ export default function RoutineCard({ type, time, title, imgSrc, onMarkDone, onT
             paddingRight: '8px',
           }}
         >
-          Mark as Done
+          {t('mark_as_done')}
         </Text>
       ) : (
         // ChevronRight / ArrowLeftIcon(flip:true): 14px, color outline

@@ -1,3 +1,4 @@
+import { t } from '@/i18n'
 import type { AppDispatch } from '@/store'
 
 import { fetchBoxData, fetchCitiesData } from './api'
@@ -25,10 +26,10 @@ export const fetchBox = () => async (dispatch: AppDispatch) => {
     if (response.success && response.data) {
       dispatch(fetchBoxSuccess(response.data))
     } else {
-      dispatch(fetchBoxFailure(response.error || 'Failed to fetch box data'))
+      dispatch(fetchBoxFailure(response.error || t('failed_to_fetch_box_data')))
     }
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Network error'
+    const message = error instanceof Error ? error.message : t('network_error')
     dispatch(fetchBoxFailure(message))
   }
 }

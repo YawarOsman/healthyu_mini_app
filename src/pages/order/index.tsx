@@ -38,7 +38,7 @@ export default function OrderPage() {
           style={{ paddingTop: `${statusBarHeight + navBarHeight}px` }}
         >
           <Text style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-locale-body)', fontSize: '16px' }}>
-            {loading ? 'Loading...' : 'No data'}
+            {loading ? t('loading') : t('no_data')}
           </Text>
         </View>
       </View>

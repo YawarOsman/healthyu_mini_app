@@ -8,7 +8,16 @@ import { useAppSelector } from '@/store/hooks'
 import { hideHomeButtonSafely } from '@/utils/ui'
 
 export default function ScanBoxPage() {
-  const { themeMode } = useAppSelector((state) => state.theme)
+  const { themeMode, locale } = useAppSelector((state) => state.theme)
+  const { box } = useAppSelector((state) => state.order)
+  const isAr = locale === 'ar'
+  const boxName = box ? (isAr ? box.nameAr : box.nameEn) : t('scan_box_default_name')
+  const boxHeadline = box ? (isAr ? box.headlineAr : box.headlineEn) : t('scan_box_default_headline')
+  const genreLabels = box?.genres?.length
+    ? box.genres.slice(0, 2).map((genre) => (isAr ? genre.nameAr : genre.nameEn))
+    : [t('scan_box_default_genre_1'), t('scan_box_default_genre_2')]
+  const firstGenre = genreLabels[0] || t('scan_box_default_genre_1')
+  const secondGenre = genreLabels[1] || t('scan_box_default_genre_2')
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
@@ -65,10 +74,10 @@ export default function ScanBoxPage() {
         {/* Content */}
         <View className='flex-1 flex flex-col items-center w-full'>
           <Text className='text-base text-white/70 font-medium font-body self-start mb-2'>
-            {t('box_registration') || 'Box Registration'}
+            {t('box_registration')}
           </Text>
           <Text className='text-[32px] font-medium leading-[1.2] text-white font-juana self-start mb-10'>
-            {t('congratulations_on_your_purchase') || 'Congratulations on your purchase!'}
+            {t('congratulations_on_your_purchase')}
           </Text>
 
           {/* Product Image Placeholder */}
@@ -81,22 +90,22 @@ export default function ScanBoxPage() {
           </View>
 
           <Text className='text-base text-white/70 text-center mb-2'>
-            Flavie Box 1
+            {boxName}
           </Text>
           <View className='flex flex-col items-center mb-6'>
              <Text className='text-[24px] font-medium text-white font-juana'>
-               Radiance - Start your glow.
+               {boxHeadline}
              </Text>
           </View>
 
           <View className='flex flex-col gap-3 mb-auto'>
             <View className='flex items-center gap-2'>
               <View className='w-4 h-4 rounded-full bg-[#E4D589]' /> {/* Placeholder color/icon */}
-              <Text className='text-base text-white/70'>Outer Beauty</Text>
+              <Text className='text-base text-white/70'>{firstGenre}</Text>
             </View>
             <View className='flex items-center gap-2'>
               <View className='w-4 h-4 rounded-full bg-[#3B82F6]' /> {/* Placeholder color/icon */}
-              <Text className='text-base text-white/70'>Hydration</Text>
+              <Text className='text-base text-white/70'>{secondGenre}</Text>
             </View>
           </View>
 
@@ -106,7 +115,7 @@ export default function ScanBoxPage() {
             onClick={handleSetupRoutine}
           >
             <Text className='text-[#000000] text-lg font-semibold font-juana'>
-              {t('setup_routine') || 'Setup Routine'}
+              {t('setup_routine')}
             </Text>
           </View>
         </View>

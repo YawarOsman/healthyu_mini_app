@@ -2,6 +2,7 @@ import { View, Text, Image } from '@tarojs/components'
 
 import { SvgIcons } from '@/assets/icons'
 import DashedBox from '@/components/DashedBox'
+import { t } from '@/i18n'
 
 /**
  * Mirrors Flutter's _RoutineHeroCard (inside DueRoutineCard PageView).
@@ -98,7 +99,7 @@ export default function DueRoutineCard({
             display: 'block',
           }}
         >
-          Due now
+          {t('due_now')}
         </Text>
 
         {/* DottedBorder 48x48, dashPattern [6,6], color: accent (primary) */}
@@ -196,7 +197,7 @@ export default function DueRoutineCard({
             }}
           >
             <Text style={{ fontSize: '16px', fontWeight: '600', color: 'var(--scaffold-bg)', fontFamily: 'var(--font-juana)' }}>
-              Start
+              {t('start')}
             </Text>
           </View>
         )}
@@ -222,7 +223,7 @@ export default function DueRoutineCard({
               whiteSpace: 'nowrap',
             }}
           >
-            Mark as Done
+            {t('mark_as_done')}
           </Text>
         </View>
       </View>

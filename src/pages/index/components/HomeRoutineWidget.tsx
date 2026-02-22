@@ -1,6 +1,8 @@
 import { View, Text } from '@tarojs/components'
 
 import type { BoxEntity } from '@/features/order/types'
+import { t } from '@/i18n'
+import { useAppSelector } from '@/store/hooks'
 
 import DueRoutineCard from './DueRoutineCard'
 import RoutineCard from './RoutineCard'
@@ -19,6 +21,28 @@ interface HomeRoutineWidgetProps {
 }
 
 export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
+  const locale = useAppSelector((state) => state.theme.locale)
+  const isAr = locale === 'ar'
+
+  const getBoxName = (box: BoxEntity) => (isAr ? box.nameAr : box.nameEn)
+  const getBoxHeadline = (box: BoxEntity) => (isAr ? box.headlineAr : box.headlineEn)
+  const localeCode = isAr ? 'ar-IQ' : 'en-US'
+  const formatOverdue = (minutes: number) => t('minutes_overdue').replace('{minutes}', String(minutes))
+  const formatTimeLabel = (timeLabel?: string) => {
+    if (!timeLabel) return ''
+    const match = timeLabel.trim().match(/^(\d{1,2}):(\d{2})\s*([AP]M)$/i)
+    if (!match) return timeLabel
+
+    const hour12 = Number(match[1])
+    const minute = Number(match[2])
+    const isPm = match[3].toUpperCase() === 'PM'
+    const normalizedHour = (hour12 % 12) + (isPm ? 12 : 0)
+    const time = new Date()
+    time.setHours(normalizedHour, minute, 0, 0)
+
+    return time.toLocaleTimeString(localeCode, { hour: 'numeric', minute: '2-digit' })
+  }
+
   const overdueBoxes = boxes.filter(b => b.isOverdue === true)
   const dueNowBoxes = boxes.filter(b => b.isCurrent === true && !b.isCompleted)
   const laterBoxes = boxes.filter(b => b.isLater === true)
@@ -36,15 +60,15 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
           <View style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <View style={{ paddingBottom: '6px' }}>
               <Text style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', display: 'block' }}>
-                Overdue
+                {t('overdue')}
               </Text>
             </View>
             {overdueBoxes.map((box, i) => (
               <RoutineCard
                 key={i}
                 type='overdue'
-                title={box.nameEn}
-                time='3 minutes overdue'
+                title={getBoxName(box)}
+                time={formatOverdue(3)}
                 imgSrc={box.productDisplayImage}
               />
             ))}
@@ -55,8 +79,8 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
         {dueNowBoxes.map((box, i) => (
           <DueRoutineCard
             key={i}
-            title={box.nameEn}
-            description={box.headlineEn}
+            title={getBoxName(box)}
+            description={getBoxHeadline(box)}
             imgSrc={box.productDisplayImage}
             hasDuration
           />
@@ -67,15 +91,15 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
           <View style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <View style={{ paddingBottom: '6px' }}>
               <Text style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', display: 'block' }}>
-                Later today
+                {t('later_today')}
               </Text>
             </View>
             {laterBoxes.map((box, i) => (
               <RoutineCard
                 key={i}
                 type='later'
-                title={box.nameEn}
-                time={box.timeLabel ?? ''}
+                title={getBoxName(box)}
+                time={formatTimeLabel(box.timeLabel)}
                 imgSrc={box.productDisplayImage}
               />
             ))}
@@ -87,14 +111,14 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
           <View style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <View style={{ paddingBottom: '6px' }}>
               <Text style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', display: 'block' }}>
-                Completed
+                {t('completed')}
               </Text>
             </View>
             {completedBoxes.map((box, i) => (
               <RoutineCard
                 key={i}
                 type='completed'
-                title={box.nameEn}
+                title={getBoxName(box)}
                 imgSrc={box.productDisplayImage}
               />
             ))}

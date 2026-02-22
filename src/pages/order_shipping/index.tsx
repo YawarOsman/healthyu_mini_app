@@ -21,7 +21,7 @@ import { reLaunch } from '@/utils/navigation'
 
 export default function OrderShippingPage() {
   const dispatch = useAppDispatch()
-  const { themeMode } = useAppSelector((state) => state.theme)
+  const { themeMode, locale } = useAppSelector((state) => state.theme)
   const { city, streetAddress, fullAddress, isFormSubmitted, cities } = useAppSelector(
     (state) => state.order,
   )
@@ -39,7 +39,7 @@ export default function OrderShippingPage() {
 
   const handleCheckout = () => {
     console.log('handleCheckout called')
-    Taro.showToast({ title: 'Processing...', icon: 'loading' })
+    Taro.showToast({ title: t('processing'), icon: 'loading' })
     dispatch(submitShippingForm())
     console.log('Form submitted. City:', city, 'Street:', streetAddress)
     
@@ -48,7 +48,7 @@ export default function OrderShippingPage() {
       // Mark box as ordered with estimated delivery
       const deliveryDate = new Date()
       deliveryDate.setDate(deliveryDate.getDate() + 7) // ~1 week
-      const dateStr = deliveryDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      const dateStr = deliveryDate.toLocaleDateString(locale === 'ar' ? 'ar-IQ' : 'en-US', { month: 'short', day: 'numeric' })
 
       dispatch(setUserOrderedBox(true))
       dispatch(setEstimatedDelivery(dateStr))

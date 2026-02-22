@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 
 import BottomNavBar from '@/components/BottomNavBar'
 import { setUserInfo } from '@/features/auth/actions'
+import { t } from '@/i18n'
 import type { AppDispatch } from '@/store'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { hideHomeButtonSafely } from '@/utils/ui'
@@ -264,7 +265,7 @@ export default function HomePage() {
     return <View className='w-screen h-screen bg-scaffold' />
   }
 
-  const brandName = isFlavie ? 'Flavie' : 'Mann'
+  const brandName = isFlavie ? t('onboarding.brandFlavie') : t('onboarding.brandMann')
   const hasOrderedButNotReceived = isUserOrderedABox && boxes.length === 0
   const hasBoxes = boxes.length > 0
 

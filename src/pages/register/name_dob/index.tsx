@@ -1,7 +1,7 @@
 import { View, Text, Input, Image } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import calendarIcon from '@/assets/svg/calendar.svg'
 import CustomDatePicker from '@/components/CustomDatePicker'
@@ -12,11 +12,6 @@ import { setRegistrationData } from '@/features/registration/actions'
 import { t } from '@/i18n'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { navigateTo } from '@/utils/navigation'
-
-const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-]
 
 export default function NameAndDOBEntryScreen() {
   const dispatch = useAppDispatch()
@@ -32,7 +27,11 @@ export default function NameAndDOBEntryScreen() {
   const [dobError, setDobError] = useState('')
   const [showDatePicker, setShowDatePicker] = useState(false)
 
-  const themeMode = useAppSelector((state) => state.theme.themeMode)
+  const { themeMode, locale } = useAppSelector((state) => state.theme)
+  const dateFormatter = useMemo(
+    () => new Intl.DateTimeFormat(locale === 'ar' ? 'ar-IQ' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+    [locale],
+  )
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
@@ -41,16 +40,7 @@ export default function NameAndDOBEntryScreen() {
   const formatDate = (dateStr: string) => {
     if (!dateStr) return ''
     const [year, month, day] = dateStr.split('-').map(Number)
-    const suffix = (d: number) => {
-      if (d > 3 && d < 21) return 'th'
-      switch (d % 10) {
-        case 1: return 'st'
-        case 2: return 'nd'
-        case 3: return 'rd'
-        default: return 'th'
-      }
-    }
-    return `${MONTHS[month - 1]} ${day}${suffix(day)}, ${year}`
+    return dateFormatter.format(new Date(year, month - 1, day))
   }
 
   const handleNext = () => {

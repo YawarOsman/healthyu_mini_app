@@ -1,6 +1,9 @@
 import { View, Text, Image } from '@tarojs/components'
 
+import { useMemo } from 'react'
+
 import { SvgIcons } from '@/assets/icons'
+import { useAppSelector } from '@/store/hooks'
 
 interface DayStreak {
   progress: number // 0-100
@@ -14,8 +17,6 @@ interface WeeklyCalendarProps {
   streaks?: (DayStreak | null)[]
   dateLabel?: string
 }
-
-const DAY_NAMES = ['S', 'M', 'T', 'W', 'T', 'F', 'S'] // Sun=0…Sat=6
 
 /**
  * Build a 7-slot window centered on today.
@@ -35,7 +36,12 @@ const TODAY_SLOT = 3
 const ARROW_LEFT_PERCENT = ((TODAY_SLOT + 0.5) / 7) * 100
 
 export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarProps) {
+  const locale = useAppSelector((state) => state.theme.locale)
   const dayWindow = buildDayWindow()
+  const weekdayFormatter = useMemo(
+    () => new Intl.DateTimeFormat(locale === 'ar' ? 'ar-IQ' : 'en-US', { weekday: 'narrow' }),
+    [locale],
+  )
 
   return (
     <View style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -102,8 +108,7 @@ export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarPro
           }}
         >
           {dayWindow.map((date, i) => {
-            const dayOfWeek = date.getDay() // 0=Sun…6=Sat
-            const dayLetter = DAY_NAMES[dayOfWeek]
+            const dayLetter = weekdayFormatter.format(date)
             const isToday = i === TODAY_SLOT
             const isPast = i < TODAY_SLOT
 

@@ -134,7 +134,7 @@ export default function UserWithoutBoxWidget({ brandName, isFlavie }: UserWithou
             textDecoration: 'underline',
           }}
         >
-          Switch to {isFlavie ? 'Mann' : 'Flavie'}
+          {t('switch_to_brand').replace('{brand}', isFlavie ? t('onboarding.brandMann') : t('onboarding.brandFlavie'))}
         </Text>
       </View>
     </View>

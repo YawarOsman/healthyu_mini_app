@@ -109,7 +109,7 @@ export default function SetupAccountScreen() {
                 <Input
                   className='flex-1'
                   type='number'
-                  placeholder='750 123 ## ##'
+                  placeholder={t('phone_number_placeholder')}
                   placeholderClass='input-field-placeholder'
                   value={phone}
                   onInput={(e) => {

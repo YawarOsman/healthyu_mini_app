@@ -13,6 +13,7 @@ type AppBarProps = {
 export default function AppBar({ isFlavie, name, hasBoxes }: AppBarProps) {
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
+  const greetingName = name ? name.split(' ')[0] : t('hello_fallback_name')
 
   return (
     <View
@@ -35,7 +36,7 @@ export default function AppBar({ isFlavie, name, hasBoxes }: AppBarProps) {
             fontFamily: 'var(--font-juana)',
           }}
         >
-          {t('hey')}, {!isFlavie ? 'Karo' : name ? name.split(' ')[0] : 'User'}
+          {t('hey')}, {greetingName}
         </Text>
         <Text
           style={{

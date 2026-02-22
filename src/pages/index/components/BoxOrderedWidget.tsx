@@ -83,7 +83,7 @@ export default function BoxOrderedWidget({ estimatedDeliveryDate }: BoxOrderedWi
                     fontFamily: 'var(--font-locale-body)',
                   }}
                 >
-                  {estimatedDeliveryDate || 'TBD'}
+                  {estimatedDeliveryDate || t('delivery_date_tbd')}
                 </Text>
                 .
               </Text>

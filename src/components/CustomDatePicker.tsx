@@ -2,6 +2,8 @@ import { View, Text, ScrollView } from '@tarojs/components'
 
 import { useState, useMemo } from 'react'
 
+import { t } from '@/i18n'
+import { useAppSelector } from '@/store/hooks'
 
 interface CustomDatePickerProps {
   visible: boolean
@@ -11,11 +13,6 @@ interface CustomDatePickerProps {
   onConfirm: (date: string) => void
   onCancel: () => void
 }
-
-const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-]
 
 const ITEM_HEIGHT = 44
 
@@ -27,8 +24,13 @@ export default function CustomDatePicker({
   onConfirm,
   onCancel,
 }: CustomDatePickerProps) {
+  const locale = useAppSelector((state) => state.theme.locale)
   const currentDate = new Date()
   const effectiveMaxYear = maxYear || currentDate.getFullYear()
+  const monthFormatter = useMemo(
+    () => new Intl.DateTimeFormat(locale === 'ar' ? 'ar-IQ' : 'en-US', { month: 'long' }),
+    [locale],
+  )
 
   // Parse initial date or use today
   const parseDate = (dateStr?: string) => {
@@ -103,13 +105,13 @@ export default function CustomDatePicker({
             style={{ fontSize: '16px', color: 'var(--text-secondary)', fontFamily: 'var(--font-locale-body)' }}
             onClick={onCancel}
           >
-            Cancel
+            {t('cancel')}
           </Text>
           <Text
             style={{ fontSize: '16px', color: 'var(--primary)', fontWeight: '600', fontFamily: 'var(--font-locale-body)' }}
             onClick={handleConfirm}
           >
-            Confirm
+            {t('confirm')}
           </Text>
         </View>
 
@@ -144,7 +146,7 @@ export default function CustomDatePicker({
             items={months}
             selected={selectedMonth}
             onSelect={setSelectedMonth}
-            renderLabel={(m) => MONTHS[m - 1]}
+            renderLabel={(m) => monthFormatter.format(new Date(2024, m - 1, 1))}
           />
 
           {/* Day Column */}

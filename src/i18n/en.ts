@@ -29,6 +29,7 @@ const en = {
   'date_of_birth': 'Date of Birth',
   'next': 'Next',
   'please_enter_your_name': 'Please enter your name',
+  'please_select_date_of_birth': 'Please select your date of birth',
 
   // Setup Account
   'how_do_you_want_to_login': 'How do you want to login?',
@@ -43,6 +44,8 @@ const en = {
   'sign_in_apple': 'Sign in with Apple',
   'please_enter_phone': 'Please enter your phone number',
   'please_enter_email': 'Please enter your email',
+  'phone_number_placeholder': '750 123 ## ##',
+  'navigation_failed': 'Navigation failed',
 
   // OTP Verification
   'verify_your_phone': 'Verify your phone number',
@@ -62,7 +65,6 @@ const en = {
   'selfie_subtitle': 'A selfie a day, keeps the doctor away.',
   'take_a_selfie': 'Take a Selfie',
   'profile_complete': 'Your profile is {percent}% complete.',
-  'please_select_date_of_birth': 'Please select your date of birth',
   'last_step_lets_get_you_a_box': "Last step, let's get you a box.",
   'order_box_subtitle': 'You can order a {brand} Box here.',
   'start_my_experience': 'Start my experience',
@@ -72,6 +74,30 @@ const en = {
   'congratulations_on_your_purchase': 'Congratulations on your purchase!',
   'start_using': 'Start Using',
   'interested': 'Interested',
+  'overdue': 'Overdue',
+  'later_today': 'Later today',
+  'completed': 'Completed',
+  'due_now': 'Due now',
+  'start': 'Start',
+  'mark_as_done': 'Mark as Done',
+  'minutes_overdue': '{minutes} minutes overdue',
+  'delivery_date_tbd': 'TBD',
+  'hello_fallback_name': 'User',
+  'loading': 'Loading...',
+  'no_data': 'No data',
+  'failed_to_fetch_box_data': 'Failed to fetch box data',
+  'network_error': 'Network error',
+  'processing': 'Processing...',
+  'setup_routine': 'Setup Routine',
+  'scan_box_default_name': 'Flavie Box 1',
+  'scan_box_default_headline': 'Radiance - Start your glow.',
+  'scan_box_default_genre_1': 'Outer Beauty',
+  'scan_box_default_genre_2': 'Hydration',
+  'switch_to_brand': 'Switch to {brand}',
+  'theme': 'Theme',
+  'flavie_dark': 'Flavie Dark',
+  'mann_dark': 'Mann Dark',
+  'flavie_light': 'Flavie Light',
 
   // Shipping Address
   'lovely_you_will_look_great': "Lovely, you'll look great!",
@@ -119,6 +145,7 @@ const en = {
   'scan_not_available_in_simulator': 'Scanner is unavailable in simulator. Please preview on a real device.',
   'settings': 'Settings',
   'cancel': 'Cancel',
+  'confirm': 'Confirm',
 }
 
 export default en

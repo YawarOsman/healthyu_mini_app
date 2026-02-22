@@ -12,6 +12,7 @@ const ar = {
   'date_of_birth': 'تاريخ الميلاد',
   'next': 'التالي',
   'please_enter_your_name': 'الرجاء إدخال اسمك',
+  'please_select_date_of_birth': 'الرجاء اختيار تاريخ الميلاد',
 
   'onboarding.flavie.subtitle2': 'حللي اتجاهاتكِ واستخدامكِ ووقتكِ.',
   'onboarding.flavie.title3': 'احصلي على فحوصات مهنية معنا.',
@@ -44,6 +45,8 @@ const ar = {
   'sign_in_apple': 'تسجيل الدخول عبر آبل',
   'please_enter_phone': 'الرجاء إدخال رقم هاتفك',
   'please_enter_email': 'الرجاء إدخال بريدك الإلكتروني',
+  'phone_number_placeholder': '750 123 ## ##',
+  'navigation_failed': 'فشل التنقل',
 
   // OTP Verification
   'verify_your_phone': 'تحقق من رقم هاتفك',
@@ -72,6 +75,30 @@ const ar = {
   'congratulations_on_your_purchase': 'تهانينا على شرائك!',
   'start_using': 'ابدأ بالاستخدام',
   'interested': 'مهتم',
+  'overdue': 'متأخر',
+  'later_today': 'لاحقًا اليوم',
+  'completed': 'مكتمل',
+  'due_now': 'مستحق الآن',
+  'start': 'ابدأ',
+  'mark_as_done': 'تحديد كمكتمل',
+  'minutes_overdue': 'متأخر {minutes} دقيقة',
+  'delivery_date_tbd': 'سيحدد لاحقًا',
+  'hello_fallback_name': 'مستخدم',
+  'loading': 'جاري التحميل...',
+  'no_data': 'لا توجد بيانات',
+  'failed_to_fetch_box_data': 'فشل في جلب بيانات الصندوق',
+  'network_error': 'خطأ في الشبكة',
+  'processing': 'جاري المعالجة...',
+  'setup_routine': 'إعداد الروتين',
+  'scan_box_default_name': 'صندوق فلافي 1',
+  'scan_box_default_headline': 'إشراقة - ابدئي توهجك.',
+  'scan_box_default_genre_1': 'الجمال الخارجي',
+  'scan_box_default_genre_2': 'ترطيب',
+  'switch_to_brand': 'التبديل إلى {brand}',
+  'theme': 'السمة',
+  'flavie_dark': 'فلافي داكن',
+  'mann_dark': 'مان داكن',
+  'flavie_light': 'فلافي فاتح',
 
   // Shipping Address
   'lovely_you_will_look_great': 'رائعة، ستبدين رائعة!',
@@ -119,6 +146,7 @@ const ar = {
   'scan_not_available_in_simulator': 'الماسح غير متاح في المحاكي. يرجى المعاينة على جهاز حقيقي.',
   'settings': 'الإعدادات',
   'cancel': 'إلغاء',
+  'confirm': 'تأكيد',
 }
 
 export default ar
