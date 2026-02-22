@@ -58,7 +58,7 @@ const en = {
   'for_ladies': 'FOR LADIES',
   'for_men': 'FOR MEN',
   'care': 'Care',
-  'products': 'Products',
+  'boxes': 'Boxes',
   'answers': 'Answers',
   'me': 'Me',
   'lets_see_your_smile': "Let's see your smile.",

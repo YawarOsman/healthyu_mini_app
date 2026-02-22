@@ -29,7 +29,7 @@ export default function DueRoutineCard({
     <View
       onClick={onTap}
       style={{
-        height: '310px',
+        height: '250px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',

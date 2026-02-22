@@ -59,7 +59,7 @@ const ar = {
   'for_ladies': 'للسيدات',
   'for_men': 'للرجال',
   'care': 'العناية',
-  'products': 'المنتجات',
+  'boxes': 'الصناديق',
   'answers': 'الأجوبة',
   'me': 'أنا',
   'lets_see_your_smile': 'دعنا نرى ابتسامتك.',

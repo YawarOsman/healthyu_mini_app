@@ -1,8 +1,10 @@
-import { defineConfig, type UserConfigExport } from '@tarojs/cli'
-import type { Plugin } from 'vite'
 import path from 'node:path'
+
+import { defineConfig, type UserConfigExport } from '@tarojs/cli'
 import tailwindcss from 'tailwindcss'
+import type { Plugin } from 'vite'
 import { UnifiedViteWeappTailwindcssPlugin as uvtw } from 'weapp-tailwindcss/vite'
+
 import devConfig from './dev'
 import prodConfig from './prod'
 
@@ -257,6 +259,9 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
           '/pages/register/name_dob/index': '/register/name',
           '/pages/register/setup_account/index': '/register/setup',
           '/pages/register/otp_verification/index': '/register/verify',
+          '/pages/boxes/index': '/boxes',
+          '/pages/answers/index': '/answers',
+          '/pages/me/index': '/me',
         }
       },
 

@@ -10,16 +10,21 @@ import { useAppSelector } from '@/store/hooks'
 interface BottomNavBarProps {
   activeIndex?: number
   lockedTabs?: boolean // blur tabs 1-3
+  onTabPress?: (index: number) => void
 }
 
 const tabs = [
   { icon: careIcon, labelKey: 'care' },
-  { icon: boxesIcon, labelKey: 'products' },
+  { icon: boxesIcon, labelKey: 'boxes' },
   { icon: answersIcon, labelKey: 'answers' },
   { icon: profileIcon, labelKey: 'me' },
 ]
 
-export default function BottomNavBar({ activeIndex = 0, lockedTabs = true }: BottomNavBarProps) {
+export default function BottomNavBar({
+  activeIndex = 0,
+  lockedTabs = true,
+  onTabPress,
+}: BottomNavBarProps) {
   const themeMode = useAppSelector((state) => state.theme.themeMode)
 
   return (
@@ -43,6 +48,10 @@ export default function BottomNavBar({ activeIndex = 0, lockedTabs = true }: Bot
         return (
           <View
             key={i}
+            onClick={() => {
+              if (isLocked || !onTabPress) return
+              onTabPress(i)
+            }}
             style={{
               flex: 1,
               display: 'flex',
@@ -53,6 +62,7 @@ export default function BottomNavBar({ activeIndex = 0, lockedTabs = true }: Bot
               height: '100%',
               position: 'relative',
               overflow: 'hidden',
+              cursor: isLocked ? 'default' : 'pointer',
             }}
           >
             <View

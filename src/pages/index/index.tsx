@@ -4,10 +4,12 @@ import Taro, { useDidShow } from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 
 import BottomNavBar from '@/components/BottomNavBar'
+import { ROUTES } from '@/constants/routes'
 import { setUserInfo } from '@/features/auth/actions'
 import { t } from '@/i18n'
 import type { AppDispatch } from '@/store'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { redirectTo } from '@/utils/navigation'
 import { hideHomeButtonSafely } from '@/utils/ui'
 
 // Page-level widget components
@@ -261,6 +263,17 @@ export default function HomePage() {
     setChecking(false) // Bypass onboarding for development
   }
 
+  const handleTabPress = (index: number) => {
+    const tabRouteMap = [ROUTES.HOME, ROUTES.BOXES, ROUTES.ANSWERS, ROUTES.ME] as const
+    const targetRoute = tabRouteMap[index]
+    if (!targetRoute || targetRoute === ROUTES.HOME) {
+      return
+    }
+    redirectTo(targetRoute).catch((error) => {
+      console.error('Failed to switch bottom section', { index, targetRoute, error })
+    })
+  }
+
   if (checking) {
     return <View className='w-screen h-screen bg-scaffold' />
   }
@@ -290,7 +303,7 @@ export default function HomePage() {
       )}
 
       {/* Bottom Navigation Bar */}
-      <BottomNavBar activeIndex={0} lockedTabs={!hasBoxes} />
+      <BottomNavBar activeIndex={0} lockedTabs={false} onTabPress={handleTabPress} />
     </View>
   )
 }

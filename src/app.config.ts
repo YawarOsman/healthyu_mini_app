@@ -8,6 +8,9 @@ export default defineAppConfig({
     'pages/order/index',
     'pages/order_shipping/index',
     'pages/scan_box/index',
+    'pages/boxes/index',
+    'pages/answers/index',
+    'pages/me/index',
   ],
   permission: {
     'scope.scan': {
