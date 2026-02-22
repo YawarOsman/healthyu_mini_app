@@ -3,29 +3,6 @@ import { View, Text, Image } from '@tarojs/components'
 import { SvgIcons } from '@/assets/icons'
 import { t } from '@/i18n'
 
-/**
- * Mirrors Flutter's RoutineCard widget.
- *
- * Flutter layout (Slidable > GestureDetector > Padding(bottom:8) > SizedBox(height:48)):
- *   Row(spacing: 10) {
- *     Container(48x48, padding: paddingAll14, color: surfaceContainer) { SvgPicture(product image) }
- *     Expanded { Column(crossAxisAlignment: start, mainAxisAlignment: spaceAround) {
- *       Text(name, bodyMedium w600, linethrough if completed)
- *       Text(overdue text OR time, bodyMedium w600, color: secondaryFixed, linethrough if completed)
- *     }}
- *     if completed → Icon(check, 14px, color: secondaryFixed)
- *     if overdue   → TextButton("Mark as Done", bodyMedium w700, color: error)
- *     else         → ArrowLeftIcon(flip:true, size:14, color: outline)
- *   }
- *
- * Key measurements from Flutter source:
- * - Container size: 48x48, padding: paddingAll14 (14px all sides)
- * - Row spacing: 10px
- * - Trailing chevron: 14px, color: outline (var(--text-secondary) in our theme)
- * - Font: bodyMedium (14px, w500 base → w600 for name, w700 for mark-as-done)
- * - Color: secondaryFixed → icon/time text color (our var(--text-secondary))
- */
-
 export interface RoutineCardProps {
   type: 'overdue' | 'later' | 'completed'
   time?: string        // formatted time string e.g. "3:00 PM" or "3 min overdue"

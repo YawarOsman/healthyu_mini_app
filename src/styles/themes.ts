@@ -1,4 +1,3 @@
-// Theme definitions extracted from Flutter's colors.dart + theme files
 
 export type ThemeMode = 'flavie-dark' | 'flavie-light' | 'mann-dark' | 'mann-light'
 

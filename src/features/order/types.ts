@@ -35,7 +35,7 @@ export interface BoxEntity {
   videoUrl: string | null
   videoThumbnail: string | null
   items: BoxItem[]
-  // Dev-mode timeframe simulation flags (mirrors Flutter's RoutineTimeframeEnum)
+
   isOverdue?: boolean
   isLater?: boolean
   isCompleted?: boolean

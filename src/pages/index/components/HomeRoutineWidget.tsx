@@ -8,14 +8,6 @@ import { useAppSelector } from '@/store/hooks'
 import DueRoutineCard from './DueRoutineCard'
 import RoutineCard from './RoutineCard'
 
-/**
- * Mirrors Flutter's HomeRoutineWidget.
- *
- * Timeframe grouping order: overdue → due → laterToday → completed
- * Spacing: Column(spacing:14) outer, Column(spacing:10) within each group
- * Section headers: bodyMedium size (14px/500) with bodySmall color (text-secondary) + Padding(bottom:6)
- * "due" group has NO section header.
- */
 
 interface HomeRoutineWidgetProps {
   boxes: BoxEntity[]

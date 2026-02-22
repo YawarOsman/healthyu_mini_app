@@ -4,36 +4,6 @@ import { SvgIcons } from '@/assets/icons'
 import DashedBox from '@/components/DashedBox'
 import { t } from '@/i18n'
 
-/**
- * Mirrors Flutter's _RoutineHeroCard (inside DueRoutineCard PageView).
- *
- * Flutter layout (Padding(horizontal:10, vertical:8) > GestureDetector > Padding(vertical:24)):
- *   Column(mainAxisAlignment: spaceBetween) {
- *     Column {
- *       Text("Due now", labelMedium style)   ← fontSize:14, w500, color: textSecondary
- *       SizedBox(height: 24)
- *       DottedBorder(dashPattern:[6,6], rect) {
- *         Container(48x48, padding:paddingAll12, color: background.fill.deepFill) {
- *           SvgPicture.network(productDisplayImage, colorFilter: accent)
- *         }
- *       }
- *       SizedBox(height: 16)
- *       Column(spacing: 4) {
- *         Text(productName, headlineMedium w500)    ← fontSize:20, w500, juana font
- *         Text(description, labelMedium, color: secondaryFixed)  ← fontSize:14, w500, text-secondary
- *       }
- *     }
- *     Row(mainAxisAlignment: center, spacing: 12) {
- *       if usageDuration > 0:
- *         FilledButton(Start, height:46, padding:h16, accent bg, fontSize:16)
- *       FilledButton(Mark as Done, height:46, padding:h12)
- *         — transparent bg/foreground: secondaryFixed (text-secondary) when not focused
- *         — accent bg / surface text when showCompletionFocus or duration=0
- *     }
- *   }
- *
- * The entire card is: 310px tall, horizontally scrollable if multiple routines.
- */
 
 interface DueRoutineCardProps {
   title: string

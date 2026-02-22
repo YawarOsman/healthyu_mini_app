@@ -31,9 +31,6 @@ html, body, #app, page {
 .font-label-sm { font-family: var(--font-family-label-sm); }
 .font-btn { font-family: var(--font-family-btn); }
 
-// ─── Reusable Component Classes (from Flutter Theme) ───
-
-// Input field - matches Flutter InputDecorationTheme
 // fillColor: #141414, no border radius, contentPadding: 16px
 .input-field {
   width: 100%;
@@ -56,7 +53,7 @@ html, body, #app, page {
   font-size: 16px;
 }
 
-// Filled Button - matches Flutter FilledButtonTheme
+
 // height: 57px, no border radius, Juana font 19px semibold
 .btn-filled {
   width: 100%;
@@ -76,7 +73,6 @@ html, body, #app, page {
   font-family: var(--font-juana);
 }
 
-// Elevated Button - matches Flutter ElevatedButtonTheme
 .btn-elevated {
   width: 100%;
   height: var(--btn-height);
@@ -88,7 +84,6 @@ html, body, #app, page {
   border: none;
 }
 
-// Outlined Button - matches Flutter OutlinedButtonTheme
 .btn-outlined {
   width: 100%;
   height: 57px;
@@ -100,7 +95,6 @@ html, body, #app, page {
   border-radius: 0px;
 }
 
-// Section label - matches Flutter bodyMedium w600 + bodySmall.color
 .text-section-label {
   font-size: 16px;
   font-weight: 500;
@@ -108,7 +102,6 @@ html, body, #app, page {
   font-family: var(--font-locale-body);
 }
 
-// Page title - matches Flutter titleLarge 24px w500
 .text-page-title {
   font-size: 24px;
   font-weight: 500;
@@ -116,7 +109,6 @@ html, body, #app, page {
   font-family: var(--font-juana);
 }
 
-// Field label - matches Flutter labelLarge 16px w600
 .text-field-label {
   font-size: 16px;
   font-weight: 500;
@@ -124,7 +116,6 @@ html, body, #app, page {
   font-family: var(--font-locale-body);
 }
 
-// Date picker trigger - matches Flutter CustomDatePicker
 .picker-trigger {
   width: 100%;
   height: 52px;
@@ -137,7 +128,6 @@ html, body, #app, page {
   box-sizing: border-box;
 }
 
-// Error text - matches Flutter errorStyle
 .text-error {
   font-size: 14px;
   font-weight: 500;
