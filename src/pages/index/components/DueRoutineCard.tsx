@@ -62,7 +62,7 @@ export default function DueRoutineCard({
         {/* "Due now" label — labelMedium: fontSize:14, w500, color: textSecondary */}
         <Text
           style={{
-            fontSize: '14px',
+            fontSize: '16px',
             fontWeight: '500',
             color: 'var(--text-secondary)',
             marginBottom: '24px',
@@ -94,6 +94,7 @@ export default function DueRoutineCard({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              backgroundColor: 'var(--background-color)'
             }}
           >
             <Image
@@ -101,8 +102,7 @@ export default function DueRoutineCard({
               style={{
                 width: '100%',
                 height: '100%',
-                // colorFilter: accent (primary color tint)
-                filter: 'brightness(0) saturate(100%) invert(72%) sepia(30%) saturate(600%) hue-rotate(350deg) brightness(95%) contrast(85%)',
+                color: 'var(--primary)',
               }}
             />
           </View>
