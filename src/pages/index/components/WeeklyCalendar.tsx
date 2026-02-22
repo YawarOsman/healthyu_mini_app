@@ -66,7 +66,10 @@ export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarPro
             top: 0,
             left: 0,
             right: 0,
-            borderTop: '1px dashed rgba(255,255,255,0.16)',
+            height: '1px',
+            backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.16) 50%, transparent 50%)',
+            backgroundSize: '14px 1px',
+            backgroundRepeat: 'repeat-x',
             pointerEvents: 'none',
           }}
         />
@@ -75,28 +78,27 @@ export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarPro
         <View
           style={{
             position: 'absolute',
-            top: '-14px',
+            top: '-18px',
             left: `${ARROW_LEFT_PERCENT}%`,
             transform: 'translateX(-50%)',
             pointerEvents: 'none',
           }}
         >
-          <Text style={{ fontSize: '18px', color: 'var(--text-primary)', lineHeight: '1' }}>▼</Text>
+          <Text style={{ fontSize: '16px', color: 'var(--text-primary)', lineHeight: '1' }}>▼</Text>
         </View>
 
         {/* Day items row — paddingVertical:16 */}
         <View
           style={{
             position: 'absolute',
-            top: '16px',
-            bottom: '16px',
+            top: '20px',
             left: 0,
             right: 0,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingLeft: '8px',
-            paddingRight: '8px',
+            paddingLeft: '16px',
+            paddingRight: '16px',
           }}
         >
           {dayWindow.map((date, i) => {
@@ -107,7 +109,7 @@ export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarPro
 
             const letterColor = (isPast || isToday)
               ? 'var(--text-secondary)'
-              : 'var(--text-primary)'
+              : 'var(--icon-secondary)'
 
             const streak = streaks?.[i] ?? null
             const fillPercent = Math.min(100, Math.max(0, streak?.progress ?? 0))
@@ -123,7 +125,7 @@ export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarPro
                   gap: '8px',
                 }}
               >
-                <Text style={{ fontSize: '14px', fontWeight: '500', color: letterColor }}>
+                <Text style={{ fontSize: '16px', fontWeight: '500', color: letterColor }}>
                   {dayLetter}
                 </Text>
 

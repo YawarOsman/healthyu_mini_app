@@ -1,17 +1,16 @@
-import { View, Text, Image } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 
 import { useState, useEffect } from 'react'
 
-import { SvgIcons } from '@/assets/icons'
 import BottomNavBar from '@/components/BottomNavBar'
 import { setUserInfo } from '@/features/auth/actions'
-import { t } from '@/i18n'
 import type { AppDispatch } from '@/store'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { hideHomeButtonSafely } from '@/utils/ui'
 
 // Page-level widget components
+import AppBar from './components/AppBar'
 import BoxOrderedWidget from './components/BoxOrderedWidget'
 import CareRoutineWidget from './components/CareRoutineWidget'
 import UserWithoutBoxWidget from './components/UserWithoutBoxWidget'
@@ -35,7 +34,7 @@ type MiniAppApi = {
 }
 
 const MINI_AUTH_INFO_STORAGE_KEY = 'miniAuthInfo'
-const REQUESTED_AUTH_SCOPES = ['auth_base', 'USER_NAME']
+const REQUESTED_AUTH_SCOPES = ['auth_base','USER_ID', 'HASH_LOGIN_ID', 'USER_LOGIN_ID', 'USER_NAME', 'USER_GENDER']
 
 type UnknownRecord = Record<string, unknown>
 type AuthCodeResponse = {
@@ -233,7 +232,6 @@ async function fetchMiniAuthInfoOnLoad(dispatch: AppDispatch) {
 }
 
 export default function HomePage() {
-  console.log('HomePage: Rendering...')
   const [checking, setChecking] = useState(true)
   const [authInfoFetched, setAuthInfoFetched] = useState(false)
   const { themeMode, isFlavie } = useAppSelector((state) => state.theme)
@@ -242,9 +240,6 @@ export default function HomePage() {
   )
   const { name } = useAppSelector((state) => state.auth)
   const dispatch = useAppDispatch()
-
-  const systemInfo = Taro.getSystemInfoSync()
-  const statusBarHeight = systemInfo.statusBarHeight || 0
 
   useDidShow(() => {
     checkOnboarding()
@@ -279,49 +274,7 @@ export default function HomePage() {
       data-theme={themeMode}
     >
       {/* App Bar */}
-      <View
-        style={{
-          paddingTop: `${statusBarHeight + 12}px`,
-          paddingLeft: '24px',
-          paddingRight: '24px',
-          paddingBottom: '12px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <View className='flex items-center'>
-          <Text
-            style={{
-              fontSize: '26px',
-              fontWeight: '500',
-              color: 'var(--primary)',
-              fontFamily: 'var(--font-juana)',
-            }}
-          >
-            {t('hey')}, {!isFlavie ? 'Karo' : name ? name.split(' ')[0] : 'User'}
-          </Text>
-          <Text
-            style={{
-              fontSize: '12px',
-              fontWeight: '400',
-              color: 'var(--text-secondary)',
-              fontFamily: 'var(--font-locale-body)',
-              marginLeft: '10px',
-              textTransform: 'uppercase',
-            }}
-          >
-            {isFlavie ? t('for_ladies') : t('for_men')}
-          </Text>
-        </View>
-
-        {hasBoxes && (
-          <View className='flex items-center gap-4' style={{ gap: '16px' }}>
-            <Image src={SvgIcons.calendar} style={{ width: '24px', height: '24px', opacity: 0.8 }} />
-            <Image src={SvgIcons.qrScan} style={{ width: '24px', height: '24px', opacity: 0.8 }} />
-          </View>
-        )}
-      </View>
+      <AppBar isFlavie={isFlavie} name={name || ''} hasBoxes={hasBoxes} />
 
       {/* Body — Conditional on state */}
       {hasBoxes ? (
@@ -336,7 +289,7 @@ export default function HomePage() {
       )}
 
       {/* Bottom Navigation Bar */}
-      <BottomNavBar activeIndex={0} lockedTabs />
+      <BottomNavBar activeIndex={0} lockedTabs={!hasBoxes} />
     </View>
   )
 }
