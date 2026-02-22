@@ -3,6 +3,7 @@ import { View, Text, Image } from '@tarojs/components'
 import { useMemo } from 'react'
 
 import { SvgIcons } from '@/assets/icons'
+import { getDateLocaleCode } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
 
 interface DayStreak {
@@ -37,10 +38,11 @@ const ARROW_LEFT_PERCENT = ((TODAY_SLOT + 0.5) / 7) * 100
 
 export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarProps) {
   const locale = useAppSelector((state) => state.theme.locale)
+  const localeCode = getDateLocaleCode(locale)
   const dayWindow = buildDayWindow()
   const weekdayFormatter = useMemo(
-    () => new Intl.DateTimeFormat(locale === 'ar' ? 'ar-IQ' : 'en-US', { weekday: 'narrow' }),
-    [locale],
+    () => new Intl.DateTimeFormat(localeCode, { weekday: 'narrow' }),
+    [localeCode],
   )
 
   return (

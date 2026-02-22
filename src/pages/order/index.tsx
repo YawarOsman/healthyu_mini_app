@@ -4,8 +4,9 @@ import Taro from '@tarojs/taro'
 import flaskIcon from '@/assets/svg/boxes.svg'
 import RefinedAppBar from '@/components/RefinedAppBar'
 import { ROUTES } from '@/constants/routes'
-import type { BoxItem } from '@/features/order/types'
+import { getLocalizedHeadline, getLocalizedName, type BoxItem } from '@/features/order/types'
 import { t } from '@/i18n'
+import { isArabicLocale } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
 import { navigateTo } from '@/utils/navigation'
 
@@ -14,8 +15,6 @@ export default function OrderPage() {
   console.log('OrderPage: Rendering...')
   const { themeMode, locale } = useAppSelector((state) => state.theme)
   const { box, loading, error } = useAppSelector((state) => state.order)
-
-  const isAr = locale === 'ar'
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
@@ -66,8 +65,8 @@ export default function OrderPage() {
     )
   }
 
-  const boxName = isAr ? box.nameAr : box.nameEn
-  const headline = isAr ? box.headlineAr : box.headlineEn
+  const boxName = getLocalizedName(box, locale)
+  const headline = getLocalizedHeadline(box, locale)
 
   return (
     <View
@@ -145,7 +144,7 @@ export default function OrderPage() {
                     fontFamily: 'var(--font-locale-body)',
                   }}
                 >
-                  {isAr ? genre.nameAr : genre.nameEn}
+                  {getLocalizedName(genre, locale)}
                 </Text>
               </View>
             ))}
@@ -208,7 +207,7 @@ export default function OrderPage() {
           {/* Product list */}
           <View>
             {box.items.map((item) => (
-              <BoxProductCard key={item.id} item={item} isAr={isAr} />
+              <BoxProductCard key={item.id} item={item} locale={locale} />
             ))}
           </View>
         </View>
@@ -261,7 +260,8 @@ function ProgressDots({ current, total }: { current: number; total: number }) {
 }
 
 // ─── Box Product Card Component ───
-function BoxProductCard({ item, isAr }: { item: BoxItem; isAr: boolean }) {
+function BoxProductCard({ item, locale }: { item: BoxItem; locale: string }) {
+  const isAr = isArabicLocale(locale)
   const ingredientsText = item.ingredients
     .map(ing => isAr ? ing.nameAr : ing.nameEn)
     .join(' + ')
@@ -307,7 +307,7 @@ function BoxProductCard({ item, isAr }: { item: BoxItem; isAr: boolean }) {
             fontFamily: 'var(--font-locale-body)',
           }}
         >
-          {isAr ? item.nameAr : item.nameEn}
+          {getLocalizedName(item, locale)}
         </Text>
         <Text
           style={{

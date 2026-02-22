@@ -3,6 +3,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { useState, useMemo } from 'react'
 
 import { t } from '@/i18n'
+import { getDateLocaleCode } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
 
 interface CustomDatePickerProps {
@@ -25,11 +26,12 @@ export default function CustomDatePicker({
   onCancel,
 }: CustomDatePickerProps) {
   const locale = useAppSelector((state) => state.theme.locale)
+  const localeCode = getDateLocaleCode(locale)
   const currentDate = new Date()
   const effectiveMaxYear = maxYear || currentDate.getFullYear()
   const monthFormatter = useMemo(
-    () => new Intl.DateTimeFormat(locale === 'ar' ? 'ar-IQ' : 'en-US', { month: 'long' }),
-    [locale],
+    () => new Intl.DateTimeFormat(localeCode, { month: 'long' }),
+    [localeCode],
   )
 
   // Parse initial date or use today

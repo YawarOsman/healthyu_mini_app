@@ -1,3 +1,5 @@
+import { isArabicLocale } from '@/i18n/locale'
+
 // ─── Order Feature — Data Models ───
 
 export interface BoxGenre {
@@ -39,4 +41,17 @@ export interface BoxEntity {
   isCompleted?: boolean
   timeLabel?: string
   productDisplayImage?: string
+}
+
+type LocalizedNamedEntity = {
+  nameEn: string
+  nameAr: string
+}
+
+export function getLocalizedName<T extends LocalizedNamedEntity>(entity: T, locale: string): string {
+  return isArabicLocale(locale) ? entity.nameAr : entity.nameEn
+}
+
+export function getLocalizedHeadline(box: BoxEntity, locale: string): string {
+  return isArabicLocale(locale) ? box.headlineAr : box.headlineEn
 }

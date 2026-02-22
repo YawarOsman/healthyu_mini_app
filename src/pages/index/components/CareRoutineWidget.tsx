@@ -1,6 +1,7 @@
 import { View } from '@tarojs/components'
 
 import type { BoxEntity } from '@/features/order/types'
+import { getDateLocaleCode } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
 
 import HomeRoutineWidget from './HomeRoutineWidget'
@@ -15,8 +16,9 @@ interface CareRoutineWidgetProps {
 
 export default function CareRoutineWidget({ boxes, dateLabel, weeklyStreaks }: CareRoutineWidgetProps) {
   const locale = useAppSelector((state) => state.theme.locale)
+  const localeCode = getDateLocaleCode(locale)
   const today = new Date()
-  const defaultDateLabel = today.toLocaleDateString(locale === 'ar' ? 'ar-IQ' : 'en-US', {
+  const defaultDateLabel = today.toLocaleDateString(localeCode, {
     weekday: 'long',
     month: 'long',
     day: 'numeric',

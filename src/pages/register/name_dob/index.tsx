@@ -10,6 +10,7 @@ import RefinedAppBar from '@/components/RefinedAppBar'
 import { ROUTES } from '@/constants/routes'
 import { setRegistrationData } from '@/features/registration/actions'
 import { t } from '@/i18n'
+import { getDateLocaleCode } from '@/i18n/locale'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { navigateTo } from '@/utils/navigation'
 
@@ -28,9 +29,10 @@ export default function NameAndDOBEntryScreen() {
   const [showDatePicker, setShowDatePicker] = useState(false)
 
   const { themeMode, locale } = useAppSelector((state) => state.theme)
+  const localeCode = getDateLocaleCode(locale)
   const dateFormatter = useMemo(
-    () => new Intl.DateTimeFormat(locale === 'ar' ? 'ar-IQ' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-    [locale],
+    () => new Intl.DateTimeFormat(localeCode, { month: 'long', day: 'numeric', year: 'numeric' }),
+    [localeCode],
   )
 
   const systemInfo = Taro.getSystemInfoSync()

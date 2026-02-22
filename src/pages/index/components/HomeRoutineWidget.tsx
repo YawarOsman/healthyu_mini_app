@@ -1,7 +1,8 @@
 import { View, Text } from '@tarojs/components'
 
-import type { BoxEntity } from '@/features/order/types'
+import { getLocalizedHeadline, getLocalizedName, type BoxEntity } from '@/features/order/types'
 import { t } from '@/i18n'
+import { getDateLocaleCode } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
 
 import DueRoutineCard from './DueRoutineCard'
@@ -22,11 +23,7 @@ interface HomeRoutineWidgetProps {
 
 export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
   const locale = useAppSelector((state) => state.theme.locale)
-  const isAr = locale === 'ar'
-
-  const getBoxName = (box: BoxEntity) => (isAr ? box.nameAr : box.nameEn)
-  const getBoxHeadline = (box: BoxEntity) => (isAr ? box.headlineAr : box.headlineEn)
-  const localeCode = isAr ? 'ar-IQ' : 'en-US'
+  const localeCode = getDateLocaleCode(locale)
   const formatOverdue = (minutes: number) => t('minutes_overdue').replace('{minutes}', String(minutes))
   const formatTimeLabel = (timeLabel?: string) => {
     if (!timeLabel) return ''
@@ -67,7 +64,7 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
               <RoutineCard
                 key={i}
                 type='overdue'
-                title={getBoxName(box)}
+                title={getLocalizedName(box, locale)}
                 time={formatOverdue(3)}
                 imgSrc={box.productDisplayImage}
               />
@@ -79,8 +76,8 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
         {dueNowBoxes.map((box, i) => (
           <DueRoutineCard
             key={i}
-            title={getBoxName(box)}
-            description={getBoxHeadline(box)}
+            title={getLocalizedName(box, locale)}
+            description={getLocalizedHeadline(box, locale)}
             imgSrc={box.productDisplayImage}
             hasDuration
           />
@@ -98,7 +95,7 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
               <RoutineCard
                 key={i}
                 type='later'
-                title={getBoxName(box)}
+                title={getLocalizedName(box, locale)}
                 time={formatTimeLabel(box.timeLabel)}
                 imgSrc={box.productDisplayImage}
               />
@@ -118,7 +115,7 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
               <RoutineCard
                 key={i}
                 type='completed'
-                title={getBoxName(box)}
+                title={getLocalizedName(box, locale)}
                 imgSrc={box.productDisplayImage}
               />
             ))}

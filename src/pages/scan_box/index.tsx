@@ -3,6 +3,7 @@ import Taro, { useDidShow } from '@tarojs/taro'
 
 import FlavieOnboarding1 from '@/assets/images/flavie_onboarding_1.png'
 import { ROUTES } from '@/constants/routes'
+import { getLocalizedHeadline, getLocalizedName } from '@/features/order/types'
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
 import { hideHomeButtonSafely } from '@/utils/ui'
@@ -10,11 +11,10 @@ import { hideHomeButtonSafely } from '@/utils/ui'
 export default function ScanBoxPage() {
   const { themeMode, locale } = useAppSelector((state) => state.theme)
   const { box } = useAppSelector((state) => state.order)
-  const isAr = locale === 'ar'
-  const boxName = box ? (isAr ? box.nameAr : box.nameEn) : t('scan_box_default_name')
-  const boxHeadline = box ? (isAr ? box.headlineAr : box.headlineEn) : t('scan_box_default_headline')
+  const boxName = box ? getLocalizedName(box, locale) : t('scan_box_default_name')
+  const boxHeadline = box ? getLocalizedHeadline(box, locale) : t('scan_box_default_headline')
   const genreLabels = box?.genres?.length
-    ? box.genres.slice(0, 2).map((genre) => (isAr ? genre.nameAr : genre.nameEn))
+    ? box.genres.slice(0, 2).map((genre) => getLocalizedName(genre, locale))
     : [t('scan_box_default_genre_1'), t('scan_box_default_genre_2')]
   const firstGenre = genreLabels[0] || t('scan_box_default_genre_1')
   const secondGenre = genreLabels[1] || t('scan_box_default_genre_2')

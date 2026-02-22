@@ -16,12 +16,14 @@ import {
   setEstimatedDelivery,
 } from '@/features/order/actions'
 import { t } from '@/i18n'
+import { getDateLocaleCode } from '@/i18n/locale'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { reLaunch } from '@/utils/navigation'
 
 export default function OrderShippingPage() {
   const dispatch = useAppDispatch()
   const { themeMode, locale } = useAppSelector((state) => state.theme)
+  const localeCode = getDateLocaleCode(locale)
   const { city, streetAddress, fullAddress, isFormSubmitted, cities } = useAppSelector(
     (state) => state.order,
   )
@@ -48,7 +50,7 @@ export default function OrderShippingPage() {
       // Mark box as ordered with estimated delivery
       const deliveryDate = new Date()
       deliveryDate.setDate(deliveryDate.getDate() + 7) // ~1 week
-      const dateStr = deliveryDate.toLocaleDateString(locale === 'ar' ? 'ar-IQ' : 'en-US', { month: 'short', day: 'numeric' })
+      const dateStr = deliveryDate.toLocaleDateString(localeCode, { month: 'short', day: 'numeric' })
 
       dispatch(setUserOrderedBox(true))
       dispatch(setEstimatedDelivery(dateStr))
