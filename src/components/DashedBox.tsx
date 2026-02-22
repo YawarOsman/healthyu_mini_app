@@ -1,6 +1,7 @@
-import Taro from "@tarojs/taro";
-import { ReactNode, useEffect, useState, useMemo } from "react";
 import { View } from "@tarojs/components";
+import Taro from "@tarojs/taro";
+
+import { ReactNode, useEffect, useState, useMemo } from "react";
 
 type BorderPosition = "inside" | "outside" | "center";
 

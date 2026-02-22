@@ -1,17 +1,17 @@
-import { useState } from 'react'
 import { View, Text, Input, Image } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
-import RefinedAppBar from '../../../components/RefinedAppBar'
-import CustomDatePicker from '../../../components/CustomDatePicker'
-import { t } from '../../../i18n'
-import { useDispatch, useSelector } from 'react-redux'
-import { setRegistrationData } from '../../../actions/registration'
-import { RootState } from '../../../reducers'
-import calendarIcon from '../../../assets/svg/calendar.svg'
-import PaginationDots from '../../../components/PaginationDots'
 
-import { ROUTES } from '../../../constants/routes'
-import { navigateTo } from '../../../utils/navigation'
+import { useState } from 'react'
+
+import calendarIcon from '@/assets/svg/calendar.svg'
+import CustomDatePicker from '@/components/CustomDatePicker'
+import PaginationDots from '@/components/PaginationDots'
+import RefinedAppBar from '@/components/RefinedAppBar'
+import { ROUTES } from '@/constants/routes'
+import { setRegistrationData } from '@/features/registration/actions'
+import { t } from '@/i18n'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { navigateTo } from '@/utils/navigation'
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -19,7 +19,7 @@ const MONTHS = [
 ]
 
 export default function NameAndDOBEntryScreen() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   useDidShow(() => {
     Taro.setNavigationBarTitle({
@@ -32,7 +32,7 @@ export default function NameAndDOBEntryScreen() {
   const [dobError, setDobError] = useState('')
   const [showDatePicker, setShowDatePicker] = useState(false)
 
-  const themeMode = useSelector((state: RootState) => state.theme.themeMode)
+  const themeMode = useAppSelector((state) => state.theme.themeMode)
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0

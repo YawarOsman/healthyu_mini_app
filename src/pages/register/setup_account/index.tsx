@@ -1,17 +1,17 @@
-import { useState, useCallback } from 'react'
 import { View, Text, Input, Image } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
-import { useSelector } from 'react-redux'
-import RefinedAppBar from '../../../components/RefinedAppBar'
-import { t } from '../../../i18n'
-import { RootState } from '../../../reducers'
-import facebookIcon from '../../../assets/svg/facebook_icon.svg'
-import googleIcon from '../../../assets/svg/google_icon.svg'
-import appleIcon from '../../../assets/svg/apple_icon.svg'
-import PaginationDots from '../../../components/PaginationDots'
 
-import { ROUTES } from '../../../constants/routes'
-import { navigateTo } from '../../../utils/navigation'
+import { useState, useCallback } from 'react'
+
+import appleIcon from '@/assets/svg/apple_icon.svg'
+import facebookIcon from '@/assets/svg/facebook_icon.svg'
+import googleIcon from '@/assets/svg/google_icon.svg'
+import PaginationDots from '@/components/PaginationDots'
+import RefinedAppBar from '@/components/RefinedAppBar'
+import { ROUTES } from '@/constants/routes'
+import { t } from '@/i18n'
+import { useAppSelector } from '@/store/hooks'
+import { navigateTo } from '@/utils/navigation'
 
 export default function SetupAccountScreen() {
   useDidShow(() => {
@@ -25,7 +25,7 @@ export default function SetupAccountScreen() {
   const [phoneError, setPhoneError] = useState('')
   const [emailError, setEmailError] = useState('')
 
-  const themeMode = useSelector((state: RootState) => state.theme.themeMode)
+  const themeMode = useAppSelector((state) => state.theme.themeMode)
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
@@ -52,11 +52,11 @@ export default function SetupAccountScreen() {
   return (
     <View className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`} data-theme={themeMode}>
     <RefinedAppBar
-           showBack={false}
-           title={
+      showBack={false}
+      title={
              <PaginationDots total={3} current={1} />
            }
-         />
+    />
       <View
         className='flex-1 flex flex-col px-page'
         style={{ paddingTop: `${appBarTotalHeight + 8}px` }}

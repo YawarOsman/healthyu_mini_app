@@ -1,11 +1,12 @@
 import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { t } from '../../../i18n'
-import { SvgIcons } from '../../../assets/icons'
-import DashedBox from '../../../components/DashedBox'
-import DottedCircle from '../../../components/DottedCircle'
-import { ROUTES } from '../../../constants/routes'
-import { navigateTo } from '../../../utils/navigation'
+
+import { SvgIcons } from '@/assets/icons'
+import DashedBox from '@/components/DashedBox'
+import DottedCircle from '@/components/DottedCircle'
+import { ROUTES } from '@/constants/routes'
+import { t } from '@/i18n'
+import { navigateTo } from '@/utils/navigation'
 
 interface BoxOrderedWidgetProps {
   estimatedDeliveryDate: string | null
@@ -16,11 +17,11 @@ export default function BoxOrderedWidget({ estimatedDeliveryDate }: BoxOrderedWi
     <View className='flex-1 flex flex-col px-page' style={{ paddingBottom: '24px' }}>
       {/* Status Cards */}
       <DashedBox
-        width="100%"
+        width='100%'
         dash={6}
         gap={6}
-        color="var(--text-primary-16)"
-        borderPosition="inside"
+        color='var(--text-primary-16)'
+        borderPosition='inside'
         style={{ marginBottom: '40px' }}
       >
         <View style={{ backgroundColor: 'var(--text-primary-4)' }}>
@@ -95,12 +96,12 @@ export default function BoxOrderedWidget({ estimatedDeliveryDate }: BoxOrderedWi
       <View className='flex-1 flex flex-col items-center justify-center' style={{ paddingBottom: '40px' }}>
         {/* QR Icon */}
         <DashedBox
-          width="56px"
-          height="56px"
+          width='56px'
+          height='56px'
           dash={6}
           gap={6}
-          color="var(--primary)"
-          borderPosition="inside"
+          color='var(--primary)'
+          borderPosition='inside'
           style={{
             display: 'flex',
             alignItems: 'center',

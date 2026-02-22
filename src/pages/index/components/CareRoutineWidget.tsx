@@ -1,6 +1,9 @@
 import { View } from '@tarojs/components'
-import WeeklyCalendar from './WeeklyCalendar'
+
+import type { BoxEntity } from '@/features/order/types'
+
 import HomeRoutineWidget from './HomeRoutineWidget'
+import WeeklyCalendar from './WeeklyCalendar'
 
 /**
  * Layout:
@@ -14,7 +17,7 @@ import HomeRoutineWidget from './HomeRoutineWidget'
  */
 
 interface CareRoutineWidgetProps {
-  boxes: any[]
+  boxes: BoxEntity[]
   dateLabel?: string
   weeklyStreaks?: ({ progress: number } | null)[]
 }

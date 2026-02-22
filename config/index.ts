@@ -1,5 +1,6 @@
 import { defineConfig, type UserConfigExport } from '@tarojs/cli'
 import type { Plugin } from 'vite'
+import path from 'node:path'
 import tailwindcss from 'tailwindcss'
 import { UnifiedViteWeappTailwindcssPlugin as uvtw } from 'weapp-tailwindcss/vite'
 import devConfig from './dev'
@@ -34,6 +35,18 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
     compiler: {
       type: 'vite',
       vitePlugins: [
+        {
+          name: 'configure-path-alias',
+          config() {
+            return {
+              resolve: {
+                alias: {
+                  '@': path.resolve(__dirname, '..', 'src'),
+                },
+              },
+            }
+          },
+        },
         {
           name: 'force-es5',
           config() {

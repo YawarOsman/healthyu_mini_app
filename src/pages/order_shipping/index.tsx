@@ -1,35 +1,37 @@
-import { useEffect } from 'react'
 import { View, Text, Button } from '@tarojs/components'
-import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
-import { t } from '../../i18n'
-import { RootState } from '../../reducers'
-import RefinedAppBar from '../../components/RefinedAppBar'
-import { FormField, DropdownField } from '../../core/FormField'
+
+import { useEffect } from 'react'
+
+import RefinedAppBar from '@/components/RefinedAppBar'
+import { ROUTES } from '@/constants/routes'
+import { FormField, DropdownField } from '@/core/FormField'
 import {
   setCity,
   setStreetAddress,
   setFullAddress,
   submitShippingForm,
   fetchCities,
-} from '../../features/order/actions'
-import { setUserOrderedBox, setEstimatedDelivery } from '../../features/auth/actions'
-import { ROUTES } from '../../constants/routes'
-import { reLaunch } from '../../utils/navigation'
+  setUserOrderedBox,
+  setEstimatedDelivery,
+} from '@/features/order/actions'
+import { t } from '@/i18n'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { reLaunch } from '@/utils/navigation'
 
 export default function OrderShippingPage() {
-  const dispatch = useDispatch()
-  const { themeMode } = useSelector((state: RootState) => state.theme)
-  const { city, streetAddress, fullAddress, isFormSubmitted, cities } = useSelector(
-    (state: RootState) => state.order,
+  const dispatch = useAppDispatch()
+  const { themeMode } = useAppSelector((state) => state.theme)
+  const { city, streetAddress, fullAddress, isFormSubmitted, cities } = useAppSelector(
+    (state) => state.order,
   )
-  const { phone } = useSelector((state: RootState) => state.auth)
+  const { phone } = useAppSelector((state) => state.auth)
 
   useEffect(() => {
     if (cities.length === 0) {
-      dispatch(fetchCities() as any)
+      dispatch(fetchCities())
     }
-  }, [])
+  }, [cities.length, dispatch])
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0

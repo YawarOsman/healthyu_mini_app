@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from 'react'
 import { View, Text, Input, ITouchEvent } from '@tarojs/components'
+
+import { useState, useRef, useEffect } from 'react'
 
 // ─── Reusable Form Field ───
 // Styled text input with label, focus-only border, grey-900 background,
@@ -53,7 +54,7 @@ export function FormField({ label, value, placeholder, onInput, error }: FormFie
           color: 'var(--text-primary)',
           fontFamily: 'var(--font-locale-body)',
           backgroundColor: '#171717',
-          boxSizing: 'border-box' as any,
+          boxSizing: 'border-box',
           width: '100%',
         }}
       />
@@ -88,7 +89,7 @@ interface DropdownFieldProps {
 
 export function DropdownField({ label, value, placeholder, options, onSelect, error }: DropdownFieldProps) {
   const [open, setOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (!open) return
@@ -108,7 +109,7 @@ export function DropdownField({ label, value, placeholder, options, onSelect, er
       : 'transparent'
 
   return (
-    <View ref={containerRef as any} style={{ flex: 1, position: 'relative' }}>
+    <View ref={containerRef} style={{ flex: 1, position: 'relative' }}>
       <Text
         style={{
           fontSize: '14px',
@@ -132,7 +133,7 @@ export function DropdownField({ label, value, placeholder, options, onSelect, er
           paddingRight: '12px',
           backgroundColor: '#171717',
           cursor: 'pointer',
-          boxSizing: 'border-box' as any,
+          boxSizing: 'border-box',
         }}
       >
         <Text

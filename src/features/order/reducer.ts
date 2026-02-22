@@ -1,22 +1,17 @@
-import {
-  FETCH_BOX_REQUEST,
-  FETCH_BOX_SUCCESS,
-  FETCH_BOX_FAILURE,
-  SET_CITY,
-  SET_STREET_ADDRESS,
-  SET_FULL_ADDRESS,
-  SUBMIT_SHIPPING_FORM,
-  FETCH_CITIES_REQUEST,
-  FETCH_CITIES_SUCCESS,
-  FETCH_CITIES_FAILURE,
-} from './constants'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+
 import type { BoxEntity } from './types'
 
 export interface OrderState {
-  // Box data
+  // Order catalog
   box: BoxEntity | null
   loading: boolean
   error: string | null
+
+  // User order tracking
+  isUserOrderedABox: boolean
+  boxes: BoxEntity[]
+  estimatedDeliveryDate: string | null
 
   // Cities
   cities: string[]
@@ -29,10 +24,99 @@ export interface OrderState {
   isFormSubmitted: boolean
 }
 
+const MOCK_ROUTINE_BOXES: BoxEntity[] = [
+  {
+    id: 1,
+    nameEn: 'Nail Serum',
+    nameAr: 'سيروم الأظافر',
+    headlineEn: 'Vitamin B7 + Keratin',
+    headlineAr: 'فيتامين ب7 + كيراتين',
+    videoUrl: null,
+    videoThumbnail: null,
+    image: '',
+    isCurrent: false,
+    isOverdue: true,
+    isLater: false,
+    isCompleted: false,
+    genres: [],
+    items: [],
+  },
+  {
+    id: 2,
+    nameEn: 'Magnesium',
+    nameAr: 'مغنيسيوم',
+    headlineEn: 'Shines your skin and protects nails.',
+    headlineAr: 'يضيء بشرتك ويحمي الأظافر.',
+    videoUrl: null,
+    videoThumbnail: null,
+    image: '',
+    isCurrent: true,
+    isOverdue: false,
+    isLater: false,
+    isCompleted: false,
+    genres: [],
+    items: [],
+  },
+  {
+    id: 3,
+    nameEn: 'Nail Serum',
+    nameAr: 'سيروم الأظافر',
+    headlineEn: 'Vitamin B7 + Keratin',
+    headlineAr: 'فيتامين ب7 + كيراتين',
+    videoUrl: null,
+    videoThumbnail: null,
+    image: '',
+    isCurrent: false,
+    isOverdue: false,
+    isLater: true,
+    isCompleted: false,
+    timeLabel: '3:00 PM',
+    genres: [],
+    items: [],
+  },
+  {
+    id: 4,
+    nameEn: 'Heel Repair Cream',
+    nameAr: 'كريم إصلاح الكعب',
+    headlineEn: 'Shea Butter',
+    headlineAr: 'زبدة الشيا',
+    videoUrl: null,
+    videoThumbnail: null,
+    image: '',
+    isCurrent: false,
+    isOverdue: false,
+    isLater: true,
+    isCompleted: false,
+    timeLabel: '8:00 PM',
+    genres: [],
+    items: [],
+  },
+  {
+    id: 5,
+    nameEn: 'Nail Serum',
+    nameAr: 'سيروم الأظافر',
+    headlineEn: 'Vitamin B7 + Keratin',
+    headlineAr: 'فيتامين ب7 + كيراتين',
+    videoUrl: null,
+    videoThumbnail: null,
+    image: '',
+    isCurrent: false,
+    isOverdue: false,
+    isLater: false,
+    isCompleted: true,
+    genres: [],
+    items: [],
+  },
+]
+
 const INITIAL_STATE: OrderState = {
   box: null,
   loading: false,
   error: null,
+
+  isUserOrderedABox: true,
+  boxes: MOCK_ROUTINE_BOXES,
+  estimatedDeliveryDate: null,
 
   cities: [],
   citiesLoading: false,
@@ -43,32 +127,71 @@ const INITIAL_STATE: OrderState = {
   isFormSubmitted: false,
 }
 
-export default function order(state = INITIAL_STATE, action: { type: string; payload?: any }): OrderState {
-  switch (action.type) {
-    case FETCH_BOX_REQUEST:
-      return { ...state, loading: true, error: null }
-    case FETCH_BOX_SUCCESS:
-      return { ...state, loading: false, box: action.payload, error: null }
-    case FETCH_BOX_FAILURE:
-      return { ...state, loading: false, error: action.payload }
+const orderSlice = createSlice({
+  name: 'order',
+  initialState: INITIAL_STATE,
+  reducers: {
+    fetchBoxRequest: (state) => {
+      state.loading = true
+      state.error = null
+    },
+    fetchBoxSuccess: (state, action: PayloadAction<BoxEntity>) => {
+      state.loading = false
+      state.box = action.payload
+      state.error = null
+    },
+    fetchBoxFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false
+      state.error = action.payload
+    },
+    setUserOrderedBox: (state, action: PayloadAction<boolean>) => {
+      state.isUserOrderedABox = action.payload
+    },
+    setUserBoxes: (state, action: PayloadAction<BoxEntity[]>) => {
+      state.boxes = action.payload
+    },
+    setEstimatedDelivery: (state, action: PayloadAction<string | null>) => {
+      state.estimatedDeliveryDate = action.payload
+    },
+    fetchCitiesRequest: (state) => {
+      state.citiesLoading = true
+    },
+    fetchCitiesSuccess: (state, action: PayloadAction<string[]>) => {
+      state.citiesLoading = false
+      state.cities = action.payload
+    },
+    fetchCitiesFailure: (state) => {
+      state.citiesLoading = false
+    },
+    setCity: (state, action: PayloadAction<string>) => {
+      state.city = action.payload
+    },
+    setStreetAddress: (state, action: PayloadAction<string>) => {
+      state.streetAddress = action.payload
+    },
+    setFullAddress: (state, action: PayloadAction<string>) => {
+      state.fullAddress = action.payload
+    },
+    submitShippingForm: (state) => {
+      state.isFormSubmitted = true
+    },
+  },
+})
 
-    case FETCH_CITIES_REQUEST:
-      return { ...state, citiesLoading: true }
-    case FETCH_CITIES_SUCCESS:
-      return { ...state, citiesLoading: false, cities: action.payload }
-    case FETCH_CITIES_FAILURE:
-      return { ...state, citiesLoading: false }
+export const {
+  fetchBoxRequest,
+  fetchBoxSuccess,
+  fetchBoxFailure,
+  setUserOrderedBox,
+  setUserBoxes,
+  setEstimatedDelivery,
+  fetchCitiesRequest,
+  fetchCitiesSuccess,
+  fetchCitiesFailure,
+  setCity,
+  setStreetAddress,
+  setFullAddress,
+  submitShippingForm,
+} = orderSlice.actions
 
-    case SET_CITY:
-      return { ...state, city: action.payload }
-    case SET_STREET_ADDRESS:
-      return { ...state, streetAddress: action.payload }
-    case SET_FULL_ADDRESS:
-      return { ...state, fullAddress: action.payload }
-    case SUBMIT_SHIPPING_FORM:
-      return { ...state, isFormSubmitted: true }
-
-    default:
-      return state
-  }
-}
+export default orderSlice.reducer

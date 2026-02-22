@@ -1,6 +1,7 @@
 import { View, Text, Image } from '@tarojs/components'
-import { SvgIcons } from '../../../assets/icons'
-import DashedBox from '../../../components/DashedBox'
+
+import { SvgIcons } from '@/assets/icons'
+import DashedBox from '@/components/DashedBox'
 
 /**
  * Mirrors Flutter's _RoutineHeroCard (inside DueRoutineCard PageView).
@@ -106,8 +107,8 @@ export default function DueRoutineCard({
           height={48}
           dash={6}
           gap={6}
-          color="var(--primary)"
-          borderPosition="inside"
+          color='var(--primary)'
+          borderPosition='inside'
           style={{
             backgroundColor: 'rgba(0,0,0,0.3)',
             marginBottom: '16px',

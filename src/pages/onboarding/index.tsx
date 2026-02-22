@@ -1,18 +1,20 @@
-import { useCallback, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { View, Swiper, SwiperItem, Image, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { t } from '../../i18n'
-import { ROUTES } from '../../constants/routes'
-import PaginationDots from '../../components/PaginationDots'
-import { navigateTo, redirectTo } from '../../utils/navigation'
 
-import flavie1 from '../../assets/images/flavie_onboarding_1.png'
-import flavie2 from '../../assets/images/flavie_onboarding_2.png'
-import flavie3 from '../../assets/images/flavie_onboarding_3.png'
-import mann1 from '../../assets/images/mann_onboarding_1.png'
-import mann2 from '../../assets/images/mann_onboarding_2.png'
-import mann3 from '../../assets/images/mann_onboarding_3.png'
+import { useCallback, useState } from 'react'
+
+
+import flavie1 from '@/assets/images/flavie_onboarding_1.png'
+import flavie2 from '@/assets/images/flavie_onboarding_2.png'
+import flavie3 from '@/assets/images/flavie_onboarding_3.png'
+import mann1 from '@/assets/images/mann_onboarding_1.png'
+import mann2 from '@/assets/images/mann_onboarding_2.png'
+import mann3 from '@/assets/images/mann_onboarding_3.png'
+import PaginationDots from '@/components/PaginationDots'
+import { ROUTES } from '@/constants/routes'
+import { t } from '@/i18n'
+import { useAppSelector } from '@/store/hooks'
+import { navigateTo } from '@/utils/navigation'
 
 // Onboarding slide data
 const flavieSlides = [
@@ -51,31 +53,12 @@ const mannSlides = [
   },
 ]
 
-interface RootState {
-  theme: {
-    themeMode: string
-    isFlavie: boolean
-    locale: string
-  }
-}
-
-
 export default function Onboarding() {
-  const { isFlavie, themeMode } = useSelector((state: RootState) => state.theme)
+  const { isFlavie, themeMode } = useAppSelector((state) => state.theme)
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const slides = isFlavie ? flavieSlides : mannSlides
   const isLastSlide = currentIndex === slides.length - 1
-
-  const handleFinish = useCallback(() => {
-    try {
-      Taro.setStorageSync('hasOnboarded', 'true')
-      // Redirect to home page
-      redirectTo(ROUTES.HOME)
-    } catch (e) {
-      console.error('Failed to set storage', e)
-    }
-  }, [])
 
   const handleNext = useCallback(() => {
     if (isLastSlide) {
@@ -87,7 +70,7 @@ export default function Onboarding() {
     } else {
       setCurrentIndex((prev) => Math.min(prev + 1, slides.length - 1))
     }
-  }, [isLastSlide, handleFinish, slides.length])
+  }, [isLastSlide, slides.length])
 
   const handleSwiperChange = useCallback((e) => {
     const { current } = e.detail

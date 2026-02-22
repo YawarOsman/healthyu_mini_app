@@ -2,27 +2,23 @@ import { Component, PropsWithChildren } from 'react'
 // import Taro from '@tarojs/taro'
 import { Provider } from 'react-redux'
 
-import configStore from './store'
-import { fetchBox } from './features/order/actions'
+import { fetchBox } from '@/features/order/actions'
+import configStore from '@/store'
+import type { RootState } from '@/store'
 
 import './app.scss'
 import './styles/theme.scss'
 
 const store = configStore()
+const getThemeMode = (state: RootState) => state.theme.themeMode
 
 class App extends Component<PropsWithChildren> {
   componentDidMount() {
     // Fetch box data on app load
-    store.dispatch(fetchBox() as any)
+    store.dispatch(fetchBox())
 
     // Apply theme to document root
-    const state = store.getState()
-    const themeState = state && state.theme ? state.theme : null
-    const themeMode = themeState && themeState.themeMode ? themeState.themeMode : 'flavie-dark'
-    // const isFlavie = themeState && typeof themeState.isFlavie === 'boolean'
-    //   ? themeState.isFlavie
-    //   : true // Default to true if undefined
-
+    const themeMode = getThemeMode(store.getState())
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-theme', themeMode)
     }
@@ -34,14 +30,7 @@ class App extends Component<PropsWithChildren> {
 
     // Subscribe to theme changes
     store.subscribe(() => {
-      const currentState = store.getState()
-      const currentThemeState = currentState && currentState.theme ? currentState.theme : null
-      const currentTheme = currentThemeState && currentThemeState.themeMode
-        ? currentThemeState.themeMode
-        : 'flavie-dark'
-      // const currentIsFlavie = currentThemeState && typeof currentThemeState.isFlavie === 'boolean'
-      //   ? currentThemeState.isFlavie
-      //   : true
+      const currentTheme = getThemeMode(store.getState())
       
       if (typeof document !== 'undefined') {
         document.documentElement.setAttribute('data-theme', currentTheme)

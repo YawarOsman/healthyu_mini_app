@@ -1,7 +1,9 @@
 import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
+
 import { ReactNode } from 'react'
-import arrowLeft from '../assets/svg/arrow_left.svg'
+
+import arrowLeft from '@/assets/svg/arrow_left.svg'
 
 
 interface RefinedAppBarProps {

@@ -1,4 +1,5 @@
 import { View } from '@tarojs/components'
+
 import React from 'react'
 
 interface DottedCircleProps {

@@ -2,7 +2,10 @@ import Taro from '@tarojs/taro'
 
 // `hideHomeButton` is not implemented by some mini-program runtimes (including Alipay).
 export const hideHomeButtonSafely = () => {
-  const hideHomeButton = (Taro as any).hideHomeButton
+  const taroWithHideHomeButton = Taro as typeof Taro & {
+    hideHomeButton?: () => Promise<unknown> | void
+  }
+  const hideHomeButton = taroWithHideHomeButton.hideHomeButton
   if (typeof hideHomeButton !== 'function') {
     return Promise.resolve()
   }

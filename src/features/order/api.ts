@@ -1,5 +1,6 @@
+import type { ApiResponse } from '@/core/types'
+
 import { BoxEntity } from './types'
-import type { ApiResponse } from '../../core/types'
 
 // ─── Mock Data ───
 // Replace this with a real API call when the backend is ready.
@@ -10,6 +11,8 @@ const MOCK_BOX: BoxEntity = {
   nameAr: 'صندوق فلافي 1',
   headlineEn: 'Radiance – Start your glow.',
   headlineAr: 'إشراقة – ابدئي توهجك.',
+  image: '',
+  isCurrent: true,
   genres: [
     {
       id: 1,

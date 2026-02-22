@@ -1,11 +1,11 @@
 import { View, Text } from '@tarojs/components'
-import { useSelector } from 'react-redux'
-import careIcon from '../assets/svg/care.svg'
-import boxesIcon from '../assets/svg/boxes.svg'
-import answersIcon from '../assets/svg/answers.svg'
-import profileIcon from '../assets/svg/profile.svg'
-import { t } from '../i18n'
-import { RootState } from '../reducers'
+
+import answersIcon from '@/assets/svg/answers.svg'
+import boxesIcon from '@/assets/svg/boxes.svg'
+import careIcon from '@/assets/svg/care.svg'
+import profileIcon from '@/assets/svg/profile.svg'
+import { t } from '@/i18n'
+import { useAppSelector } from '@/store/hooks'
 
 interface BottomNavBarProps {
   activeIndex?: number
@@ -20,7 +20,7 @@ const tabs = [
 ]
 
 export default function BottomNavBar({ activeIndex = 0, lockedTabs = true }: BottomNavBarProps) {
-  const themeMode = useSelector((state: RootState) => state.theme.themeMode)
+  const themeMode = useAppSelector((state) => state.theme.themeMode)
 
   return (
     <View

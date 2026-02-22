@@ -1,28 +1,30 @@
-import { legacy_createStore as createStore, applyMiddleware, compose } from 'redux'
-import thunkMiddleware from 'redux-thunk'
+import { configureStore } from '@reduxjs/toolkit'
 import logger from 'redux-logger'
-import rootReducer from '../reducers'
 
-const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-  })
-  : compose
+import rootReducer from './rootReducer'
 
-const middlewares = [
-  thunkMiddleware
-]
+import type { RootState } from './rootReducer'
 
-if (process.env.NODE_ENV === 'development') {
-  middlewares.push(logger)
+declare const process: {
+  env?: {
+    NODE_ENV?: string
+  }
 }
 
-const enhancer = composeEnhancers(
-  applyMiddleware(...middlewares),
-  // other store enhancers if any
-)
+const isDev = process.env?.NODE_ENV === 'development'
 
-export default function configStore () {
-  const store = createStore(rootReducer, enhancer)
-  return store
+const createAppStore = () =>
+  configureStore({
+    reducer: rootReducer,
+    devTools: isDev,
+    middleware: (getDefaultMiddleware) =>
+      isDev ? getDefaultMiddleware().concat(logger) : getDefaultMiddleware(),
+  })
+
+export type AppStore = ReturnType<typeof createAppStore>
+export type AppDispatch = AppStore['dispatch']
+export type { RootState }
+
+export default function configStore() {
+  return createAppStore()
 }

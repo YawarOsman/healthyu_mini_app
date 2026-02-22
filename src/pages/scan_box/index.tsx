@@ -1,15 +1,14 @@
 import { Image, Text, View } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../reducers'
-import { t } from '../../i18n'
-import { ROUTES } from '../../constants/routes'
-import { hideHomeButtonSafely } from '../../utils/ui'
-import RefinedAppBar from '../../components/RefinedAppBar'
-import FlavieOnboarding1 from '../../assets/images/flavie_onboarding_1.png'
 
-export default function BoxRegistration() {
-  const { themeMode } = useSelector((state: RootState) => state.theme)
+import FlavieOnboarding1 from '@/assets/images/flavie_onboarding_1.png'
+import { ROUTES } from '@/constants/routes'
+import { t } from '@/i18n'
+import { useAppSelector } from '@/store/hooks'
+import { hideHomeButtonSafely } from '@/utils/ui'
+
+export default function ScanBoxPage() {
+  const { themeMode } = useAppSelector((state) => state.theme)
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
@@ -23,14 +22,6 @@ export default function BoxRegistration() {
     })
     void hideHomeButtonSafely()
   })
-
-  const handleBack = () => {
-    if (Taro.getCurrentPages().length > 1) {
-      Taro.navigateBack()
-      return
-    }
-    Taro.reLaunch({ url: ROUTES.HOME })
-  }
 
   const handleSetupRoutine = () => {
     // Navigate to setup or home, logic TBD
@@ -83,10 +74,10 @@ export default function BoxRegistration() {
           {/* Product Image Placeholder */}
           <View className='w-[200px] h-[200px] flex items-center justify-center mb-6'>
              <Image
-              src={FlavieOnboarding1}
-              className='w-full h-full object-contain'
-              mode='aspectFit'
-            />
+               src={FlavieOnboarding1}
+               className='w-full h-full object-contain'
+               mode='aspectFit'
+             />
           </View>
 
           <Text className='text-base text-white/70 text-center mb-2'>

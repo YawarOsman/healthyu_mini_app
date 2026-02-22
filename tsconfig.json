@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2017",
     "module": "commonjs",
+    "lib": ["ES2017", "DOM", "DOM.Iterable"],
     "removeComments": false,
     "preserveConstEnums": true,
     "moduleResolution": "node",
@@ -14,10 +15,14 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "rootDir": ".",
     "jsx": "react-jsx",
     "allowJs": true,
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "typeRoots": [
       "node_modules/@types"
     ]

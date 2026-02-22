@@ -1,13 +1,14 @@
-import { useState, useEffect, useCallback } from 'react'
 import { View, Text, Input } from '@tarojs/components'
 import Taro, { useRouter, useDidShow } from '@tarojs/taro'
-import { useSelector } from 'react-redux'
-import RefinedAppBar from '../../../components/RefinedAppBar'
-import { t } from '../../../i18n'
-import { RootState } from '../../../reducers'
-import PaginationDots from '../../../components/PaginationDots'
-import { ROUTES } from '../../../constants/routes'
-import { reLaunch } from '../../../utils/navigation'
+
+import { useState, useEffect, useCallback } from 'react'
+
+import PaginationDots from '@/components/PaginationDots'
+import RefinedAppBar from '@/components/RefinedAppBar'
+import { ROUTES } from '@/constants/routes'
+import { t } from '@/i18n'
+import { useAppSelector } from '@/store/hooks'
+import { reLaunch } from '@/utils/navigation'
 
 const OTP_LENGTH = 6
 const RESEND_SECONDS = 42
@@ -27,7 +28,7 @@ export default function OtpVerificationScreen() {
   const [secondsRemaining, setSecondsRemaining] = useState(RESEND_SECONDS)
   const [otpError, setOtpError] = useState('')
 
-  const themeMode = useSelector((state: RootState) => state.theme.themeMode)
+  const themeMode = useAppSelector((state) => state.theme.themeMode)
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
@@ -77,11 +78,11 @@ export default function OtpVerificationScreen() {
   return (
     <View className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`} data-theme={themeMode}>
      <RefinedAppBar
-            showBack={false}
-            title={
+       showBack={false}
+       title={
               <PaginationDots total={3} current={2} />
             }
-          />
+     />
 
       <View
         className='flex-1 flex flex-col px-page'

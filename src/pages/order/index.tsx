@@ -1,19 +1,19 @@
 import { View, Text, Image, ScrollView } from '@tarojs/components'
-import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
-import { t } from '../../i18n'
-import { RootState } from '../../reducers'
-import RefinedAppBar from '../../components/RefinedAppBar'
-import type { BoxItem } from '../../features/order/types'
-import flaskIcon from '../../assets/svg/boxes.svg'
-import { ROUTES } from '../../constants/routes'
-import { navigateTo } from '../../utils/navigation'
+
+import flaskIcon from '@/assets/svg/boxes.svg'
+import RefinedAppBar from '@/components/RefinedAppBar'
+import { ROUTES } from '@/constants/routes'
+import type { BoxItem } from '@/features/order/types'
+import { t } from '@/i18n'
+import { useAppSelector } from '@/store/hooks'
+import { navigateTo } from '@/utils/navigation'
 
 
 export default function OrderPage() {
   console.log('OrderPage: Rendering...')
-  const { themeMode, locale } = useSelector((state: RootState) => state.theme)
-  const { box, loading, error } = useSelector((state: RootState) => state.order)
+  const { themeMode, locale } = useAppSelector((state) => state.theme)
+  const { box, loading, error } = useAppSelector((state) => state.order)
 
   const isAr = locale === 'ar'
 

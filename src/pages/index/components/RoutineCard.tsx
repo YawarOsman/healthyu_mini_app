@@ -1,5 +1,6 @@
 import { View, Text, Image } from '@tarojs/components'
-import { SvgIcons } from '../../../assets/icons'
+
+import { SvgIcons } from '@/assets/icons'
 
 /**
  * Mirrors Flutter's RoutineCard widget.

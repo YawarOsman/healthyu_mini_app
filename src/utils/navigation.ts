@@ -1,6 +1,11 @@
 import Taro from '@tarojs/taro'
 
 type NavMethod = 'navigateTo' | 'redirectTo' | 'reLaunch' | 'switchTab'
+type NavOption = {
+  url: string
+  success: (res: unknown) => void
+  fail: (error: unknown) => void
+}
 
 const isInternalPagePath = (url: string) =>
   url.startsWith('/pages/') || url.startsWith('pages/')
@@ -13,18 +18,30 @@ const buildAlternatePagePath = (url: string) => {
 }
 
 const invokeNav = (method: NavMethod, url: string) => {
-  const api = (Taro as any)[method]
-  if (typeof api !== 'function') {
-    return Promise.reject(new Error(`[navigation:${method}] API is unavailable`))
-  }
-
   return new Promise((resolve, reject) => {
+    const options: NavOption = {
+      url,
+      success: (res) => resolve(res),
+      fail: (error) => reject(error),
+    }
+
     try {
-      api({
-        url,
-        success: (res: unknown) => resolve(res),
-        fail: (error: unknown) => reject(error),
-      })
+      switch (method) {
+        case 'navigateTo':
+          Taro.navigateTo(options)
+          break
+        case 'redirectTo':
+          Taro.redirectTo(options)
+          break
+        case 'reLaunch':
+          Taro.reLaunch(options)
+          break
+        case 'switchTab':
+          Taro.switchTab(options)
+          break
+        default:
+          reject(new Error(`[navigation:${method}] API is unavailable`))
+      }
     } catch (error) {
       reject(error)
     }

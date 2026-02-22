@@ -1,19 +1,22 @@
 import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { t } from '../../../i18n'
-import { SvgIcons } from '../../../assets/icons'
-import DashedBox from '../../../components/DashedBox'
-import { ROUTES } from '../../../constants/routes'
-import { navigateTo } from '../../../utils/navigation'
-import { setIsFlavie } from '../../../actions/theme'
+
+import { SvgIcons } from '@/assets/icons'
+import DashedBox from '@/components/DashedBox'
+import { ROUTES } from '@/constants/routes'
+import { setIsFlavie } from '@/features/theme/actions'
+import { t } from '@/i18n'
+import { useAppDispatch } from '@/store/hooks'
+import { navigateTo } from '@/utils/navigation'
 
 interface UserWithoutBoxWidgetProps {
   brandName: string
   isFlavie: boolean
-  dispatch: any
 }
 
-export default function UserWithoutBoxWidget({ brandName, isFlavie, dispatch }: UserWithoutBoxWidgetProps) {
+export default function UserWithoutBoxWidget({ brandName, isFlavie }: UserWithoutBoxWidgetProps) {
+  const dispatch = useAppDispatch()
+
   return (
     <View
       className='flex-1 flex flex-col items-center justify-center px-page'
@@ -25,8 +28,8 @@ export default function UserWithoutBoxWidget({ brandName, isFlavie, dispatch }: 
         height={56}
         dash={5}
         gap={6}
-        color="var(--primary)"
-        borderPosition="inside"
+        color='var(--primary)'
+        borderPosition='inside'
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -81,8 +84,8 @@ export default function UserWithoutBoxWidget({ brandName, isFlavie, dispatch }: 
         dash={5}
         gap={6}
         stroke={1}
-        color="var(--border-secondary)"
-        borderPosition="inside"
+        color='var(--border-secondary)'
+        borderPosition='inside'
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         <View

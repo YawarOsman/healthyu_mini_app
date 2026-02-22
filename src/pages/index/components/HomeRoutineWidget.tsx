@@ -1,6 +1,9 @@
 import { View, Text } from '@tarojs/components'
-import RoutineCard from './RoutineCard'
+
+import type { BoxEntity } from '@/features/order/types'
+
 import DueRoutineCard from './DueRoutineCard'
+import RoutineCard from './RoutineCard'
 
 /**
  * Mirrors Flutter's HomeRoutineWidget.
@@ -11,21 +14,8 @@ import DueRoutineCard from './DueRoutineCard'
  * "due" group has NO section header.
  */
 
-interface Box {
-  id: number
-  nameEn: string
-  headlineEn?: string
-  timeLabel?: string
-  isCurrent?: boolean
-  isOverdue?: boolean
-  isLater?: boolean
-  isCompleted?: boolean
-  productDisplayImage?: string
-  [key: string]: any
-}
-
 interface HomeRoutineWidgetProps {
-  boxes: Box[]
+  boxes: BoxEntity[]
 }
 
 export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
@@ -52,9 +42,9 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
             {overdueBoxes.map((box, i) => (
               <RoutineCard
                 key={i}
-                type="overdue"
+                type='overdue'
                 title={box.nameEn}
-                time="3 minutes overdue"
+                time='3 minutes overdue'
                 imgSrc={box.productDisplayImage}
               />
             ))}
@@ -68,7 +58,7 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
             title={box.nameEn}
             description={box.headlineEn}
             imgSrc={box.productDisplayImage}
-            hasDuration={true}
+            hasDuration
           />
         ))}
 
@@ -83,7 +73,7 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
             {laterBoxes.map((box, i) => (
               <RoutineCard
                 key={i}
-                type="later"
+                type='later'
                 title={box.nameEn}
                 time={box.timeLabel ?? ''}
                 imgSrc={box.productDisplayImage}
@@ -103,7 +93,7 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
             {completedBoxes.map((box, i) => (
               <RoutineCard
                 key={i}
-                type="completed"
+                type='completed'
                 title={box.nameEn}
                 imgSrc={box.productDisplayImage}
               />
