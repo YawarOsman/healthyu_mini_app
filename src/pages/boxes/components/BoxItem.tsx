@@ -26,22 +26,27 @@ export default function BoxItem({ box, isCompleted = false, onClick }: BoxItemPr
     >
       <Image
         src={box.image || ''}
-        className='w-[60px] h-[60px] object-cover rounded flex-shrink-0'
+        className='w-[60px] h-[60px] object-cover flex-shrink-0'
+        style={{ borderRadius: 0 }}
       />
       <View className='flex-1 flex flex-col justify-around overflow-hidden'>
         <Text
-          className={`text-base font-medium truncate ${isCompleted ? 'line-through' : ''}`}
+          className={`truncate ${isCompleted ? 'line-through' : ''}`}
           style={{
-            fontFamily: 'var(--font-locale-heading)',
+            fontFamily: 'var(--font-juana)',
+            fontSize: '18px',
+            fontWeight: '600',
             color: 'var(--text-primary)',
           }}
         >
           {name}
         </Text>
         <Text
-          className={`text-sm font-normal line-clamp-2 mt-1 ${isCompleted ? 'line-through text-[rgba(255,255,255,0.4)]' : 'text-[var(--text-secondary)]'}`}
+          className={`line-clamp-2 mt-1 ${isCompleted ? 'line-through text-[rgba(255,255,255,0.4)]' : 'text-[var(--text-secondary)]'}`}
           style={{
             fontFamily: 'var(--font-locale-body)',
+            fontSize: '14px',
+            fontWeight: '500',
           }}
         >
           {headline}

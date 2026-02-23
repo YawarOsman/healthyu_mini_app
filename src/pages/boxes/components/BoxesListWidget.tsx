@@ -31,7 +31,7 @@ export default function BoxesListWidget({ boxes, titleKey, isCompleted = false }
       <Text
         style={{
           fontFamily: 'var(--font-locale-body)',
-          fontSize: '14px',
+          fontSize: '16px',
           fontWeight: '600',
           color: 'var(--text-secondary)',
         }}

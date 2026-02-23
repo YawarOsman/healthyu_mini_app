@@ -1,4 +1,5 @@
 import answers from './svg/answers.svg'
+import appleIcon from './svg/apple_icon.svg'
 import arrowLeft from './svg/arrow_left.svg'
 import arrowUpRight from './svg/arrow_up_right.svg'
 import bar from './svg/bar.svg'
@@ -14,6 +15,7 @@ import check from './svg/check.svg'
 import checkIconOutline from './svg/check_icon_outline.svg'
 import clock from './svg/clock.svg'
 import clockReminder from './svg/clock_reminder.svg'
+import googleIcon from './svg/google_icon.svg'
 import home from './svg/home.svg'
 import moon from './svg/moon.svg'
 import notification from './svg/notification.svg'
@@ -31,6 +33,7 @@ import superQi from './svg/super_qi.svg'
 import toastError from './svg/toast_error.svg'
 import toastInfo from './svg/toast_info.svg'
 import toastSuccess from './svg/toast_success.svg'
+
 
 export const SvgIcons = {
   answers,
@@ -66,4 +69,6 @@ export const SvgIcons = {
   toastError,
   toastInfo,
   toastSuccess,
+  appleIcon,
+  googleIcon,
 } as const
