@@ -1,11 +1,8 @@
-import { View, Text, Input, Image } from '@tarojs/components'
+import { View, Text, Input } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 
 import { useState, useCallback } from 'react'
 
-import appleIcon from '@/assets/svg/apple_icon.svg'
-import facebookIcon from '@/assets/svg/facebook_icon.svg'
-import googleIcon from '@/assets/svg/google_icon.svg'
 import PaginationDots from '@/components/PaginationDots'
 import RefinedAppBar from '@/components/RefinedAppBar'
 import { ROUTES } from '@/constants/routes'
@@ -163,13 +160,8 @@ export default function SetupAccountScreen() {
           </Text>
           <View style={{ height: '24px' }} />
 
-          {/* Social Login Buttons */}
-          <SocialButton icon={facebookIcon} label={t('sign_in_facebook')} />
-          <View style={{ height: '12px' }} />
-          <SocialButton icon={googleIcon} label={t('sign_in_google')} />
-          <View style={{ height: '12px' }} />
-          <SocialButton icon={appleIcon} label={t('sign_in_apple')} />
-        </View>
+        
+          </View>
 
         {/* Next Button */}
         <View className='pb-8'>
@@ -212,24 +204,4 @@ function TabButton({ label, isSelected, onTap }: { label: string; isSelected: bo
   )
 }
 
-// ─── Social Login Button ───
-function SocialButton({ icon, label }: { icon: string; label: string }) {
-  return (
-    <View
-      className='btn-outlined flex items-center active:opacity-85'
-      style={{ paddingLeft: '16px', paddingRight: '16px', justifyContent: 'flex-start', borderColor: 'border-secondary' }}
-    >
-      <Image src={icon} style={{ width: '24px', height: '24px', marginRight: '12px' }} />
-      <Text
-        style={{
-          fontSize: '16px',
-          fontWeight: '500',
-          color: 'var(--text-primary)',
-          fontFamily: 'var(--font-locale-body)',
-        }}
-      >
-        {label}
-      </Text>
-    </View>
-  )
-}
+

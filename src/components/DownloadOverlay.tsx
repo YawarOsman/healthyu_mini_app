@@ -3,7 +3,11 @@ import { Image, Text, View } from '@tarojs/components'
 import { SvgIcons } from '@/assets/icons'
 import { t } from '@/i18n'
 
-export default function DownloadOverlay() {
+interface DownloadOverlayProps {
+  downloadText?: string
+}
+
+export default function DownloadOverlay({ downloadText }: DownloadOverlayProps) {
   return (
     <View className='absolute inset-0 z-50 flex flex-col justify-end pointer-events-none'>
       {/* Fading Glassy Background Layer */}
@@ -32,7 +36,7 @@ export default function DownloadOverlay() {
             textAlign: 'center',
           }}
         >
-          {t('download_to_access') || 'Download the app to access this feature'}
+          {downloadText || t('download_to_access') || 'Download the app to access this feature'}
         </Text>
 
         <View className='flex flex-col w-full gap-2 max-w-[280px]' style={{ boxSizing: 'border-box' }}>

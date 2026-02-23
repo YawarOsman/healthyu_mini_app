@@ -1,4 +1,4 @@
-import discover from './svg/discover.svg'
+import addressIcon from './svg/address_icon.svg'
 import appleIcon from './svg/apple_icon.svg'
 import arrowLeft from './svg/arrow_left.svg'
 import arrowUpRight from './svg/arrow_up_right.svg'
@@ -15,10 +15,13 @@ import check from './svg/check.svg'
 import checkIconOutline from './svg/check_icon_outline.svg'
 import clock from './svg/clock.svg'
 import clockReminder from './svg/clock_reminder.svg'
+import creditCardIcon from './svg/credit_card_icon.svg'
+import discover from './svg/discover.svg'
+import fingerprintIcon from './svg/fingerprint_icon.svg'
 import googleIcon from './svg/google_icon.svg'
 import home from './svg/home.svg'
+import logoutIcon from './svg/logout_icon.svg'
 import moon from './svg/moon.svg'
-import notification from './svg/notification.svg'
 import notificationsIcon from './svg/notifications_icon.svg'
 import onboarding from './svg/onboarding.svg'
 import orderConfirmed from './svg/order_confirmed.svg'
@@ -36,7 +39,6 @@ import toastSuccess from './svg/toast_success.svg'
 
 
 export const SvgIcons = {
-  discover,
   arrowLeft,
   arrowUpRight,
   bar,
@@ -52,9 +54,13 @@ export const SvgIcons = {
   checkIconOutline,
   clock,
   clockReminder,
+  discover,
+  fingerprintIcon,
+  logoutIcon,
+  creditCardIcon,
+  addressIcon,
   home,
   moon,
-  notification,
   notificationsIcon,
   onboarding,
   orderConfirmed,

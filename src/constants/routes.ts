@@ -11,6 +11,7 @@ const MINI_ROUTES = {
   ORDER_SHIPPING: `${MINI_ROUTE_PREFIX}pages/order_shipping/index`,
   SCAN_BOX: `${MINI_ROUTE_PREFIX}pages/scan_box/index`,
   BOXES: `${MINI_ROUTE_PREFIX}pages/boxes/index`,
+  ANSWERS: `${MINI_ROUTE_PREFIX}pages/answers/index`,
   DISCOVER: `${MINI_ROUTE_PREFIX}pages/discover/index`,
   ME: `${MINI_ROUTE_PREFIX}pages/me/index`,
   BOX_REGISTRATION: `${MINI_ROUTE_PREFIX}pages/scan_box/index`,

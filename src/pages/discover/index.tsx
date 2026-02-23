@@ -137,7 +137,7 @@ export default function DiscoverPage() {
 
       {/* ── OVERLAY (Full Screen Fading Bottom Sheet) ── */}
       <DownloadOverlay 
-        downloadText={t('download_to_d')}
+        downloadText={t('download_to_discover')}
       />
 
       {/* ── BOTTOM NAVIGATION ── */}
