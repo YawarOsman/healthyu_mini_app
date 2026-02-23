@@ -1,4 +1,8 @@
-import { ScrollView, Text, View } from '@tarojs/components'
+import { ScrollView, Text, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { useEffect } from 'react';
+
+
 
 import BottomNavBar from '@/components/BottomNavBar'
 import DownloadOverlay from '@/components/DownloadOverlay'
@@ -15,6 +19,9 @@ export default function DiscoverPage() {
   const discoverData = useAppSelector((state) => state.discover)
   const { featuredVideo, selfCareItems, loading: isLoading } = discoverData
 
+  useEffect(() => {
+    Taro.hideHomeButton?.();
+  }, []);
 
   const handleTabPress = (index: number) => {
     const tabRouteMap = [ROUTES.HOME, ROUTES.BOXES, ROUTES.DISCOVER, ROUTES.ME] as const
@@ -33,7 +40,7 @@ export default function DiscoverPage() {
       {/* ── APP BAR ── */}
       <View
         style={{
-          paddingTop: '10px',
+          paddingTop: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + 12}px`,
           paddingLeft: '24px',
           paddingRight: '24px',
           paddingBottom: '12px',

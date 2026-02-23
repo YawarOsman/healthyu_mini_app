@@ -1,15 +1,22 @@
-import { Image, Text, View } from '@tarojs/components'
+import { Image, Text, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+
+
 
 import { SvgIcons } from '@/assets/icons'
 import { t } from '@/i18n'
 
 interface DownloadOverlayProps {
-  downloadText?: string
+  downloadText?: string;
+  topOffset?: number;
 }
 
-export default function DownloadOverlay({ downloadText }: DownloadOverlayProps) {
+export default function DownloadOverlay({ downloadText, topOffset }: DownloadOverlayProps) {
   return (
-    <View className='absolute inset-0 z-50 flex flex-col justify-end pointer-events-none'>
+    <View className='absolute inset-x-0 bottom-0 z-50 flex flex-col justify-end pointer-events-none' style={{ top: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + (topOffset ?? 70)}px` }}>
+
+
+
       {/* Fading Glassy Background Layer */}
       <View
         className='absolute inset-0 pointer-events-auto'

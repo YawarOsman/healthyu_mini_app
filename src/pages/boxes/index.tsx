@@ -1,4 +1,9 @@
-import { Image, ScrollView, Text, View } from '@tarojs/components'
+import { Image, ScrollView, Text, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { useEffect } from 'react';
+
+
+
 
 import clockIcon from '@/assets/svg/clock.svg'
 import BottomNavBar from '@/components/BottomNavBar'
@@ -13,6 +18,9 @@ import { redirectTo } from '@/utils/navigation'
 import BoxesListWidget from './components/BoxesListWidget'
 
 export default function BoxesPage() {
+  useEffect(() => {
+    Taro.hideHomeButton?.();
+  }, []);
   const themeMode = useAppSelector((state) => state.theme.themeMode)
   const locale = useAppSelector((state) => state.theme.locale)
   const isArabic = isArabicLocale(locale)
@@ -66,7 +74,7 @@ export default function BoxesPage() {
       {/* ── APP BAR ── */}
       <View
         style={{
-          paddingTop: '10px',
+          paddingTop: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + 12}px`,
           paddingLeft: '24px',
           paddingRight: '24px',
           paddingBottom: '12px',

@@ -1,5 +1,5 @@
 import { Component, PropsWithChildren } from 'react'
-// import Taro from '@tarojs/taro'
+import Taro from '@tarojs/taro';
 import { Provider } from 'react-redux'
 
 import { fetchDiscover } from '@/features/discover/actions'
@@ -47,7 +47,9 @@ class App extends Component<PropsWithChildren> {
     })
   }
 
-  componentDidShow() {}
+  componentDidShow() {
+    Taro.hideHomeButton?.();
+  }
 
   componentDidHide() {}
 

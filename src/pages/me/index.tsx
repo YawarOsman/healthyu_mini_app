@@ -1,4 +1,8 @@
-import { Image, ScrollView, Text, View } from '@tarojs/components'
+import { Image, ScrollView, Text, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { useEffect } from 'react';
+
+
 
 import addressIcon from '@/assets/svg/address_icon.svg'
 import arrowLeftIcon from '@/assets/svg/arrow_left.svg'
@@ -179,7 +183,11 @@ function ProfileSection({ title, items }: SectionProps) {
 // ─── Main Page ───
 
 export default function MePage() {
-  const themeMode = useAppSelector((state) => state.theme.themeMode)
+  useEffect(() => {
+    Taro.hideHomeButton?.();
+  }, []);
+
+  const themeMode = useAppSelector((state) => state.theme.themeMode);
   const { name, selfiePath } = useAppSelector((state) => state.auth)
 
   const handleTabPress = (index: number) => {
@@ -243,6 +251,7 @@ export default function MePage() {
       data-theme={themeMode}
     >
       <ScrollView scrollY className='flex-1 overflow-y-auto'>
+        <View style={{ height: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + 12}px` }} />
         <ProfileAvatar selfiePath={selfiePath} name={name || ''} />
 
         <ProfileSection title={t('about')} items={aboutItems} />
@@ -252,7 +261,7 @@ export default function MePage() {
         <View style={{ height: '32px' }} />
       </ScrollView>
 
-      <DownloadOverlay downloadText={t('download_to_me')} />
+      <DownloadOverlay downloadText={t('download_to_me')} topOffset={150} />
 
       <BottomNavBar activeIndex={3} lockedTabs={false} onTabPress={handleTabPress} />
     </View>

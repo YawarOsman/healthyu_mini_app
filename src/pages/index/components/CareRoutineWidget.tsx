@@ -1,4 +1,4 @@
-import { View } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 
 import type { BoxEntity } from '@/features/order/types'
 import { getDateLocaleCode } from '@/i18n/locale'
@@ -40,7 +40,7 @@ export default function CareRoutineWidget({ boxes, dateLabel, weeklyStreaks }: C
           paddingTop: '10px',
           paddingBottom: '0px',
           backgroundColor: 'var(--scaffold-bg)',
-          zIndex: 10,
+
         }}
       >
         <WeeklyCalendar
@@ -50,15 +50,16 @@ export default function CareRoutineWidget({ boxes, dateLabel, weeklyStreaks }: C
       </View>
 
       {/* ── SCROLLABLE BODY: routine sections ── */}
-      <View
+      <ScrollView
+        scrollY
+        showScrollbar={false}
         style={{
           flex: 1,
-          overflowY: 'auto',
         }}
       >
         <HomeRoutineWidget boxes={boxes} />
         <View style={{ height: '20px' }} />
-      </View>
+      </ScrollView>
     </View>
   )
 }

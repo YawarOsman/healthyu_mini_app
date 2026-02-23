@@ -39,6 +39,7 @@ export default function BottomNavBar({
         backgroundColor: 'var(--scaffold-bg)',
         borderTop: '1px solid rgba(255,255,255,0.06)',
         position: 'relative',
+        paddingBottom: '20px',
         zIndex: 100,
       }}
       data-theme={themeMode}
