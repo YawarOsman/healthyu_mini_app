@@ -1,8 +1,8 @@
 import { View, Text } from '@tarojs/components'
 
-import answersIcon from '@/assets/svg/answers.svg'
 import boxesIcon from '@/assets/svg/boxes.svg'
 import careIcon from '@/assets/svg/care.svg'
+import discoverIcon from '@/assets/svg/discover.svg'
 import profileIcon from '@/assets/svg/profile.svg'
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
@@ -16,7 +16,7 @@ interface BottomNavBarProps {
 const tabs = [
   { icon: careIcon, labelKey: 'care' },
   { icon: boxesIcon, labelKey: 'boxes' },
-  { icon: answersIcon, labelKey: 'answers' },
+  { icon: discoverIcon, labelKey: 'discover' },
   { icon: profileIcon, labelKey: 'me' },
 ]
 
@@ -38,12 +38,15 @@ export default function BottomNavBar({
         justifyContent: 'space-around',
         backgroundColor: 'var(--scaffold-bg)',
         borderTop: '1px solid rgba(255,255,255,0.06)',
+        position: 'relative',
+        zIndex: 100,
       }}
       data-theme={themeMode}
     >
       {tabs.map((tab, i) => {
         const isActive = i === activeIndex
-        const isLocked = lockedTabs && i > 0
+        // Only lock the 'Boxes' tab (index 1) if lockedTabs is true
+        const isLocked = lockedTabs && i === 1
 
         return (
           <View

@@ -44,7 +44,7 @@ export default function AppBar({ isFlavie, name, hasBoxes }: AppBarProps) {
             fontWeight: '400',
             color: 'var(--text-secondary)',
             fontFamily: 'var(--font-locale-body)',
-            marginLeft: '10px',
+            marginLeft: '16px',
             textTransform: 'uppercase',
           }}
         >

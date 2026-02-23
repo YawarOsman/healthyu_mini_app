@@ -9,7 +9,7 @@ export default defineAppConfig({
     'pages/order_shipping/index',
     'pages/scan_box/index',
     'pages/boxes/index',
-    'pages/answers/index',
+    'pages/discover/index',
     'pages/me/index',
   ],
   permission: {

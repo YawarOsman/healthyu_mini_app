@@ -1,8 +1,8 @@
 import { Image, ScrollView, Text, View } from '@tarojs/components'
 
-import { SvgIcons } from '@/assets/icons'
 import clockIcon from '@/assets/svg/clock.svg'
 import BottomNavBar from '@/components/BottomNavBar'
+import DownloadOverlay from '@/components/DownloadOverlay'
 import { ROUTES } from '@/constants/routes'
 import { getLocalizedName } from '@/features/order/types'
 import { t } from '@/i18n'
@@ -43,7 +43,7 @@ export default function BoxesPage() {
   const completedBoxes = boxes.filter((box) => box.isCompleted)
 
   const handleTabPress = (index: number) => {
-    const tabRouteMap = [ROUTES.HOME, ROUTES.BOXES, ROUTES.ANSWERS, ROUTES.ME] as const
+    const tabRouteMap = [ROUTES.HOME, ROUTES.BOXES, ROUTES.DISCOVER, ROUTES.ME] as const
     const targetRoute = tabRouteMap[index]
     if (!targetRoute || targetRoute === ROUTES.BOXES) {
       return
@@ -62,6 +62,7 @@ export default function BoxesPage() {
       className={`h-screen bg-scaffold flex flex-col overflow-hidden ${themeMode}`}
       data-theme={themeMode}
     >
+        
       {/* ── APP BAR ── */}
       <View
         style={{
@@ -70,8 +71,10 @@ export default function BoxesPage() {
           paddingRight: '24px',
           paddingBottom: '12px',
           display: 'flex',
+          flexDirection: 'row',
           justifyContent: 'flex-start',
-          alignItems: 'center',
+          alignItems: 'baseline',
+          gap: '16px',
           flexShrink: 0,
         }}
       >
@@ -85,18 +88,29 @@ export default function BoxesPage() {
         >
           {t('boxes')}
         </Text>
+        <Text
+          style={{
+            fontFamily: 'var(--font-locale-body)',
+            fontSize: '12px',
+            fontWeight: '400',
+            color: 'var(--text-secondary)',
+            textTransform: 'uppercase',
+          }}
+        >
+          {t('catalogue')}
+        </Text>
       </View>
 
       {/* ── SCROLLABLE BODY ── */}
-      <View className='flex-1 relative'>
-        <ScrollView
-          scrollY={false}
-          className='absolute inset-0 z-0 overflow-hidden flex flex-col pointer-events-none'
-          style={{ paddingLeft: '20px', paddingRight: '20px', paddingBottom: '20px' }}
-        >
+      <ScrollView
+        scrollY={false}
+        className='flex-1 flex flex-col pointer-events-none mt-4'
+        style={{ paddingLeft: '24px', paddingRight: '24px', boxSizing: 'border-box', overflow: 'hidden' }}
+      >
+        <View style={{ height: '8px' }} />
         {/* Current Box Section */}
         {currentBox && (
-          <View className='flex flex-col items-center mt-6 mb-4 w-full'>
+          <View className='flex flex-col items-center mb-4 w-full'>
             <Text
               style={{
                 fontFamily: 'var(--font-locale-body)',
@@ -210,122 +224,7 @@ export default function BoxesPage() {
           <View style={{ height: '32px' }} />
       </ScrollView>
 
-        {/* ── OVERLAY (Full Screen Fading Bottom Sheet) ── */}
-        <View className='absolute inset-0 z-50 flex flex-col justify-end pointer-events-none'>
-          
-          {/* Fading Glassy Background Layer */}
-          <View
-            className='absolute inset-0 pointer-events-auto'
-            style={{
-              backgroundColor: 'rgba(0,0,0,0.7)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              // 1 & 2 (~0-33%): transparent
-              // 3 (~33-50%): fade transparent -> black
-              // 4, 5, 6 (50-100%): solid black
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 20%, transparent 20%, black 60%, black 70%, black 90%)',
-              maskImage: 'linear-gradient(to bottom, transparent 20%, transparent 20%, black 60%, black 70%, black 90%)',
-            }}
-          />
-          
-          {/* Button Container Area */}
-          <View
-            className='relative w-full flex flex-col items-center px-6 pb-6 pt-6 gap-6 pointer-events-auto'
-            style={{ boxSizing: 'border-box' }}
-          >
-            <Text
-              style={{
-                fontFamily: 'var(--font-juana)',
-                fontSize: '24px',
-                fontWeight: '500',
-                color: 'var(--text-primary)',
-                textAlign: 'center',
-              }}
-            >
-              {t('download_to_access') || 'Download the app to access this feature'}
-            </Text>
-
-            <View className='flex flex-col w-full gap-2 max-w-[280px]' style={{ boxSizing: 'border-box' }}>
-              
-              {/* Apple App Store Button */}
-              <View
-                className='flex flex-row items-center justify-center gap-3 w-full bg-black cursor-pointer'
-                style={{ 
-                  padding: '10px 16px', 
-                  boxSizing: 'border-box',
-                  border: '1px solid rgba(255,255,255,0.2)' 
-                }}
-                onClick={() => window.open('https://apps.apple.com/us/app/bourse-%D8%A8%DB%86%D8%B1%D8%B3%DB%95-%D8%A7%D9%84%D8%A8%D9%88%D8%B1%D8%B5%D8%A9/id6749684112', '_blank')}
-              >
-                <Image src={SvgIcons.appleIcon} style={{ width: '30px', height: '30px' }} />
-                <View className='flex flex-col items-start'>
-                  <Text
-                    style={{
-                      fontFamily: 'var(--font-locale-body)',
-                      fontSize: '11px',
-                      fontWeight: '500',
-                      color: 'white',
-                      lineHeight: '1.2',
-                    }}
-                  >
-                    Download on the
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: 'var(--font-locale-body)',
-                      fontSize: '20px',
-                      fontWeight: '700',
-                      color: 'white',
-                      lineHeight: '1.2',
-                    }}
-                  >
-                    App Store
-                  </Text>
-                </View>
-              </View>
-
-              {/* Google Play Button */}
-              <View
-                className='flex flex-row items-center justify-center gap-3 w-full bg-black cursor-pointer'
-                style={{ 
-                  padding: '10px 16px', 
-                  boxSizing: 'border-box',
-                  border: '1px solid rgba(255,255,255,0.2)' 
-                }}
-                onClick={() => window.open('https://play.google.com/store/apps/details?id=com.architech.bourse', '_blank')}
-              >
-                <Image src={SvgIcons.googleIcon} style={{ width: '28px', height: '28px' }} />
-                <View className='flex flex-col items-start'>
-                  <Text
-                    style={{
-                      fontFamily: 'var(--font-locale-body)',
-                      fontSize: '11px',
-                      fontWeight: '500',
-                      color: 'white',
-                      lineHeight: '1.2',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    GET IT ON
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: 'var(--font-locale-body)',
-                      fontSize: '20px',
-                      fontWeight: '700',
-                      color: 'white',
-                      lineHeight: '1.2',
-                    }}
-                  >
-                    Google Play
-                  </Text>
-                </View>
-              </View>
-
-            </View>
-          </View>
-        </View>
-      </View>
+      <DownloadOverlay />
 
       {/* ── BOTTOM NAVIGATION ── */}
       <BottomNavBar activeIndex={1} lockedTabs={false} onTabPress={handleTabPress} />

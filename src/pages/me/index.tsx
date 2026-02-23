@@ -10,7 +10,7 @@ export default function MePage() {
   const themeMode = useAppSelector((state) => state.theme.themeMode)
 
   const handleTabPress = (index: number) => {
-    const tabRouteMap = [ROUTES.HOME, ROUTES.BOXES, ROUTES.ANSWERS, ROUTES.ME] as const
+    const tabRouteMap = [ROUTES.HOME, ROUTES.BOXES, ROUTES.DISCOVER, ROUTES.ME] as const
     const targetRoute = tabRouteMap[index]
     if (!targetRoute || targetRoute === ROUTES.ME) {
       return

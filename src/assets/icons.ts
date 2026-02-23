@@ -1,4 +1,4 @@
-import answers from './svg/answers.svg'
+import discover from './svg/discover.svg'
 import appleIcon from './svg/apple_icon.svg'
 import arrowLeft from './svg/arrow_left.svg'
 import arrowUpRight from './svg/arrow_up_right.svg'
@@ -36,7 +36,7 @@ import toastSuccess from './svg/toast_success.svg'
 
 
 export const SvgIcons = {
-  answers,
+  discover,
   arrowLeft,
   arrowUpRight,
   bar,

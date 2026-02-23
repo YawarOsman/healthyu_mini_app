@@ -260,7 +260,7 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
           '/pages/register/setup_account/index': '/register/setup',
           '/pages/register/otp_verification/index': '/register/verify',
           '/pages/boxes/index': '/boxes',
-          '/pages/answers/index': '/answers',
+          '/pages/discover/index': '/discover',
           '/pages/me/index': '/me',
         }
       },
