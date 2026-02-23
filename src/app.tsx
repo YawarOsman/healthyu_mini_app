@@ -2,6 +2,7 @@ import { Component, PropsWithChildren } from 'react'
 // import Taro from '@tarojs/taro'
 import { Provider } from 'react-redux'
 
+import { fetchDiscover } from '@/features/discover/actions'
 import { fetchBox } from '@/features/order/actions'
 import configStore from '@/store'
 import type { RootState } from '@/store'
@@ -16,6 +17,9 @@ class App extends Component<PropsWithChildren> {
   componentDidMount() {
     // Fetch box data on app load
     store.dispatch(fetchBox())
+
+    // Fetch discover page data on app load
+    store.dispatch(fetchDiscover())
 
     // Apply theme to document root
     const themeMode = getThemeMode(store.getState())

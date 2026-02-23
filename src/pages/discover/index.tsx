@@ -1,12 +1,9 @@
 import { ScrollView, Text, View } from '@tarojs/components'
 
-import { useEffect, useState } from 'react'
-
 import BottomNavBar from '@/components/BottomNavBar'
 import DownloadOverlay from '@/components/DownloadOverlay'
 import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
-import { fetchDiscoverData, type DiscoverPageResponse } from '@/services/discover'
 import { useAppSelector } from '@/store/hooks'
 import { redirectTo } from '@/utils/navigation'
 
@@ -15,32 +12,9 @@ import FeaturedVideoWidget from './components/FeaturedVideoWidget'
 
 export default function DiscoverPage() {
   const themeMode = useAppSelector((state) => state.theme.themeMode)
+  const discoverData = useAppSelector((state) => state.discover)
+  const { featuredVideo, selfCareItems, loading: isLoading } = discoverData
 
-  const [data, setData] = useState<DiscoverPageResponse | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    let isMounted = true
-    const loadData = async () => {
-      try {
-        setIsLoading(true)
-        const response = await fetchDiscoverData()
-        if (isMounted) {
-          setData(response)
-        }
-      } catch (error) {
-        console.error('Failed to load discover data:', error)
-      } finally {
-        if (isMounted) {
-          setIsLoading(false)
-        }
-      }
-    }
-    loadData()
-    return () => {
-      isMounted = false
-    }
-  }, [])
 
   const handleTabPress = (index: number) => {
     const tabRouteMap = [ROUTES.HOME, ROUTES.BOXES, ROUTES.DISCOVER, ROUTES.ME] as const
@@ -121,7 +95,7 @@ export default function DiscoverPage() {
             <Text className='text-[var(--text-secondary)] font-locale-body'>Loading Featured...</Text>
           </View>
         ) : (
-          <FeaturedVideoWidget thumbnailUrl={data?.featuredVideo.thumbnailUrl} />
+          <FeaturedVideoWidget thumbnailUrl={featuredVideo?.thumbnailUrl} />
         )}
 
         <View style={{ height: '32px' }} />
@@ -148,7 +122,7 @@ export default function DiscoverPage() {
           </View>
         ) : (
           <View className='flex flex-row gap-6'>
-            {data?.selfCareItems.map((item) => (
+            {selfCareItems.map((item) => (
               <DiscoverContentCard 
                 key={item.id}
                 imageUrl={item.imageUrl} 
@@ -162,7 +136,9 @@ export default function DiscoverPage() {
       </ScrollView>
 
       {/* ── OVERLAY (Full Screen Fading Bottom Sheet) ── */}
-      <DownloadOverlay />
+      <DownloadOverlay 
+        downloadText={t('download_to_d')}
+      />
 
       {/* ── BOTTOM NAVIGATION ── */}
       <BottomNavBar activeIndex={2} lockedTabs={false} onTabPress={handleTabPress} />
