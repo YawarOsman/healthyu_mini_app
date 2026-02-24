@@ -7,21 +7,25 @@ export interface RoutineCardProps {
   type: 'overdue' | 'later' | 'completed'
   time?: string        // formatted time string e.g. "3:00 PM" or "3 min overdue"
   title: string
+  description?: string
   imgSrc?: string      // product image URL
   onMarkDone?: () => void
   onTap?: () => void
 }
 
-export default function RoutineCard({ type, time, title, imgSrc, onMarkDone, onTap }: RoutineCardProps) {
+export default function RoutineCard({ type, title, description, time, imgSrc, onMarkDone, onTap }: RoutineCardProps) {
   const isCompleted = type === 'completed'
   const isOverdue = type === 'overdue'
+
+  // Prioritize time for overdue, description for others
+  const subText = isOverdue ? time : description
 
   return (
     <View
       onClick={onTap}
       style={{
         paddingBottom: '8px',
-        height: '48px',
+        minHeight: '48px',
         boxSizing: 'content-box',
         display: 'flex',
         alignItems: 'center',
@@ -47,9 +51,8 @@ export default function RoutineCard({ type, time, title, imgSrc, onMarkDone, onT
           style={{
             width: '100%',
             height: '100%',
-            // colorFilter: completed → primary, else → onSurface
-            filter: isCompleted
-              ? 'brightness(0) saturate(100%) invert(72%) sepia(30%) saturate(600%) hue-rotate(350deg) brightness(95%) contrast(85%)'
+            filter: isOverdue ? 'var(--filter-error)' : isCompleted
+              ? 'var(--filter-primary)'
               : 'brightness(0) invert(0.9)',
           }}
         />
@@ -59,17 +62,17 @@ export default function RoutineCard({ type, time, title, imgSrc, onMarkDone, onT
       <View
         style={{
           flex: 1,
-          height: '48px',
+          minHeight: '48px',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-around',
+          justifyContent: 'center',
           overflow: 'hidden',
         }}
       >
         {/* Product name: bodyMedium w600, linethrough when completed */}
         <Text
           style={{
-            fontSize: '14px',
+            fontSize: '16px',
             fontWeight: '600',
             color: 'var(--text-primary)',
             textDecoration: isCompleted ? 'line-through' : 'none',
@@ -82,18 +85,18 @@ export default function RoutineCard({ type, time, title, imgSrc, onMarkDone, onT
           {title}
         </Text>
 
-        {/* Time / overdue text: bodyMedium w600, color secondaryFixed, linethrough when completed */}
-        {time && (
+
+        {subText && (
           <Text
             style={{
-              fontSize: '14px',
+              fontSize: '16px',
               fontWeight: '600',
-              color: isOverdue ? 'var(--error)' : 'var(--text-secondary)',
+              color: 'var(--text-secondary)',
               textDecoration: isCompleted ? 'line-through' : 'none',
               display: 'block',
             }}
           >
-            {time}
+            {subText}
           </Text>
         )}
       </View>
@@ -104,7 +107,10 @@ export default function RoutineCard({ type, time, title, imgSrc, onMarkDone, onT
         <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '20px' }}>
           <Image
             src={SvgIcons.check}
-            style={{ width: '14px', height: '14px', opacity: 0.5 }}
+            style={{ width: '22px', height: '22px', opacity: 0.5,
+            filter: 'var(--filter-secondary)',
+
+             }}
           />
         </View>
       ) : isOverdue ? (
@@ -116,33 +122,34 @@ export default function RoutineCard({ type, time, title, imgSrc, onMarkDone, onT
             fontWeight: '700',
             color: 'var(--error)',
             whiteSpace: 'nowrap',
-            paddingLeft: '8px',
-            paddingRight: '8px',
+            paddingInlineEnd: '6px',
+            paddingInlineStart: '6px',
           }}
         >
           {t('mark_as_done')}
         </Text>
       ) : (
-        // ChevronRight / ArrowLeftIcon(flip:true): 14px, color outline
+
         <View
           style={{
-            width: '14px',
-            height: '14px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             minWidth: '14px',
           }}
         >
-          <View
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRight: '1.5px solid var(--text-secondary)',
-              borderTop: '1.5px solid var(--text-secondary)',
-              transform: 'rotate(45deg)',
+         <Text
+           style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: 'var(--text-secondary)',
+              whiteSpace: 'nowrap',
+              paddingInlineEnd: '6px',
+              paddingInlineStart: '6px',
             }}
-          />
+          >
+          {time}
+        </Text>
         </View>
       )}
     </View>

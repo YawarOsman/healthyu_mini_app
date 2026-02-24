@@ -237,10 +237,12 @@ async function fetchMiniAuthInfoOnLoad(dispatch: AppDispatch) {
 export default function HomePage() {
   const [checking, setChecking] = useState(true)
   const [authInfoFetched, setAuthInfoFetched] = useState(false)
+  
   const { themeMode, isFlavie } = useAppSelector((state) => state.theme)
   const { isUserOrderedABox, boxes, estimatedDeliveryDate } = useAppSelector(
     (state) => state.order,
   )
+  const { todayRoutine, weeklyStreaks } = useAppSelector((state) => state.home)
   const { name } = useAppSelector((state) => state.auth)
   const dispatch = useAppDispatch()
 
@@ -292,7 +294,7 @@ export default function HomePage() {
 
       {/* Body — Conditional on state */}
       {hasBoxes ? (
-        <CareRoutineWidget boxes={boxes} />
+        <CareRoutineWidget routines={todayRoutine} weeklyStreaks={weeklyStreaks as any} />
       ) : hasOrderedButNotReceived ? (
         <BoxOrderedWidget estimatedDeliveryDate={estimatedDeliveryDate} />
       ) : (

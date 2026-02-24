@@ -1,47 +1,66 @@
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
+import { useState } from 'react'
+
+
 
 import { SvgIcons } from '@/assets/icons'
 import DashedBox from '@/components/DashedBox'
+import {
+  type RoutineEntity,
+  getLocalizedProductName,
+  getLocalizedDescription
+} from '@/features/home/types'
 import { t } from '@/i18n'
-
+import { useAppSelector } from '@/store/hooks'
 
 interface DueRoutineCardProps {
-  title: string
-  description?: string
-  imgSrc?: string
-  /** Whether the product has a timed usage (shows Start button if true) */
-  hasDuration?: boolean
-  onStart?: () => void
-  onMarkDone?: () => void
-  onTap?: () => void
+  routines: RoutineEntity[]
+  onStart?: (routine: RoutineEntity) => void
+  onMarkDone?: (routine: RoutineEntity) => void
+  onTap?: (routine: RoutineEntity) => void
 }
 
 export default function DueRoutineCard({
-  title,
-  description,
-  imgSrc,
-  hasDuration = true,
+  routines,
   onStart,
   onMarkDone,
   onTap,
 }: DueRoutineCardProps) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const locale = useAppSelector((state) => state.theme.locale)
+  
+  if (!routines || routines.length === 0) return null
+
+  const isCarousel = routines.length > 1
+  const showLeftArrow = isCarousel && currentIndex > 0
+  const showRightArrow = isCarousel && currentIndex < routines.length - 1
+
+  const handleNext = () => {
+    if (currentIndex < routines.length - 1) {
+      setCurrentIndex(prev => prev + 1)
+    }
+  }
+
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(prev => prev - 1)
+    }
+  }
+
   return (
     <View
-      onClick={onTap}
       style={{
-        height: '250px',
+        height: '310px',
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop: '24px',
-        paddingBottom: '24px',
+        justifyContent: 'center',
         paddingLeft: '10px',
         paddingRight: '10px',
-        position: 'relative',
       }}
     >
-      {/* Blurred circular glow — mirrors: Positioned.fill Center Container(200x200 circle, boxShadow) */}
+      {/* Blurred circular glow */}
       <View
         style={{
           position: 'absolute',
@@ -56,147 +75,231 @@ export default function DueRoutineCard({
         }}
       />
 
-      {/* Top section */}
-      <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0' }}>
-
-        {/* "Due now" label — labelMedium: fontSize:14, w500, color: textSecondary */}
-        <Text
-          style={{
-            fontSize: '16px',
-            fontWeight: '500',
-            color: 'var(--text-secondary)',
-            marginBottom: '24px',
-            display: 'block',
-          }}
-        >
-          {t('due_now')}
-        </Text>
-
-        {/* DottedBorder 48x48, dashPattern [6,6], color: accent (primary) */}
-        <DashedBox
-          width={48}
-          height={48}
-          dash={6}
-          gap={6}
-          color='var(--primary)'
-          borderPosition='inside'
-          style={{
-            backgroundColor: 'rgba(0,0,0,0.3)',
-            marginBottom: '16px',
-          }}
-        >
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              padding: '12px',
-              boxSizing: 'border-box',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'var(--background-color)'
-            }}
-          >
-            <Image
-              src={imgSrc || SvgIcons.box}
-              style={{
-                width: '100%',
-                height: '100%',
-                color: 'var(--primary)',
-              }}
-            />
-          </View>
-        </DashedBox>
-
-        {/* Product name + description */}
-        <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-          {/* headlineMedium w500: fontSize:20, juana font */}
-          <Text
-            style={{
-              fontSize: '20px',
-              fontWeight: '500',
-              fontFamily: 'var(--font-juana)',
-              color: 'var(--text-primary)',
-              textAlign: 'center',
-              display: 'block',
-            }}
-          >
-            {title}
-          </Text>
-
-          {/* description: labelMedium, color: secondaryFixed (text-secondary) */}
-          {description && (
-            <Text
-              style={{
-                fontSize: '14px',
-                fontWeight: '500',
-                color: 'var(--text-secondary)',
-                textAlign: 'center',
-                display: 'block',
-              }}
-            >
-              {description}
-            </Text>
-          )}
-        </View>
-      </View>
-
-      {/* Bottom buttons row: Row(center, spacing:12) */}
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '12px',
-        }}
+      {/* Swiper / Carousel */}
+      <Swiper
+        current={currentIndex}
+        onChange={(e) => setCurrentIndex(e.detail.current)}
+        circular={false}
+        indicatorDots={false}
+        autoplay={false}
+        style={{ width: '100%', height: '100%' }}
       >
-        {/* Start button — only if hasDuration: FilledButton height:46, padding:h16, accent bg, fontSize:16 */}
-        {hasDuration && (
-          <View
-            onClick={(e) => { e.stopPropagation?.(); onStart?.() }}
-            className='btn-filled active:opacity-85'
-            style={{
-              height: '46px',
-              paddingLeft: '16px',
-              paddingRight: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: 'auto',
-            }}
-          >
-            <Text style={{ fontSize: '16px', fontWeight: '600', color: 'var(--scaffold-bg)', fontFamily: 'var(--font-juana)' }}>
-              {t('start')}
-            </Text>
-          </View>
-        )}
+        {routines.map((routine, idx) => {
+          const title = getLocalizedProductName(routine, locale)
+          const description = getLocalizedDescription(routine, locale)
+          const hasDuration = routine.timeToRemind.usageDurationInMinutes > 0
+          
+          return (
+            <SwiperItem key={routine.id || idx}>
+              <View
+                onClick={() => onTap?.(routine)}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  paddingTop: '24px',
+                }}
+              >
+                {/* Top section */}
+                <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0' }}>
+                  {/* "Due now" label */}
+                  <Text
+                    style={{
+                      fontSize: '16px',
+                      fontWeight: '500',
+                      color: 'var(--text-secondary)',
+                      marginBottom: '24px',
+                      display: 'block',
+                    }}
+                  >
+                    {t('due_now')}
+                  </Text>
 
-        {/* Mark as Done button — FilledButton height:46, padding:h12, transparent bg, color: secondaryFixed */}
+                  {/* DottedBorder */}
+                  <DashedBox
+                    width={48}
+                    height={48}
+                    dash={6}
+                    gap={6}
+                    color='var(--primary)'
+                    borderPosition='inside'
+                    style={{
+                      backgroundColor: 'rgba(0,0,0,0.3)',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        padding: '14px',
+                        boxSizing: 'border-box',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: 'var(--background-color)'
+                      }}
+                    >
+                      <Image
+                        src={routine.productDisplayImage || SvgIcons.box}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          filter: 'brightness(0) invert(0.9)'
+                        }}
+                      />
+                    </View>
+                  </DashedBox>
+
+                  {/* Product name + description */}
+                  <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                    <Text
+                      style={{
+                        fontSize: '20px',
+                        fontWeight: '500',
+                        fontFamily: 'var(--font-juana)',
+                        color: 'var(--text-primary)',
+                        textAlign: 'center',
+                        display: 'block',
+                      }}
+                    >
+                      {title}
+                    </Text>
+
+                    {description && (
+                      <Text
+                        style={{
+                          fontSize: '14px',
+                          fontWeight: '500',
+                          color: 'var(--text-secondary)',
+                          textAlign: 'center',
+                          display: 'block',
+                        }}
+                      >
+                        {description}
+                      </Text>
+                    )}
+                  </View>
+                </View>
+
+                <View style={{ height: '24px' }} />
+
+                {/* Bottom buttons row */}
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '12px',
+                  }}
+                >
+                  {hasDuration && (
+                    <View
+                      onClick={(e) => { e.stopPropagation?.(); onStart?.(routine) }}
+                      className='btn-filled active:opacity-85'
+                      style={{
+                        height: '46px',
+                        paddingLeft: '16px',
+                        paddingRight: '16px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: 'auto',
+                      }}
+                    >
+                      <Text style={{ fontSize: '16px', fontWeight: '600', color: 'var(--scaffold-bg)', fontFamily: 'var(--font-juana)' }}>
+                        {t('start')}
+                      </Text>
+                    </View>
+                  )}
+
+                  <View
+                    onClick={(e) => { e.stopPropagation?.(); onMarkDone?.(routine) }}
+                    style={{
+                      height: '46px',
+                      paddingLeft: '12px',
+                      paddingRight: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: 'transparent',
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: '14px',
+                        fontWeight: '700',
+                        color: 'var(--text-secondary)',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {t('mark_as_done')}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </SwiperItem>
+          )
+        })}
+      </Swiper>
+
+      {/* Navigation Arrows */}
+      {showLeftArrow && (
         <View
-          onClick={(e) => { e.stopPropagation?.(); onMarkDone?.() }}
+          onClick={handlePrev}
           style={{
-            height: '46px',
-            paddingLeft: '12px',
-            paddingRight: '12px',
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: '40px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'transparent',
+            zIndex: 10,
           }}
         >
-          <Text
+          <View
             style={{
-              fontSize: '14px',
-              fontWeight: '700',
-              color: 'var(--text-secondary)',
-              whiteSpace: 'nowrap',
+              width: '10px',
+              height: '10px',
+              borderLeft: '2px solid var(--text-secondary)',
+              borderBottom: '2px solid var(--text-secondary)',
+              transform: 'rotate(45deg)',
             }}
-          >
-            {t('mark_as_done')}
-          </Text>
+          />
         </View>
-      </View>
+      )}
+
+      {showRightArrow && (
+        <View
+          onClick={handleNext}
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: '40px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10,
+          }}
+        >
+          <View
+            style={{
+              width: '10px',
+              height: '10px',
+              borderRight: '2px solid var(--text-secondary)',
+              borderTop: '2px solid var(--text-secondary)',
+              transform: 'rotate(45deg)',
+            }}
+          />
+        </View>
+      )}
+
     </View>
   )
 }

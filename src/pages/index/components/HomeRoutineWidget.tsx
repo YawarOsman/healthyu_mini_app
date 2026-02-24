@@ -1,6 +1,11 @@
 import { View, Text } from '@tarojs/components'
 
-import { getLocalizedName, getItemsFromBoxes, type BoxEntity } from '@/features/order/types'
+import {
+  type RoutineEntity,
+  getLocalizedProductName,
+  getLocalizedDescription,
+  getRoutineTimeframe
+} from '@/features/home/types'
 import { t } from '@/i18n'
 import { getDateLocaleCode } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
@@ -8,37 +13,52 @@ import { useAppSelector } from '@/store/hooks'
 import DueRoutineCard from './DueRoutineCard'
 import RoutineCard from './RoutineCard'
 
-
 interface HomeRoutineWidgetProps {
-  boxes: BoxEntity[]
+  routines: RoutineEntity[]
 }
 
-export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
+export default function HomeRoutineWidget({ routines }: HomeRoutineWidgetProps) {
   const locale = useAppSelector((state) => state.theme.locale)
   const localeCode = getDateLocaleCode(locale)
-  const formatOverdue = (minutes: number) => t('minutes_overdue').replace('{minutes}', String(minutes))
-  const formatTimeLabel = (timeLabel?: string) => {
-    if (!timeLabel) return ''
-    const match = timeLabel.trim().match(/^(\d{1,2}):(\d{2})\s*([AP]M)$/i)
-    if (!match) return timeLabel
+  
+  const formatOverdue = (minutes: number) => 
+    t('minutes_overdue').replace('{minutes}', String(minutes))
 
-    const hour12 = Number(match[1])
-    const minute = Number(match[2])
-    const isPm = match[3].toUpperCase() === 'PM'
-    const normalizedHour = (hour12 % 12) + (isPm ? 12 : 0)
+  const formatTimeLabel = (timeStr: string) => {
+    if (!timeStr) return ''
+    const [hours, minutes] = timeStr.split(':').map(Number)
     const time = new Date()
-    time.setHours(normalizedHour, minute, 0, 0)
-
+    time.setHours(hours, minutes, 0, 0)
     return time.toLocaleTimeString(localeCode, { hour: 'numeric', minute: '2-digit' })
   }
 
-  // Derive items from all boxes, carrying each box's scheduling flags
-  const allItems = getItemsFromBoxes(boxes)
+  const now = new Date()
+  
+  const overdueItems: RoutineEntity[] = []
+  const dueNowItems: RoutineEntity[] = []
+  const laterItems: RoutineEntity[] = []
+  const completedItems: RoutineEntity[] = []
 
-  const overdueItems   = allItems.filter(item => item.isOverdue === true)
-  const dueNowItems    = allItems.filter(item => item.isCurrent === true && !item.isCompleted)
-  const laterItems     = allItems.filter(item => item.isLater === true)
-  const completedItems = allItems.filter(item => item.isCompleted === true)
+  routines.forEach((routine) => {
+    const timeframe = getRoutineTimeframe(routine.timeToRemind, now)
+    switch (timeframe) {
+      case 'overdue':
+        overdueItems.push(routine)
+        break
+      case 'due':
+        dueNowItems.push(routine)
+        break
+      case 'laterToday':
+        laterItems.push(routine)
+        break
+      case 'completed':
+        completedItems.push(routine)
+        break
+    }
+  })
+
+  // We order them strictly: Overdue, Due now, Later today, Completed.
+  // The UI is the same grouping as before.
 
   const hasAny = overdueItems.length > 0 || dueNowItems.length > 0 || laterItems.length > 0 || completedItems.length > 0
   if (!hasAny) return null
@@ -55,27 +75,30 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
                 {t('overdue')}
               </Text>
             </View>
-            {overdueItems.map((item, i) => (
-              <RoutineCard
-                key={i}
-                type='overdue'
-                title={getLocalizedName(item, locale)}
-                time={formatOverdue(3)}
-                imgSrc={item.productDisplayImage}
-              />
-            ))}
+            {overdueItems.map((item, i) => {
+              // Calculate minutes overdue
+              const [hours, minutes] = item.timeToRemind.time.split(':').map(Number)
+              const routineTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes)
+              const minsOverdue = Math.floor((now.getTime() - routineTime.getTime()) / 60000)
+              
+              return (
+                <RoutineCard
+                  key={i}
+                  type='overdue'
+                  title={getLocalizedProductName(item, locale)}
+                  description={getLocalizedDescription(item, locale)}
+                  time={formatOverdue(minsOverdue > 0 ? minsOverdue : 1)}
+                  imgSrc={item.productDisplayImage}
+                />
+              )
+            })}
           </View>
         )}
 
-        {/* ── Due now (no header) ── */}
-        {dueNowItems.map((item, i) => (
-          <DueRoutineCard
-            key={i}
-            title={getLocalizedName(item, locale)}
-            imgSrc={item.productDisplayImage}
-            hasDuration
-          />
-        ))}
+        {/* ── Due now (Carousel) ── */}
+        {dueNowItems.length > 0 && (
+          <DueRoutineCard routines={dueNowItems} />
+        )}
 
         {/* ── Later today ── */}
         {laterItems.length > 0 && (
@@ -89,8 +112,9 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
               <RoutineCard
                 key={i}
                 type='later'
-                title={getLocalizedName(item, locale)}
-                time={formatTimeLabel(item.timeLabel)}
+                title={getLocalizedProductName(item, locale)}
+                description={getLocalizedDescription(item, locale)}
+                time={formatTimeLabel(item.timeToRemind.time)}
                 imgSrc={item.productDisplayImage}
               />
             ))}
@@ -109,7 +133,8 @@ export default function HomeRoutineWidget({ boxes }: HomeRoutineWidgetProps) {
               <RoutineCard
                 key={i}
                 type='completed'
-                title={getLocalizedName(item, locale)}
+                title={getLocalizedProductName(item, locale)}
+                description={getLocalizedDescription(item, locale)}
                 imgSrc={item.productDisplayImage}
               />
             ))}

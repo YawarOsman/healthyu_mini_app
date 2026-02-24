@@ -1,20 +1,19 @@
 import { View, ScrollView } from '@tarojs/components'
 
-import type { BoxEntity } from '@/features/order/types'
+import type { RoutineEntity } from '@/features/home/types'
 import { getDateLocaleCode } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
 
 import HomeRoutineWidget from './HomeRoutineWidget'
 import WeeklyCalendar from './WeeklyCalendar'
 
-
 interface CareRoutineWidgetProps {
-  boxes: BoxEntity[]
+  routines: RoutineEntity[]
   dateLabel?: string
   weeklyStreaks?: ({ progress: number } | null)[]
 }
 
-export default function CareRoutineWidget({ boxes, dateLabel, weeklyStreaks }: CareRoutineWidgetProps) {
+export default function CareRoutineWidget({ routines, dateLabel, weeklyStreaks }: CareRoutineWidgetProps) {
   const locale = useAppSelector((state) => state.theme.locale)
   const localeCode = getDateLocaleCode(locale)
   const today = new Date()
@@ -57,7 +56,7 @@ export default function CareRoutineWidget({ boxes, dateLabel, weeklyStreaks }: C
           flex: 1,
         }}
       >
-        <HomeRoutineWidget boxes={boxes} />
+        <HomeRoutineWidget routines={routines} />
         <View style={{ height: '20px' }} />
       </ScrollView>
     </View>

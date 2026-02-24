@@ -1,11 +1,14 @@
-@import './styles/fonts.scss';
-@import './styles/theme.scss';
+@import "./styles/fonts.scss";
+@import "./styles/theme.scss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 // Global Background for Status Bar / Overscroll
-html, body, #app, page {
+html,
+body,
+#app,
+page {
   min-height: 100vh;
   height: 100%;
   background-color: var(--scaffold-bg, #000000);
@@ -17,19 +20,45 @@ html, body, #app, page {
 }
 
 // Manual overrides for missing Tailwind classes
-.font-headline-lg { font-family: var(--font-family-headline-lg); }
-.font-headline-md { font-family: var(--font-family-headline-md); }
-.font-headline-sm { font-family: var(--font-family-headline-sm); }
-.font-title-lg { font-family: var(--font-family-title-lg); }
-.font-title-md { font-family: var(--font-family-title-md); }
-.font-title-sm { font-family: var(--font-family-title-sm); }
-.font-body-lg { font-family: var(--font-family-body-lg); }
-.font-body-md { font-family: var(--font-family-body-md); }
-.font-body-sm { font-family: var(--font-family-body-sm); }
-.font-label-lg { font-family: var(--font-family-label-lg); }
-.font-label-md { font-family: var(--font-family-label-md); }
-.font-label-sm { font-family: var(--font-family-label-sm); }
-.font-btn { font-family: var(--font-family-btn); }
+.font-headline-lg {
+  font-family: var(--font-family-headline-lg);
+}
+.font-headline-md {
+  font-family: var(--font-family-headline-md);
+}
+.font-headline-sm {
+  font-family: var(--font-family-headline-sm);
+}
+.font-title-lg {
+  font-family: var(--font-family-title-lg);
+}
+.font-title-md {
+  font-family: var(--font-family-title-md);
+}
+.font-title-sm {
+  font-family: var(--font-family-title-sm);
+}
+.font-body-lg {
+  font-family: var(--font-family-body-lg);
+}
+.font-body-md {
+  font-family: var(--font-family-body-md);
+}
+.font-body-sm {
+  font-family: var(--font-family-body-sm);
+}
+.font-label-lg {
+  font-family: var(--font-family-label-lg);
+}
+.font-label-md {
+  font-family: var(--font-family-label-md);
+}
+.font-label-sm {
+  font-family: var(--font-family-label-sm);
+}
+.font-btn {
+  font-family: var(--font-family-btn);
+}
 
 // fillColor: #141414, no border radius, contentPadding: 16px
 .input-field {
@@ -52,7 +81,6 @@ html, body, #app, page {
   color: rgba(255, 255, 255, 0.24);
   font-size: 16px;
 }
-
 
 // height: 57px, no border radius, Juana font 19px semibold
 .btn-filled {
@@ -143,8 +171,13 @@ html, body, #app, page {
 
 // Blinking cursor for OTP input
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .custom-dotted-border {
@@ -153,3 +186,15 @@ html, body, #app, page {
   box-sizing: border-box;
 }
 
+// Utility class for rendering tinted SVG icons safely across platforms using mask-image
+.svg-icon-mask {
+  background-color: var(--icon-color, var(--primary));
+  mask-image: var(--icon-url);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: var(--icon-url);
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}

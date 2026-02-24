@@ -84,6 +84,9 @@
   --scaffold-bg: #000000;
   --primary: #EB9E74;
   --primary-rgb: 235, 158, 116;
+  --filter-primary: brightness(0) saturate(100%) invert(72%) sepia(30%) saturate(600%) hue-rotate(350deg) brightness(95%) contrast(85%);
+  --filter-secondary: brightness(0) saturate(100%) invert(65%) sepia(1%) saturate(0%) hue-rotate(148deg) brightness(87%) contrast(97%);
+  --filter-error: brightness(0) saturate(100%) invert(36%) sepia(23%) saturate(1637%) hue-rotate(315deg) brightness(97%) contrast(85%);
   --text-primary: #FFFFFF;
   --text-secondary: #8F8F8F;
   --text-brand: #EB9E74;
@@ -119,6 +122,9 @@
   --scaffold-bg: #000000;
   --primary: #EB9E74;
   --primary-rgb: 235, 158, 116;
+  --filter-primary: brightness(0) saturate(100%) invert(72%) sepia(30%) saturate(600%) hue-rotate(350deg) brightness(95%) contrast(85%);
+  --filter-secondary: brightness(0) saturate(100%) invert(65%) sepia(1%) saturate(0%) hue-rotate(148deg) brightness(87%) contrast(97%);
+  --filter-error: brightness(0) saturate(100%) invert(36%) sepia(23%) saturate(1637%) hue-rotate(315deg) brightness(97%) contrast(85%);
   --text-primary: #FFFFFF;
   --text-secondary: #8F8F8F;
   --text-brand: #EB9E74;
@@ -154,6 +160,9 @@
   --scaffold-bg: #000000;
   --primary: #FFFFFF;
   --primary-rgb: 255, 255, 255;
+  --filter-primary: brightness(0) saturate(100%) invert(72%) sepia(30%) saturate(600%) hue-rotate(350deg) brightness(95%) contrast(85%);
+  --filter-secondary: brightness(0) saturate(100%) invert(65%) sepia(1%) saturate(0%) hue-rotate(148deg) brightness(87%) contrast(97%);
+  --filter-error: brightness(0) saturate(100%) invert(36%) sepia(23%) saturate(1637%) hue-rotate(315deg) brightness(97%) contrast(85%);
   --text-primary: #FFFFFF;
   --text-secondary: #8F8F8F;
   --text-brand: #FFFFFF;
@@ -189,6 +198,8 @@
   --scaffold-bg: #000000;
   --primary: #FFFFFF;
   --primary-rgb: 255, 255, 255;
+  --filter-primary: brightness(0) saturate(100%) invert(72%) sepia(30%) saturate(600%) hue-rotate(350deg) brightness(95%) contrast(85%);
+  --filter-error: brightness(0) saturate(100%) invert(36%) sepia(23%) saturate(1637%) hue-rotate(315deg) brightness(97%) contrast(85%);  
   --text-primary: #FFFFFF;
   --text-secondary: #8F8F8F;
   --text-brand: #FFFFFF;
