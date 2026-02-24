@@ -7,16 +7,6 @@ type NavOption = {
   fail: (error: unknown) => void
 }
 
-const isInternalPagePath = (url: string) =>
-  url.startsWith('/pages/') || url.startsWith('pages/')
-
-const buildAlternatePagePath = (url: string) => {
-  if (!isInternalPagePath(url)) {
-    return ''
-  }
-  return url.startsWith('/') ? url.slice(1) : `/${url}`
-}
-
 const invokeNav = (method: NavMethod, url: string) => {
   return new Promise((resolve, reject) => {
     const options: NavOption = {
@@ -49,21 +39,9 @@ const invokeNav = (method: NavMethod, url: string) => {
 }
 
 const callNav = (method: NavMethod, url: string) => {
-  return invokeNav(method, url).catch((firstError) => {
-    const alternateUrl = buildAlternatePagePath(url)
-    if (!alternateUrl || alternateUrl === url) {
-      console.error(`[navigation:${method}] failed`, { url, error: firstError })
-      throw firstError
-    }
-    return invokeNav(method, alternateUrl).catch((secondError) => {
-      console.error(`[navigation:${method}] failed after retry`, {
-        originalUrl: url,
-        retryUrl: alternateUrl,
-        firstError,
-        secondError,
-      })
-      throw secondError
-    })
+  return invokeNav(method, url).catch((error) => {
+    console.error(`[navigation:${method}] failed`, { url, error })
+    throw error
   })
 }
 

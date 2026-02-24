@@ -18,14 +18,13 @@ export default function DiscoverContentCard({ imageUrl, title, onTap }: Discover
       {/* Image with 1:1 aspect ratio and dark overlay */}
       <View 
         className='relative w-full overflow-hidden'
-        style={{ aspectRatio: '1', backgroundColor: '#1A1A1A' }}
+        style={{ backgroundColor: '#1A1A1A', paddingTop: '100%' }}
       >
         <Image 
           src={imageUrl} 
-          className='w-full h-full object-cover'
-          style={{ width: '100%', height: '100%' }}
+          mode='aspectFill'
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'block' }}
         />
-
       </View>
 
       {/* Title */}

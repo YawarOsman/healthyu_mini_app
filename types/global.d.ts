@@ -5,6 +5,7 @@ declare module '*.gif';
 declare module '*.jpg';
 declare module '*.jpeg';
 declare module '*.svg';
+declare module '*?url';
 declare module '*.css';
 declare module '*.less';
 declare module '*.scss';

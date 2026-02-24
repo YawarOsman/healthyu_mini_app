@@ -1,6 +1,5 @@
 import { Image, ScrollView, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import { useEffect } from 'react';
+import Taro, { useDidShow } from '@tarojs/taro';
 
 
 
@@ -14,13 +13,14 @@ import { t } from '@/i18n'
 import { isArabicLocale } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
 import { redirectTo } from '@/utils/navigation'
+import { hideHomeButtonSafely } from '@/utils/ui'
 
 import BoxesListWidget from './components/BoxesListWidget'
 
 export default function BoxesPage() {
-  useEffect(() => {
-    Taro.hideHomeButton?.();
-  }, []);
+  useDidShow(() => {
+    void hideHomeButtonSafely();
+  });
   const themeMode = useAppSelector((state) => state.theme.themeMode)
   const locale = useAppSelector((state) => state.theme.locale)
   const isArabic = isArabicLocale(locale)
@@ -75,21 +75,21 @@ export default function BoxesPage() {
       <View
         style={{
           paddingTop: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + 12}px`,
-          paddingLeft: '24px',
-          paddingRight: '24px',
+          paddingInlineStart: '24px',
+          paddingInlineEnd: '24px',
           paddingBottom: '12px',
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'flex-start',
           alignItems: 'baseline',
-          gap: '16px',
+          gap: '10px',
           flexShrink: 0,
         }}
       >
         <Text
           style={{
             fontFamily: 'var(--font-juana)',
-            fontSize: '26px',
+            fontSize: '22px',
             fontWeight: '500',
             color: 'var(--primary)',
           }}
@@ -99,7 +99,7 @@ export default function BoxesPage() {
         <Text
           style={{
             fontFamily: 'var(--font-locale-body)',
-            fontSize: '12px',
+            fontSize: '11px',
             fontWeight: '400',
             color: 'var(--text-secondary)',
             textTransform: 'uppercase',
@@ -111,9 +111,9 @@ export default function BoxesPage() {
 
       {/* ── SCROLLABLE BODY ── */}
       <ScrollView
-        scrollY={false}
+        scrollY
         className='flex-1 flex flex-col pointer-events-none mt-4'
-        style={{ paddingLeft: '24px', paddingRight: '24px', boxSizing: 'border-box', overflow: 'hidden' }}
+        style={{ paddingInlineStart: '24px', paddingInlineEnd: '24px', boxSizing: 'border-box', overflow: 'hidden' }}
       >
         <View style={{ height: '8px' }} />
         {/* Current Box Section */}

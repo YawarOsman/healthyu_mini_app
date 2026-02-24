@@ -1,4 +1,5 @@
 import { View, Text } from '@tarojs/components'
+import Taro from '@tarojs/taro'
 
 import boxesIcon from '@/assets/svg/boxes.svg'
 import careIcon from '@/assets/svg/care.svg'
@@ -26,12 +27,13 @@ export default function BottomNavBar({
   onTabPress,
 }: BottomNavBarProps) {
   const themeMode = useAppSelector((state) => state.theme.themeMode)
+  const isAndroid = Taro.getSystemInfoSync().platform === 'android'
 
   return (
     <View
       style={{
         width: '100%',
-        height: '64px',
+        height: isAndroid ? '84px' : '94px',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -39,7 +41,7 @@ export default function BottomNavBar({
         backgroundColor: 'var(--scaffold-bg)',
         borderTop: '1px solid rgba(255,255,255,0.06)',
         position: 'relative',
-        paddingBottom: '20px',
+        paddingBottom: isAndroid ? '16px' : '26px',
         zIndex: 100,
       }}
       data-theme={themeMode}

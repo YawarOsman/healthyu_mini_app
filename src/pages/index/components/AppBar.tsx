@@ -1,7 +1,7 @@
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 
-import { SvgIcons } from '@/assets/icons'
+
 import { t } from '@/i18n'
 
 type AppBarProps = {
@@ -10,7 +10,7 @@ type AppBarProps = {
   hasBoxes: boolean
 }
 
-export default function AppBar({ isFlavie, name, hasBoxes }: AppBarProps) {
+export default function AppBar({ isFlavie, name }: AppBarProps) {
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
   const greetingName = name ? name.split(' ')[0] : t('hello_fallback_name')
@@ -19,8 +19,8 @@ export default function AppBar({ isFlavie, name, hasBoxes }: AppBarProps) {
     <View
       style={{
         paddingTop: `${statusBarHeight + 12}px`,
-        paddingLeft: '24px',
-        paddingRight: '24px',
+        paddingInlineStart: '24px',
+        paddingInlineEnd: '24px',
         paddingBottom: '12px',
         display: 'flex',
         justifyContent: 'space-between',
@@ -30,7 +30,7 @@ export default function AppBar({ isFlavie, name, hasBoxes }: AppBarProps) {
       <View className='flex items-center'>
         <Text
           style={{
-            fontSize: '26px',
+            fontSize: '22px',
             fontWeight: '500',
             color: 'var(--primary)',
             fontFamily: 'var(--font-juana)',
@@ -40,11 +40,11 @@ export default function AppBar({ isFlavie, name, hasBoxes }: AppBarProps) {
         </Text>
         <Text
           style={{
-            fontSize: '12px',
+            fontSize: '11px',
             fontWeight: '400',
             color: 'var(--text-secondary)',
             fontFamily: 'var(--font-locale-body)',
-            marginLeft: '16px',
+            marginInlineStart: '10px',
             textTransform: 'uppercase',
           }}
         >
@@ -52,9 +52,6 @@ export default function AppBar({ isFlavie, name, hasBoxes }: AppBarProps) {
         </Text>
       </View>
 
-      {hasBoxes && (
-        <Image src={SvgIcons.calendar} style={{ width: '24px', height: '24px', opacity: 0.8 }} />
-      )}
     </View>
   )
 }

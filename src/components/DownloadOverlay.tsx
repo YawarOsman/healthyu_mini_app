@@ -13,7 +13,7 @@ interface DownloadOverlayProps {
 
 export default function DownloadOverlay({ downloadText, topOffset }: DownloadOverlayProps) {
   return (
-    <View className='absolute inset-x-0 bottom-0 z-50 flex flex-col justify-end pointer-events-none' style={{ top: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + (topOffset ?? 70)}px` }}>
+    <View className='absolute inset-0 z-50 flex flex-col justify-end pointer-events-none'>
 
 
 
@@ -24,14 +24,14 @@ export default function DownloadOverlay({ downloadText, topOffset }: DownloadOve
           backgroundColor: 'rgba(0,0,0,0.7)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
-          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 30%, black 60%, black 100%)',
-          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 30%, black 60%, black 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 25%, black 50%, black 100%)',
+          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 25%, black 50%, black 100%)',
         }}
       />
       
       {/* Button Container Area */}
       <View
-        className='relative w-full flex flex-col items-center px-6 pb-6 pt-6 gap-6 pointer-events-auto'
+        className='relative w-full flex flex-col items-center px-6 pb-16 pt-6 gap-6 pointer-events-auto'
         style={{ boxSizing: 'border-box' }}
       >
         <Text

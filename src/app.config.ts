@@ -23,7 +23,7 @@ export default defineAppConfig({
     navigationBarTitleText: '',
     navigationBarTextStyle: 'white',
     navigationStyle: 'custom',
-    backgroundColor: '#F44336',
+    backgroundColor: '#000000',
     transparentTitle: 'always',
     titlePenetrate: 'YES',
   },

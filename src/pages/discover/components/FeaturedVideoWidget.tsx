@@ -1,25 +1,27 @@
-import { View } from '@tarojs/components'
+import { Image, View } from '@tarojs/components'
 
 interface FeaturedVideoWidgetProps {
-  thumbnailUrl?: string
+  thumbnailUrl: string
 }
 
 export default function FeaturedVideoWidget({ thumbnailUrl }: FeaturedVideoWidgetProps) {
   const src =
-    thumbnailUrl ??
-    'https://t3.ftcdn.net/jpg/19/09/34/50/240_F_1909345096_Q2fwLPSpjOgCidGapNYxFl8biZzCyZah.jpg'
+    thumbnailUrl;
 
   return (
     <View
       className='w-full relative overflow-hidden'
       style={{
-        aspectRatio: '2.28',
-        backgroundImage: `url(${src})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+        aspectRatio: '2.28'
       }}
     >
+      <Image
+        src={src}
+        className='w-full'
+        style={{ width: '100%', display: 'block' }}
+        mode='widthFix'
+      />
+      
       {/* Dark overlay */}
       <View className='absolute inset-0 bg-black/45 z-10' />
 

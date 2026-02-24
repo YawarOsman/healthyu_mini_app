@@ -1,5 +1,6 @@
 import addressIcon from './svg/address_icon.svg'
 import appleIcon from './svg/apple_icon.svg'
+import arrowDownFill from './svg/arrow_down_fill.svg'
 import arrowLeft from './svg/arrow_left.svg'
 import arrowUpRight from './svg/arrow_up_right.svg'
 import bar from './svg/bar.svg'
@@ -25,6 +26,7 @@ import moon from './svg/moon.svg'
 import notificationsIcon from './svg/notifications_icon.svg'
 import onboarding from './svg/onboarding.svg'
 import orderConfirmed from './svg/order_confirmed.svg'
+import play from './svg/play.svg'
 import profile from './svg/profile.svg'
 import profileFlavie from './svg/profile_flavie.svg'
 import profileIcon from './svg/profile_icon.svg'
@@ -41,6 +43,7 @@ import toastSuccess from './svg/toast_success.svg'
 export const SvgIcons = {
   arrowLeft,
   arrowUpRight,
+  arrowDownFill,
   bar,
   box,
   boxes,
@@ -64,6 +67,7 @@ export const SvgIcons = {
   notificationsIcon,
   onboarding,
   orderConfirmed,
+  play,
   profile,
   profileFlavie,
   profileIcon,

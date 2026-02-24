@@ -1,5 +1,5 @@
-import type { AppDispatch } from '@/store'
 import { fetchDiscoverData } from '@/services/discover'
+import type { AppDispatch } from '@/store'
 
 import { fetchDiscoverRequest, fetchDiscoverSuccess, fetchDiscoverFailure } from './reducer'
 

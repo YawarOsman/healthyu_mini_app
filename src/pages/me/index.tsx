@@ -1,6 +1,5 @@
 import { Image, ScrollView, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import { useEffect } from 'react';
+import Taro, { useDidShow } from '@tarojs/taro';
 
 
 
@@ -17,6 +16,7 @@ import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
 import { redirectTo } from '@/utils/navigation'
+import { hideHomeButtonSafely } from '@/utils/ui'
 
 // ─── Types ───
 
@@ -183,9 +183,9 @@ function ProfileSection({ title, items }: SectionProps) {
 // ─── Main Page ───
 
 export default function MePage() {
-  useEffect(() => {
-    Taro.hideHomeButton?.();
-  }, []);
+  useDidShow(() => {
+    void hideHomeButtonSafely();
+  });
 
   const themeMode = useAppSelector((state) => state.theme.themeMode);
   const { name, selfiePath } = useAppSelector((state) => state.auth)

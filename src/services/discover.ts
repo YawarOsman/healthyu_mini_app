@@ -25,7 +25,7 @@ export const fetchDiscoverData = async (): Promise<DiscoverPageResponse> => {
     featuredVideo: {
       id: 'volvo_1',
       thumbnailUrl:
-        'https://t3.ftcdn.net/jpg/19/09/34/50/240_F_1909345096_Q2fwLPSpjOgCidGapNYxFl8biZzCyZah.jpg',
+        'https://i.ibb.co/JjHB7Bfd/mmmm.jpg',
     },
     selfCareItems: [
       {

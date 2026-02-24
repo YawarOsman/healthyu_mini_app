@@ -1,5 +1,5 @@
-import discover1 from './images/discover.png'
-import discover2 from './images/discover2.png'
+import discover1 from './images/discover.png?url'
+import discover2 from './images/discover2.png?url'
 import flavie from './images/flavie.png'
 import flavieOnboarding1 from './images/flavie_onboarding_1.png'
 import flavieOnboarding2 from './images/flavie_onboarding_2.png'

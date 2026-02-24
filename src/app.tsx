@@ -1,11 +1,11 @@
 import { Component, PropsWithChildren } from 'react'
-import Taro from '@tarojs/taro';
 import { Provider } from 'react-redux'
 
 import { fetchDiscover } from '@/features/discover/actions'
 import { fetchBox } from '@/features/order/actions'
 import configStore from '@/store'
 import type { RootState } from '@/store'
+import { hideHomeButtonSafely } from '@/utils/ui'
 
 import './app.scss'
 import './styles/theme.scss'
@@ -48,7 +48,7 @@ class App extends Component<PropsWithChildren> {
   }
 
   componentDidShow() {
-    Taro.hideHomeButton?.();
+    void hideHomeButtonSafely();
   }
 
   componentDidHide() {}

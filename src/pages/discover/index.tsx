@@ -1,6 +1,5 @@
 import { ScrollView, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
-import { useEffect } from 'react';
+import Taro, { useDidShow } from '@tarojs/taro';
 
 
 
@@ -10,6 +9,7 @@ import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
 import { redirectTo } from '@/utils/navigation'
+import { hideHomeButtonSafely } from '@/utils/ui'
 
 import DiscoverContentCard from './components/DiscoverContentCard'
 import FeaturedVideoWidget from './components/FeaturedVideoWidget'
@@ -19,9 +19,9 @@ export default function DiscoverPage() {
   const discoverData = useAppSelector((state) => state.discover)
   const { featuredVideo, selfCareItems, loading: isLoading } = discoverData
 
-  useEffect(() => {
-    Taro.hideHomeButton?.();
-  }, []);
+  useDidShow(() => {
+    void hideHomeButtonSafely();
+  });
 
   const handleTabPress = (index: number) => {
     const tabRouteMap = [ROUTES.HOME, ROUTES.BOXES, ROUTES.DISCOVER, ROUTES.ME] as const
@@ -41,21 +41,21 @@ export default function DiscoverPage() {
       <View
         style={{
           paddingTop: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + 12}px`,
-          paddingLeft: '24px',
-          paddingRight: '24px',
+          paddingInlineStart: '24px',
+          paddingInlineEnd: '24px',
           paddingBottom: '12px',
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'flex-start',
           alignItems: 'baseline',
-          gap: '16px',
+          gap: '10px',
           flexShrink: 0,
         }}
       >
         <Text
           style={{
             fontFamily: 'var(--font-juana)',
-            fontSize: '26px',
+            fontSize: '22px',
             fontWeight: '500',
             color: 'var(--primary)',
           }}
@@ -65,7 +65,7 @@ export default function DiscoverPage() {
         <Text
           style={{
             fontFamily: 'var(--font-locale-body)',
-            fontSize: '12px',
+            fontSize: '11px',
             fontWeight: '400',
             color: 'var(--text-secondary)',
             textTransform: 'uppercase',
@@ -79,7 +79,7 @@ export default function DiscoverPage() {
       <ScrollView
         scrollY
         className='flex-1 overflow-y-auto flex flex-col'
-        style={{ paddingLeft: '24px', paddingRight: '24px', boxSizing: 'border-box' }}
+        style={{ paddingInlineStart: '24px', paddingInlineEnd: '24px', boxSizing: 'border-box' }}
       >
         <View style={{ height: '8px' }} />
 
@@ -122,13 +122,13 @@ export default function DiscoverPage() {
         </Text>
 
         {isLoading ? (
-          <View className='flex flex-row gap-6 w-full h-[220px]'>
-             <View className='flex-1 border-2 border-dashed border-[var(--border-disabled)] rounded-[var(--radius-xl)] flex items-center justify-center'>
+          <View style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', width: '100%', height: '220px' }}>
+             <View className='border-2 border-dashed border-[var(--border-disabled)] rounded-[var(--radius-xl)] flex items-center justify-center'>
                <Text className='text-[var(--text-secondary)] font-locale-body'>Loading Cards...</Text>
              </View>
           </View>
         ) : (
-          <View className='flex flex-row gap-6'>
+          <View style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
             {selfCareItems.map((item) => (
               <DiscoverContentCard 
                 key={item.id}

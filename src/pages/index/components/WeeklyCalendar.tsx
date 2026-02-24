@@ -33,8 +33,6 @@ function buildDayWindow(): Date[] {
 
 // Today is always the center slot (index 3 out of 0-6)
 const TODAY_SLOT = 3
-// Arrow always points to the center
-const ARROW_LEFT_PERCENT = ((TODAY_SLOT + 0.5) / 7) * 100
 
 export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarProps) {
   const locale = useAppSelector((state) => state.theme.locale)
@@ -46,7 +44,7 @@ export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarPro
   )
 
   return (
-    <View style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <View style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}>
 
       {/* Date header — headlineMedium w500 */}
       {dateLabel && (
@@ -65,15 +63,11 @@ export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarPro
       )}
 
       {/* 120px calendar strip */}
-      <View style={{ height: '120px', position: 'relative' }}>
+      <View >
 
         {/* Dotted top line */}
         <View
           style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
             height: '1px',
             backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.16) 50%, transparent 50%)',
             backgroundSize: '14px 1px',
@@ -82,33 +76,37 @@ export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarPro
           }}
         />
 
-        {/* ▼ arrow — always centered (today is always slot 3 = center) */}
+        {/* Grid Container for Arrow and Day Items */}
         <View
           style={{
-            position: 'absolute',
-            top: '-18px',
-            left: `${ARROW_LEFT_PERCENT}%`,
-            transform: 'translateX(-50%)',
-            pointerEvents: 'none',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(7, 1fr)',
+            paddingInlineStart: '4px',
+            paddingInlineEnd: '4px',
+            paddingBottom: '10px',
+            position: 'relative',
           }}
         >
-          <Text style={{ fontSize: '16px', color: 'var(--text-primary)', lineHeight: '1' }}>▼</Text>
-        </View>
 
-        {/* Day items row — paddingVertical:16 */}
-        <View
-          style={{
-            position: 'absolute',
-            top: '20px',
-            left: 0,
-            right: 0,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingLeft: '16px',
-            paddingRight: '16px',
-          }}
-        >
+          {/* Row 1: arrow — always centered (today is always column 4) */}
+          <View
+            style={{
+              gridColumn: '4',
+              gridRow: '1',
+              display: 'flex',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+              paddingBottom: '10px',
+            }}
+          >
+            <Image
+              src={SvgIcons.arrowDownFill}
+              style={{ width: '12px', height: '12px' }}
+            />
+          </View>
+
+
+          {/* Row 2: Day items */}
           {dayWindow.map((date, i) => {
             const dayLetter = weekdayFormatter.format(date)
             const isToday = i === TODAY_SLOT
@@ -126,6 +124,7 @@ export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarPro
               <View
                 key={i}
                 style={{
+                  gridRow: '2',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',

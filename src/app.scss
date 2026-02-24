@@ -6,17 +6,31 @@
 
 // Global Background for Status Bar / Overscroll
 html,
-body,
-#app,
-page {
-  min-height: 100vh;
-  height: 100%;
-  background-color: var(--scaffold-bg, #000000);
-  /* Ensure no white background leaks */
+body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
   overscroll-behavior-y: none;
-  touch-action: pan-x pan-y;
+  background-color: var(--scaffold-bg, #000000);
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#app,
+page {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--scaffold-bg, #000000);
+  overscroll-behavior-y: none;
+  animation: pageFadeIn 0.2s ease-out;
 }
 
 // Manual overrides for missing Tailwind classes

@@ -1,12 +1,16 @@
 import path from 'node:path'
 
+
 import { defineConfig, type UserConfigExport } from '@tarojs/cli'
 import tailwindcss from 'tailwindcss'
-import type { Plugin } from 'vite'
 import { UnifiedViteWeappTailwindcssPlugin as uvtw } from 'weapp-tailwindcss/vite'
 
 import devConfig from './dev'
 import prodConfig from './prod'
+
+
+// eslint-disable-next-line import/first
+import type { Plugin } from 'vite'
 
 // https://taro-docs.jd.com/docs/next/config#defineconfig-helper-function
 export default defineConfig<'vite'>(async (merge, { command, mode }) => {
@@ -52,10 +56,16 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
         {
           name: 'force-es5',
           config() {
+            const taroEnv = process.env.TARO_ENV
+            const isMiniTarget = taroEnv !== 'h5' && taroEnv !== 'rn' && taroEnv !== 'harmony'
+
             return {
               build: {
                 // Keep Vite bundling stable, then transpile emitted JS to ES5 in a post step below.
                 target: 'esnext',
+                // Mini program image components are unreliable with large inlined data URLs.
+                // Emit assets as files so <Image src> resolves to packaged paths.
+                assetsInlineLimit: isMiniTarget ? 0 : undefined,
                 minify: 'terser',
                 terserOptions: {
                   ecma: 5,
@@ -130,41 +140,7 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
             })
           }
         },
-        // {
-        //   name: 'manual-babel-transpile',
-        //   // Use transform to handle source files before bundling
-        //   // Use renderChunk to handle the final output
-        //   // Use renderChunk to handle the final output
-        //   // Use renderChunk to handle the final output
-        //   renderChunk(code, chunk) {
-        //     // Only transpile .js files
-        //     if (!chunk.fileName.endsWith('.js')) return null;
-            
-        //     try {
-        //       const babel = require('@babel/core');
-        //       const presetPath = require.resolve('@babel/preset-env');
-              
-        //       const result = babel.transformSync(code, {
-        //         presets: [
-        //           [presetPath, {
-        //             targets: {
-        //               ios: '8' // Force ES5 for Alipay
-        //             },
-        //             modules: 'commonjs' 
-        //           }]
-        //         ],
-        //         filename: chunk.fileName,
-        //         sourceMaps: false,
-        //         configFile: false,
-        //         babelrc: false
-        //       });
-        //       return { code: result.code, map: null };
-        //     } catch (e) {
-        //       console.error('Babel transpilation failed for ' + chunk.fileName, e);
-        //       return null;
-        //     }
-        //   }
-        // },
+
         {
           name: 'fix-browserslist-crash',
           enforce: 'pre',
@@ -209,15 +185,6 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
             }
           },
         },
-        {
-          name: 'configure-history-fallback',
-          configureServer(server) {
-            server.middlewares.use(require('connect-history-api-fallback')({
-              index: '/index.html', // Ensure this matches the publicPath or output structure
-              htmlAcceptHeaders: ['text/html', 'application/xhtml+xml']
-            }));
-          }
-        },
         uvtw({
           // rem to rpx
           rem2rpx: true,
@@ -249,20 +216,7 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
       publicPath: '/',
       staticDirectory: 'static',
       router: {
-        mode: 'browser', // Use browser history mode (removes #)
-        customRoutes: {
-          '/pages/index/index': '/',
-          '/pages/order/index': '/order',
-          '/pages/order_shipping/index': '/shipping',
-          '/pages/scan_box/index': '/scan',
-          '/pages/onboarding/index': '/onboarding',
-          '/pages/register/name_dob/index': '/register/name',
-          '/pages/register/setup_account/index': '/register/setup',
-          '/pages/register/otp_verification/index': '/register/verify',
-          '/pages/boxes/index': '/boxes',
-          '/pages/discover/index': '/discover',
-          '/pages/me/index': '/me',
-        }
+        mode: 'hash',
       },
 
       miniCssExtractPluginOption: {

@@ -32,28 +32,18 @@ export default function CareRoutineWidget({ routines, dateLabel, weeklyStreaks }
         overflow: 'hidden',   // outer must NOT scroll
       }}
     >
-      {/* ── STICKY HEADER: date label + weekly calendar strip ── */}
-      <View
-        style={{
-          flexShrink: 0,
-          paddingTop: '10px',
-          paddingBottom: '0px',
-          backgroundColor: 'var(--scaffold-bg)',
-
-        }}
-      >
+      
         <WeeklyCalendar
           streaks={weeklyStreaks}
           dateLabel={dateLabel || defaultDateLabel}
         />
-      </View>
-
       {/* ── SCROLLABLE BODY: routine sections ── */}
       <ScrollView
         scrollY
         showScrollbar={false}
         style={{
           flex: 1,
+          padding: '30px 0px 0px',
         }}
       >
         <HomeRoutineWidget routines={routines} />
