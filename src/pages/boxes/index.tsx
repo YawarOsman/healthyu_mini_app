@@ -196,7 +196,7 @@ export default function BoxesPage() {
               </>
             )}
 
-          <View style={{ height: '10px' }} />
+          <View style={{ height: '24px' }} />
 
             {/* Actions */}
             <View
@@ -218,12 +218,13 @@ export default function BoxesPage() {
               >
                 {t('edit_reminders') || 'Edit Reminders'}
               </Text>
+          <View style={{ height: '32px' }} />
+
             </View>
           </View>
         )}
 
           <BoxesListWidget boxes={futureBoxes} titleKey='future_boxes' />
-          <View style={{ height: '25px' }} />
           <BoxesListWidget
             boxes={completedBoxes}
             titleKey='completed_boxes'

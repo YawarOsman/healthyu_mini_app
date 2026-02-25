@@ -20,11 +20,7 @@ export default function BoxesListWidget({ boxes, titleKey, isCompleted = false }
     return null
   }
 
-  const handleBoxClick = (boxId: number) => {
-    // We'll navigate to box details if requested later
-    console.log('Navigate to box details', boxId)
-    // navigateTo(`/pages/box_details/index?id=${boxId}`)
-  }
+
 
   return (
     <View className='flex flex-col gap-4' data-theme={themeMode}>
@@ -44,7 +40,6 @@ export default function BoxesListWidget({ boxes, titleKey, isCompleted = false }
             key={box.id}
             box={box}
             isCompleted={isCompleted}
-            onClick={() => handleBoxClick(box.id)}
           />
         ))}
       </View>

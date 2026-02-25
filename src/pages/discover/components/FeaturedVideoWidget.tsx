@@ -1,5 +1,7 @@
 import { Image, View } from '@tarojs/components'
 
+import { SvgIcons } from '@/assets/icons'
+
 interface FeaturedVideoWidgetProps {
   thumbnailUrl: string
 }
@@ -7,12 +9,12 @@ interface FeaturedVideoWidgetProps {
 export default function FeaturedVideoWidget({ thumbnailUrl }: FeaturedVideoWidgetProps) {
   const src =
     thumbnailUrl;
-
   return (
     <View
-      className='w-full relative overflow-hidden'
+      className='w-full relative overflow-hidden flex'
       style={{
-        aspectRatio: '2.28'
+        aspectRatio: '2.28',
+        backgroundColor: '#1A1A1A'
       }}
     >
       <Image
@@ -27,8 +29,10 @@ export default function FeaturedVideoWidget({ thumbnailUrl }: FeaturedVideoWidge
 
       {/* Play Button Overlay */}
       <View
-        className='absolute z-20 flex items-center justify-center rounded-full border border-[var(--primary)] cursor-pointer'
+        className='absolute z-20 rounded-full border border-[var(--primary)] cursor-pointer'
         style={{
+          display: 'grid',
+          placeItems: 'center',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
@@ -37,9 +41,10 @@ export default function FeaturedVideoWidget({ thumbnailUrl }: FeaturedVideoWidge
         }}
       >
         <View style={{ marginLeft: '4px' }}>
-          <svg width='40' height='40' viewBox='0 0 24 24' fill='white'>
-            <path d='M8 5v14l11-7z' />
-          </svg>
+          <Image
+            src={SvgIcons.play}
+            style={{ width: '40px', height: '40px' }}
+          />
         </View>
       </View>
     </View>

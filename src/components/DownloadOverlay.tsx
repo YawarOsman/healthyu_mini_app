@@ -1,5 +1,4 @@
 import { Image, Text, View } from '@tarojs/components';
-import Taro from '@tarojs/taro';
 
 
 
@@ -11,7 +10,7 @@ interface DownloadOverlayProps {
   topOffset?: number;
 }
 
-export default function DownloadOverlay({ downloadText, topOffset }: DownloadOverlayProps) {
+export default function DownloadOverlay({ downloadText }: DownloadOverlayProps) {
   return (
     <View className='absolute inset-0 z-50 flex flex-col justify-end pointer-events-none'>
 
@@ -24,8 +23,8 @@ export default function DownloadOverlay({ downloadText, topOffset }: DownloadOve
           backgroundColor: 'rgba(0,0,0,0.7)',
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
-          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 25%, black 50%, black 100%)',
-          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 25%, black 50%, black 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 18%, black 60%, black 100%)',
+          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 18%, black 60%, black 100%)',
         }}
       />
       
