@@ -13,13 +13,14 @@ import { t } from '@/i18n'
 import { isArabicLocale } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
 import { switchTab } from '@/utils/navigation'
-import { hideHomeButtonSafely } from '@/utils/ui'
+import { hideHomeButtonSafely, hideNativeTabBarSafely } from '@/utils/ui'
 
 import BoxesListWidget from './components/BoxesListWidget'
 
 export default function BoxesPage() {
   useDidShow(() => {
     void hideHomeButtonSafely();
+    void hideNativeTabBarSafely();
   });
   const themeMode = useAppSelector((state) => state.theme.themeMode)
   const locale = useAppSelector((state) => state.theme.locale)

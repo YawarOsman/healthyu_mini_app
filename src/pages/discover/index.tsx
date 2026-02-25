@@ -9,7 +9,7 @@ import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
 import { switchTab } from '@/utils/navigation'
-import { hideHomeButtonSafely } from '@/utils/ui'
+import { hideHomeButtonSafely, hideNativeTabBarSafely } from '@/utils/ui'
 
 import DiscoverContentCard from './components/DiscoverContentCard'
 import FeaturedVideoWidget from './components/FeaturedVideoWidget'
@@ -21,6 +21,7 @@ export default function DiscoverPage() {
 
   useDidShow(() => {
     void hideHomeButtonSafely();
+    void hideNativeTabBarSafely();
   });
 
   const handleTabPress = (index: number) => {

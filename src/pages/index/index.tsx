@@ -10,7 +10,7 @@ import { t } from '@/i18n'
 import type { AppDispatch } from '@/store'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { switchTab } from '@/utils/navigation'
-import { hideHomeButtonSafely } from '@/utils/ui'
+import { hideHomeButtonSafely, hideNativeTabBarSafely } from '@/utils/ui'
 
 // Page-level widget components
 import AppBar from './components/AppBar'
@@ -250,6 +250,7 @@ export default function HomePage() {
     checkOnboarding()
     Taro.setNavigationBarTitle({ title: '' })
     void hideHomeButtonSafely()
+    void hideNativeTabBarSafely()
 
     if (!authInfoFetched) {
       setAuthInfoFetched(true)

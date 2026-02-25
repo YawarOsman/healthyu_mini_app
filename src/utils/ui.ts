@@ -33,3 +33,33 @@ export const hideHomeButtonSafely = () => {
 
   return Promise.resolve()
 }
+
+// Keep tabBar config for switchTab registration, but hide the native
+// bar so only the custom React bottom bar is visible.
+export const hideNativeTabBarSafely = () => {
+  const doHide = () => {
+    try {
+      const taroWithHideTabBar = Taro as any
+      if (typeof taroWithHideTabBar.hideTabBar === 'function') {
+        taroWithHideTabBar.hideTabBar({ animation: false })
+      }
+    } catch (error) {
+      console.warn('[ui] Taro.hideTabBar failed', error)
+    }
+
+    try {
+      const maybeMy = typeof globalThis !== 'undefined' ? (globalThis as any).my : undefined
+      if (maybeMy && typeof maybeMy.hideTabBar === 'function') {
+        maybeMy.hideTabBar()
+      }
+    } catch (error) {
+      console.warn('[ui] my.hideTabBar failed', error)
+    }
+  }
+
+  doHide()
+  setTimeout(doHide, 120)
+  setTimeout(doHide, 320)
+
+  return Promise.resolve()
+}

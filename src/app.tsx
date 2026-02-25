@@ -5,7 +5,7 @@ import { fetchDiscover } from '@/features/discover/actions'
 import { fetchBox } from '@/features/order/actions'
 import configStore from '@/store'
 import type { RootState } from '@/store'
-import { hideHomeButtonSafely } from '@/utils/ui'
+import { hideHomeButtonSafely, hideNativeTabBarSafely } from '@/utils/ui'
 
 import './app.scss'
 import './styles/theme.scss'
@@ -45,10 +45,13 @@ class App extends Component<PropsWithChildren> {
       //   title: currentIsFlavie ? 'Flavie' : 'Mann'
       // })
     })
+
+    void hideNativeTabBarSafely()
   }
 
   componentDidShow() {
     void hideHomeButtonSafely();
+    void hideNativeTabBarSafely();
   }
 
   componentDidHide() {}

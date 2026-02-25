@@ -16,7 +16,7 @@ import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
 import { switchTab } from '@/utils/navigation'
-import { hideHomeButtonSafely } from '@/utils/ui'
+import { hideHomeButtonSafely, hideNativeTabBarSafely } from '@/utils/ui'
 
 // ─── Types ───
 
@@ -185,6 +185,7 @@ function ProfileSection({ title, items }: SectionProps) {
 export default function MePage() {
   useDidShow(() => {
     void hideHomeButtonSafely();
+    void hideNativeTabBarSafely();
   });
 
   const themeMode = useAppSelector((state) => state.theme.themeMode);
