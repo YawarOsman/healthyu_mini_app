@@ -12,7 +12,7 @@ import { getLocalizedName } from '@/features/order/types'
 import { t } from '@/i18n'
 import { isArabicLocale } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
-import { redirectTo } from '@/utils/navigation'
+import { switchTab } from '@/utils/navigation'
 import { hideHomeButtonSafely } from '@/utils/ui'
 
 import BoxesListWidget from './components/BoxesListWidget'
@@ -56,7 +56,7 @@ export default function BoxesPage() {
     if (!targetRoute || targetRoute === ROUTES.BOXES) {
       return
     }
-    redirectTo(targetRoute).catch((error) => {
+    switchTab(targetRoute).catch((error) => {
       console.error('Failed to switch bottom section', { index, targetRoute, error })
     })
   }

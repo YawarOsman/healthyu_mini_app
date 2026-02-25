@@ -8,7 +8,7 @@ import DownloadOverlay from '@/components/DownloadOverlay'
 import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
-import { redirectTo } from '@/utils/navigation'
+import { switchTab } from '@/utils/navigation'
 import { hideHomeButtonSafely } from '@/utils/ui'
 
 import DiscoverContentCard from './components/DiscoverContentCard'
@@ -29,7 +29,7 @@ export default function DiscoverPage() {
     if (!targetRoute || targetRoute === ROUTES.DISCOVER) {
       return
     }
-    redirectTo(targetRoute).catch((error) => {
+    switchTab(targetRoute).catch((error) => {
       console.error('Failed to switch bottom section', { index, targetRoute, error })
     })
   }

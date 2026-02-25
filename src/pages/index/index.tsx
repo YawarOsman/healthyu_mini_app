@@ -9,7 +9,7 @@ import { setUserInfo } from '@/features/auth/actions'
 import { t } from '@/i18n'
 import type { AppDispatch } from '@/store'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { redirectTo } from '@/utils/navigation'
+import { switchTab } from '@/utils/navigation'
 import { hideHomeButtonSafely } from '@/utils/ui'
 
 // Page-level widget components
@@ -271,7 +271,14 @@ export default function HomePage() {
     if (!targetRoute || targetRoute === ROUTES.HOME) {
       return
     }
-    redirectTo(targetRoute).catch((error) => {
+         // Debug: log exactly what we're passing
+      console.log('switchTab attempt:', {
+        targetRoute,
+        currentPages: Taro.getCurrentPages().map(p => p.route),
+        tabBarConfig: 'check app.config',
+      })
+    
+    switchTab(targetRoute).catch((error) => {
       console.error('Failed to switch bottom section', { index, targetRoute, error })
     })
   }
