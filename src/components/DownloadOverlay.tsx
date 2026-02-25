@@ -1,5 +1,5 @@
 import { Image, Text, View } from '@tarojs/components';
-
+import Taro from '@tarojs/taro';
 
 
 import { SvgIcons } from '@/assets/icons'
@@ -11,6 +11,19 @@ interface DownloadOverlayProps {
 }
 
 export default function DownloadOverlay({ downloadText }: DownloadOverlayProps) {
+  const handleDownloadClick = (url: string) => {
+    Taro.setClipboardData({
+      data: url,
+      success: () => {
+        Taro.showToast({
+          title: t('link_copied_to_clipboard') || 'Link copied. Open your browser to download.',
+          icon: 'none',
+          duration: 3000
+        })
+      }
+    })
+  }
+
   return (
     <View className='absolute inset-0 z-50 flex flex-col justify-end pointer-events-none'>
 
@@ -55,7 +68,7 @@ export default function DownloadOverlay({ downloadText }: DownloadOverlayProps) 
               boxSizing: 'border-box',
               border: '1px solid rgba(255,255,255,0.2)' 
             }}
-            onClick={() => window.open('https://apps.apple.com/us/app/bourse-%D8%A8%DB%86%D8%B1%D8%B3%DB%95-%D8%A7%D9%84%D8%A8%D9%88%D8%B1%D8%B5%D8%A9/id6749684112', '_blank')}
+            onClick={() => handleDownloadClick('https://apps.apple.com/us/app/bourse-%D8%A8%DB%86%D8%B1%D8%B3%DB%95-%D8%A7%D9%84%D8%A8%D9%88%D8%B1%D8%B5%D8%A9/id6749684112')}
           >
             <Image src={SvgIcons.appleIcon} style={{ width: '30px', height: '30px' }} />
             <View className='flex flex-col items-start'>
@@ -92,7 +105,7 @@ export default function DownloadOverlay({ downloadText }: DownloadOverlayProps) 
               boxSizing: 'border-box',
               border: '1px solid rgba(255,255,255,0.2)' 
             }}
-            onClick={() => window.open('https://play.google.com/store/apps/details?id=com.architech.bourse', '_blank')}
+            onClick={() => handleDownloadClick('https://play.google.com/store/apps/details?id=com.architech.bourse')}
           >
             <Image src={SvgIcons.googleIcon} style={{ width: '28px', height: '28px' }} />
             <View className='flex flex-col items-start'>

@@ -172,6 +172,8 @@ const en = {
   'settings': 'Settings',
   'cancel': 'Cancel',
   'confirm': 'Confirm',
+
+  'link_copied_to_clipboard': 'Link copied to clipboard',
 }
 
 export default en

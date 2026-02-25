@@ -168,6 +168,9 @@ const ar = {
   'settings': 'الإعدادات',
   'cancel': 'إلغاء',
   'confirm': 'تأكيد',
+  
+  
+  'link_copied_to_clipboard': 'تم نسخ الرابط إلى الحافظة',
 }
 
 export default ar

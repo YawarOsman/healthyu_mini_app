@@ -21,13 +21,15 @@ const tabs = [
   { icon: profileIcon, labelKey: 'me' },
 ]
 
+const systemInfo = Taro.getSystemInfoSync()
+const isAndroid = systemInfo.platform === 'android'
+
 export default function BottomNavBar({
   activeIndex = 0,
   lockedTabs = true,
   onTabPress,
 }: BottomNavBarProps) {
   const themeMode = useAppSelector((state) => state.theme.themeMode)
-  const isAndroid = Taro.getSystemInfoSync().platform === 'android'
 
   return (
     <View

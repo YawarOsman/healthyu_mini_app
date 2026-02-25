@@ -272,13 +272,7 @@ export default function HomePage() {
     if (!targetRoute || targetRoute === ROUTES.HOME) {
       return
     }
-         // Debug: log exactly what we're passing
-      console.log('switchTab attempt:', {
-        targetRoute,
-        currentPages: Taro.getCurrentPages().map(p => p.route),
-        tabBarConfig: 'check app.config',
-      })
-    
+
     switchTab(targetRoute).catch((error) => {
       console.error('Failed to switch bottom section', { index, targetRoute, error })
     })

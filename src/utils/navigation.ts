@@ -29,18 +29,14 @@ const normalizeMiniUrl = (url: string) => {
   return trimmed
 }
 
-const getTopRoutePath = () => {
-  try {
-    const pages = Taro.getCurrentPages()
-    const top = pages[pages.length - 1]
-    const route = top?.route
-    if (typeof route === 'string' && route.length > 0) {
-      return `/${route.replace(/^\//, '')}`
-    }
-  } catch (_error) {
-    // Ignore route introspection failures in non-mini runtimes.
-  }
-  return ''
+const SWITCH_TAB_COOLDOWN_MS = 260
+let switchTabCoolingDown = false
+let lastSwitchTabUrl = ''
+let lastSwitchTabAt = 0
+const releaseSwitchTabCooldown = () => {
+  setTimeout(() => {
+    switchTabCoolingDown = false
+  }, SWITCH_TAB_COOLDOWN_MS)
 }
 
 const invokeNav = (method: NavMethod, url: string) => {
@@ -87,38 +83,30 @@ export const redirectTo = (url: string) => callNav('redirectTo', url)
 export const reLaunch = (url: string) => callNav('reLaunch', url)
 export const switchTab = (url: string) => {
   const normalizedUrl = normalizeMiniUrl(url)
-  const targetPath = normalizedUrl.split('?')[0]
-  const beforePath = getTopRoutePath()
-  return callNav('switchTab', normalizedUrl).then((res) => {
-    const immediatePath = getTopRoutePath()
-    console.log('[navigation:switchTab] success', {
-      url: normalizedUrl,
-      beforePath,
-      immediatePath,
-    })
+  const now = Date.now()
+  const isDuplicateInCooldown =
+    switchTabCoolingDown &&
+    normalizedUrl === lastSwitchTabUrl &&
+    now - lastSwitchTabAt < SWITCH_TAB_COOLDOWN_MS
 
-    // Some Alipay runtime/build combinations acknowledge switchTab success
-    // without changing the visible page. Verify and force a fallback only
-    // when the route is still unchanged shortly after success.
-    setTimeout(() => {
-      const delayedPath = getTopRoutePath()
-      if (targetPath && delayedPath && delayedPath !== targetPath) {
-        console.warn('[navigation:switchTab] route did not change, fallback to reLaunch', {
-          url: normalizedUrl,
-          targetPath,
-          delayedPath,
-        })
-        void callNav('reLaunch', normalizedUrl).catch((error) => {
-          console.error('[navigation:switchTab] reLaunch fallback failed', {
-            url: normalizedUrl,
-            error,
-          })
-        })
-      }
-    }, 150)
+  if (isDuplicateInCooldown) {
+    return Promise.resolve()
+  }
 
-    return res
-  })
+  switchTabCoolingDown = true
+  lastSwitchTabUrl = normalizedUrl
+  lastSwitchTabAt = now
+
+  return callNav('switchTab', normalizedUrl).then(
+    (res) => {
+      releaseSwitchTabCooldown()
+      return res
+    },
+    (error) => {
+      releaseSwitchTabCooldown()
+      throw error
+    },
+  )
 }
 
 // Add this export — use it everywhere you currently call redirectTo for tabs
