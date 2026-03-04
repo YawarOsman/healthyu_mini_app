@@ -1,4 +1,5 @@
 import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
+
 import { useState } from 'react'
 
 
@@ -13,19 +14,9 @@ import {
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
 
-interface DueRoutineCardProps {
-  routines: RoutineEntity[]
-  onStart?: (routine: RoutineEntity) => void
-  onMarkDone?: (routine: RoutineEntity) => void
-  onTap?: (routine: RoutineEntity) => void
-}
 
-export default function DueRoutineCard({
-  routines,
-  onStart,
-  onMarkDone,
-  onTap,
-}: DueRoutineCardProps) {
+
+export default function DueRoutineCard({ routines }: {routines: RoutineEntity[]}) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const locale = useAppSelector((state) => state.theme.locale)
   
@@ -50,7 +41,7 @@ export default function DueRoutineCard({
   return (
     <View
       style={{
-        height: '310px',
+        height: '260px',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -87,12 +78,10 @@ export default function DueRoutineCard({
         {routines.map((routine, idx) => {
           const title = getLocalizedProductName(routine, locale)
           const description = getLocalizedDescription(routine, locale)
-          const hasDuration = routine.timeToRemind.usageDurationInMinutes > 0
           
           return (
             <SwiperItem key={routine.id || idx}>
               <View
-                onClick={() => onTap?.(routine)}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -182,63 +171,7 @@ export default function DueRoutineCard({
                     )}
                   </View>
                 </View>
-
-                <View style={{ height: '24px' }} />
-
-                {/* Bottom buttons row */}
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: '12px',
-                  }}
-                >
-                  {hasDuration && (
-                    <View
-                      onClick={(e) => { e.stopPropagation?.(); onStart?.(routine) }}
-                      className='btn-filled active:opacity-85'
-                      style={{
-                        height: '46px',
-                        paddingLeft: '16px',
-                        paddingRight: '16px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        minHeight: 'auto',
-                      }}
-                    >
-                      <Text style={{ fontSize: '16px', fontWeight: '600', color: 'var(--scaffold-bg)', fontFamily: 'var(--font-juana)' }}>
-                        {t('start')}
-                      </Text>
-                    </View>
-                  )}
-
-                  <View
-                    onClick={(e) => { e.stopPropagation?.(); onMarkDone?.(routine) }}
-                    style={{
-                      height: '46px',
-                      paddingLeft: '12px',
-                      paddingRight: '12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: 'transparent',
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: '14px',
-                        fontWeight: '700',
-                        color: 'var(--text-secondary)',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {t('mark_as_done')}
-                    </Text>
-                  </View>
-                </View>
+              
               </View>
             </SwiperItem>
           )

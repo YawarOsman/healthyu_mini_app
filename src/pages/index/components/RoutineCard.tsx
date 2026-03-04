@@ -1,7 +1,6 @@
 import { View, Text, Image } from '@tarojs/components'
 
 import { SvgIcons } from '@/assets/icons'
-import { t } from '@/i18n'
 
 export interface RoutineCardProps {
   type: 'overdue' | 'later' | 'completed'
@@ -9,20 +8,15 @@ export interface RoutineCardProps {
   title: string
   description?: string
   imgSrc?: string      // product image URL
-  onMarkDone?: () => void
-  onTap?: () => void
 }
 
-export default function RoutineCard({ type, title, description, time, imgSrc, onMarkDone, onTap }: RoutineCardProps) {
+export default function RoutineCard({ type, title, description, time, imgSrc }: RoutineCardProps) {
   const isCompleted = type === 'completed'
-  const isOverdue = type === 'overdue'
 
-  // Prioritize time for overdue, description for others
-  const subText = isOverdue ? time : description
+  
 
   return (
     <View
-      onClick={onTap}
       style={{
         paddingBottom: '8px',
         minHeight: '48px',
@@ -51,8 +45,7 @@ export default function RoutineCard({ type, title, description, time, imgSrc, on
           style={{
             width: '100%',
             height: '100%',
-            filter: isOverdue ? 'var(--filter-error)' : isCompleted
-              ? 'var(--filter-primary)'
+            filter: isCompleted ? 'var(--filter-primary)'
               : 'brightness(0) invert(0.9)',
           }}
         />
@@ -86,7 +79,7 @@ export default function RoutineCard({ type, title, description, time, imgSrc, on
         </Text>
 
 
-        {subText && (
+        {description && (
           <Text
             style={{
               fontSize: '16px',
@@ -96,7 +89,7 @@ export default function RoutineCard({ type, title, description, time, imgSrc, on
               display: 'block',
             }}
           >
-            {subText}
+            {description}
           </Text>
         )}
       </View>
@@ -113,21 +106,6 @@ export default function RoutineCard({ type, title, description, time, imgSrc, on
              }}
           />
         </View>
-      ) : isOverdue ? (
-        // TextButton "Mark as Done": bodyMedium w700, color error
-        <Text
-          onClick={(e) => { e.stopPropagation?.(); onMarkDone?.() }}
-          style={{
-            fontSize: '14px',
-            fontWeight: '700',
-            color: 'var(--error)',
-            whiteSpace: 'nowrap',
-            paddingInlineEnd: '6px',
-            paddingInlineStart: '6px',
-          }}
-        >
-          {t('mark_as_done')}
-        </Text>
       ) : (
 
         <View
@@ -138,18 +116,17 @@ export default function RoutineCard({ type, title, description, time, imgSrc, on
             minWidth: '14px',
           }}
         >
-         <Text
-           style={{
-              fontSize: '14px',
-              fontWeight: '600',
+          <Text
+            style={{
+              fontSize: '13px',
               color: 'var(--text-secondary)',
               whiteSpace: 'nowrap',
               paddingInlineEnd: '6px',
               paddingInlineStart: '6px',
             }}
           >
-          {time}
-        </Text>
+            {time}
+          </Text>
         </View>
       )}
     </View>

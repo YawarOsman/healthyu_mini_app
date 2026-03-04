@@ -106,7 +106,7 @@ const en = {
   'due_now': 'Due now',
   'start': 'Start',
   'mark_as_done': 'Mark as Done',
-  'minutes_overdue': '{minutes} minutes overdue',
+  'minutes_overdue': '{minutes} min overdue',
   'delivery_date_tbd': 'TBD',
   'hello_fallback_name': 'User',
   'loading': 'Loading...',
