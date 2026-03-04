@@ -2,7 +2,8 @@ import { Component, PropsWithChildren } from 'react'
 import { Provider } from 'react-redux'
 
 import { fetchDiscover } from '@/features/discover/actions'
-import { fetchBox } from '@/features/order/actions'
+import { fetchHome } from '@/features/home/actions'
+import { fetchBox, fetchFutureBoxes, fetchUserBoxes } from '@/features/order/actions'
 import configStore from '@/store'
 import type { RootState } from '@/store'
 import { hideHomeButtonSafely, hideNativeTabBarSafely } from '@/utils/ui'
@@ -18,8 +19,17 @@ class App extends Component<PropsWithChildren> {
     // Fetch box data on app load
     store.dispatch(fetchBox())
 
+    // Fetch home page data on app load
+    store.dispatch(fetchHome())
+
     // Fetch discover page data on app load
     store.dispatch(fetchDiscover())
+
+    // Fetch user's active/completed boxes on app load
+    store.dispatch(fetchUserBoxes())
+
+    // Fetch future boxes catalogue data on app load
+    store.dispatch(fetchFutureBoxes())
 
     // Apply theme to document root
     const themeMode = getThemeMode(store.getState())

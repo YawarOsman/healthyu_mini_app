@@ -91,6 +91,92 @@ const MOCK_BOX: BoxEntity = {
   ],
 }
 
+const MOCK_USER_BOXES: BoxEntity[] = [
+  {
+    id: 1,
+    nameEn: 'Nail Serum',
+    nameAr: 'سيروم الأظافر',
+    headlineEn: 'Vitamin B7 + Keratin',
+    headlineAr: 'فيتامين ب7 + كيراتين',
+    videoUrl: null,
+    videoThumbnail: null,
+    image: 'https://picsum.photos/seed/nail/200',
+    isCurrent: false,
+    isOverdue: true,
+    isLater: false,
+    isCompleted: false,
+    genres: [
+      {
+        id: 1,
+        nameEn: 'Nails & Hair',
+        nameAr: 'الشعر والأظافر',
+        imageUrl: 'https://picsum.photos/seed/genre1/20',
+      },
+    ],
+    items: [
+      {
+        id: 1,
+        nameEn: 'Nail Serum Drops',
+        nameAr: 'قطرات سيروم الأظافر',
+        displayImage: 'https://picsum.photos/seed/item1/100',
+        ingredients: [],
+      },
+    ],
+  },
+  {
+    id: 2,
+    nameEn: 'Magnesium',
+    nameAr: 'مغنيسيوم',
+    headlineEn: 'Shines your skin and protects nails.',
+    headlineAr: 'يضيء بشرتك ويحمي الأظافر.',
+    videoUrl: null,
+    videoThumbnail: null,
+    image: 'https://picsum.photos/seed/mag/200',
+    isCurrent: true,
+    isOverdue: false,
+    isLater: false,
+    isCompleted: false,
+    genres: [
+      {
+        id: 2,
+        nameEn: 'Skin Immunity',
+        nameAr: 'مناعة البشرة',
+        imageUrl: 'https://picsum.photos/seed/genre2/20',
+      },
+      {
+        id: 3,
+        nameEn: 'Recovery',
+        nameAr: 'التعافي',
+        imageUrl: 'https://picsum.photos/seed/genre3/20',
+      },
+    ],
+    items: [
+      {
+        id: 2,
+        nameEn: 'Magnesium Tablets',
+        nameAr: 'أقراص المغنيسيوم',
+        displayImage: 'https://picsum.photos/seed/item2/100',
+        ingredients: [],
+      },
+      {
+        id: 3,
+        nameEn: 'Skin Balm',
+        nameAr: 'بلسم البشرة',
+        displayImage: 'https://picsum.photos/seed/item3/100',
+        ingredients: [],
+      },
+    ],
+  },
+]
+
+export async function fetchUserBoxesData(): Promise<ApiResponse<BoxEntity[]>> {
+  return {
+    success: true,
+    data: MOCK_USER_BOXES,
+    error: null,
+  }
+}
+
 /**
  * Fetch box data from the server.
  * Currently returns mock data — swap with a real HTTP call when ready.
@@ -108,6 +194,31 @@ export async function fetchBoxData(): Promise<ApiResponse<BoxEntity>> {
   return {
     success: true,
     data: MOCK_BOX,
+    error: null,
+  }
+}
+
+const MOCK_FUTURE_BOXES: BoxEntity[] = Array.from({ length: 6 }).map((_, i) => ({
+  id: 1000 + i,
+  nameEn: `Future Box ${i + 1}`,
+  nameAr: `صندوق مستقبلي ${i + 1}`,
+  headlineEn: 'Unlock to view contents',
+  headlineAr: 'افتح لعرض المحتويات',
+  image: `https://picsum.photos/seed/future${i}/200`,
+  videoUrl: null,
+  videoThumbnail: null,
+  isCurrent: false,
+  isOverdue: false,
+  isLater: true,
+  isCompleted: false,
+  genres: [],
+  items: [],
+}))
+
+export async function fetchFutureBoxesData(): Promise<ApiResponse<BoxEntity[]>> {
+  return {
+    success: true,
+    data: MOCK_FUTURE_BOXES,
     error: null,
   }
 }

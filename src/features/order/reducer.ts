@@ -11,6 +11,7 @@ export interface OrderState {
   // User order tracking
   isUserOrderedABox: boolean
   boxes: BoxEntity[]
+  futureBoxes: BoxEntity[]
   estimatedDeliveryDate: string | null
 
   // Cities
@@ -24,59 +25,14 @@ export interface OrderState {
   isFormSubmitted: boolean
 }
 
-const MOCK_ROUTINE_BOXES: BoxEntity[] = [
-  {
-    id: 1,
-    nameEn: 'Nail Serum',
-    nameAr: 'سيروم الأظافر',
-    headlineEn: 'Vitamin B7 + Keratin',
-    headlineAr: 'فيتامين ب7 + كيراتين',
-    videoUrl: null,
-    videoThumbnail: null,
-    image: 'https://picsum.photos/seed/nail/200',
-    isCurrent: false,
-    isOverdue: true,
-    isLater: false,
-    isCompleted: false,
-    genres: [
-      { id: 1, nameEn: 'Nails & Hair', nameAr: 'الشعر والأظافر', imageUrl: 'https://picsum.photos/seed/genre1/20' },
-    ],
-    items: [
-      { id: 1, nameEn: 'Nail Serum Drops', nameAr: 'قطرات سيروم الأظافر', displayImage: 'https://picsum.photos/seed/item1/100', ingredients: [] },
-    ],
-  },
-  {
-    id: 2,
-    nameEn: 'Magnesium',
-    nameAr: 'مغنيسيوم',
-    headlineEn: 'Shines your skin and protects nails.',
-    headlineAr: 'يضيء بشرتك ويحمي الأظافر.',
-    videoUrl: null,
-    videoThumbnail: null,
-    image: 'https://picsum.photos/seed/mag/200',
-    isCurrent: true,
-    isOverdue: false,
-    isLater: false,
-    isCompleted: false,
-    genres: [
-      { id: 2, nameEn: 'Skin Immunity', nameAr: 'مناعة البشرة', imageUrl: 'https://picsum.photos/seed/genre2/20' },
-      { id: 3, nameEn: 'Recovery', nameAr: 'التعافي', imageUrl: 'https://picsum.photos/seed/genre3/20' },
-    ],
-    items: [
-      { id: 2, nameEn: 'Magnesium Tablets', nameAr: 'أقراص المغنيسيوم', displayImage: 'https://picsum.photos/seed/item2/100', ingredients: [] },
-      { id: 3, nameEn: 'Skin Balm', nameAr: 'بلسم البشرة', displayImage: 'https://picsum.photos/seed/item3/100', ingredients: [] },
-    ],
-  },
-
-]
-
 const INITIAL_STATE: OrderState = {
   box: null,
   loading: false,
   error: null,
 
   isUserOrderedABox: true,
-  boxes: MOCK_ROUTINE_BOXES,
+  boxes: [],
+  futureBoxes: [],
   estimatedDeliveryDate: null,
 
   cities: [],
@@ -110,6 +66,9 @@ const orderSlice = createSlice({
     },
     setUserBoxes: (state, action: PayloadAction<BoxEntity[]>) => {
       state.boxes = action.payload
+    },
+    setFutureBoxes: (state, action: PayloadAction<BoxEntity[]>) => {
+      state.futureBoxes = action.payload
     },
     setEstimatedDelivery: (state, action: PayloadAction<string | null>) => {
       state.estimatedDeliveryDate = action.payload
@@ -145,6 +104,7 @@ export const {
   fetchBoxFailure,
   setUserOrderedBox,
   setUserBoxes,
+  setFutureBoxes,
   setEstimatedDelivery,
   fetchCitiesRequest,
   fetchCitiesSuccess,

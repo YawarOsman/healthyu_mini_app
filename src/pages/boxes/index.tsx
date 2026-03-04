@@ -26,28 +26,11 @@ export default function BoxesPage() {
   const locale = useAppSelector((state) => state.theme.locale)
   const isArabic = isArabicLocale(locale)
   const boxes = useAppSelector((state) => state.order.boxes)
+  const futureBoxes = useAppSelector((state) => state.order.futureBoxes)
   const isFlavie = useAppSelector((state) => state.theme.isFlavie)
 
   const currentBox = boxes.find((box) => box.isCurrent)
   const currentBoxIndex = boxes.findIndex((box) => box.isCurrent)
-  
-  // Dummy 6 "Future Boxes" just for this paywalled screen
-  const futureBoxes = Array.from({ length: 6 }).map((_, i) => ({
-    id: 1000 + i,
-    nameEn: `Future Box ${i + 1}`,
-    nameAr: `صندوق مستقبلي ${i + 1}`,
-    headlineEn: 'Unlock to view contents',
-    headlineAr: 'افتح لعرض المحتويات',
-    image: `https://picsum.photos/seed/future${i}/200`,
-    videoUrl: null,
-    videoThumbnail: null,
-    isCurrent: false,
-    isOverdue: false,
-    isLater: true,
-    isCompleted: false,
-    genres: [],
-    items: [],
-  }))
   
   const completedBoxes = boxes.filter((box) => box.isCompleted)
 

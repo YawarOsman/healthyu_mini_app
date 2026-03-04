@@ -1,6 +1,6 @@
-import { fetchDiscoverData } from '@/services/discover'
 import type { AppDispatch } from '@/store'
 
+import { fetchDiscoverData } from './api'
 import { fetchDiscoverRequest, fetchDiscoverSuccess, fetchDiscoverFailure } from './reducer'
 
 export const fetchDiscover = () => async (dispatch: AppDispatch) => {

@@ -1,7 +1,7 @@
 import { t } from '@/i18n'
 import type { AppDispatch } from '@/store'
 
-import { fetchBoxData, fetchCitiesData } from './api'
+import { fetchBoxData, fetchCitiesData, fetchFutureBoxesData, fetchUserBoxesData } from './api'
 import {
   fetchBoxRequest,
   fetchBoxSuccess,
@@ -15,6 +15,7 @@ import {
   submitShippingForm,
   setUserOrderedBox,
   setUserBoxes,
+  setFutureBoxes,
   setEstimatedDelivery,
 } from './reducer'
 
@@ -49,6 +50,28 @@ export const fetchCities = () => async (dispatch: AppDispatch) => {
   }
 }
 
+export const fetchUserBoxes = () => async (dispatch: AppDispatch) => {
+  try {
+    const response = await fetchUserBoxesData()
+    if (response.success && response.data) {
+      dispatch(setUserBoxes(response.data))
+    }
+  } catch (_error: unknown) {
+    // Keep current state on failure; do not interrupt the app flow.
+  }
+}
+
+export const fetchFutureBoxes = () => async (dispatch: AppDispatch) => {
+  try {
+    const response = await fetchFutureBoxesData()
+    if (response.success && response.data) {
+      dispatch(setFutureBoxes(response.data))
+    }
+  } catch (_error: unknown) {
+    // Keep current state on failure; this list is optional UI content.
+  }
+}
+
 export {
   setCity,
   setStreetAddress,
@@ -56,5 +79,6 @@ export {
   submitShippingForm,
   setUserOrderedBox,
   setUserBoxes,
+  setFutureBoxes,
   setEstimatedDelivery,
 }
