@@ -41,6 +41,8 @@ export default defineAppConfig({
     navigationStyle: 'custom',
     backgroundColor: '#000000',
     transparentTitle: 'always',
+    allowsBounceVertical: "NO",
+    enablePullDownRefresh: false,
     titlePenetrate: 'YES',
   },
 })
