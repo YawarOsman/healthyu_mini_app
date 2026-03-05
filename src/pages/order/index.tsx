@@ -23,7 +23,7 @@ export default function OrderPage() {
   // Genre dot colors
   const genreColors = ['#EB9E74', '#5B9BD5', '#7BC67E', '#D4A5D8']
 
-  if (loading || !box) {
+  if (loading) {
     return (
       <View
         className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`}
@@ -37,7 +37,7 @@ export default function OrderPage() {
           style={{ paddingTop: `${statusBarHeight + navBarHeight}px` }}
         >
           <Text style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-locale-body)', fontSize: '16px' }}>
-            {loading ? t('loading') : t('no_data')}
+            {t('loading')}
           </Text>
         </View>
       </View>
@@ -59,6 +59,27 @@ export default function OrderPage() {
         >
           <Text style={{ color: 'var(--error)', fontFamily: 'var(--font-locale-body)', fontSize: '16px' }}>
             {error}
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
+  if (!box) {
+    return (
+      <View
+        className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`}
+        data-theme={themeMode}
+      >
+        <RefinedAppBar
+          actions={<ProgressDots current={0} total={3} />}
+        />
+        <View
+          className='flex-1 flex items-center justify-center'
+          style={{ paddingTop: `${statusBarHeight + navBarHeight}px` }}
+        >
+          <Text style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-locale-body)', fontSize: '16px' }}>
+            {t('no_data')}
           </Text>
         </View>
       </View>
