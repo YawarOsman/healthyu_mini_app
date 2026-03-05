@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { fetchDiscover } from '@/features/discover/actions'
 import { fetchHome } from '@/features/home/actions'
 import { fetchBox, fetchFutureBoxes, fetchUserBoxes } from '@/features/order/actions'
+import { setCurrentLocale } from '@/i18n'
 import configStore from '@/store'
 import type { RootState } from '@/store'
 import { hideHomeButtonSafely, hideNativeTabBarSafely } from '@/utils/ui'
@@ -13,6 +14,7 @@ import './styles/theme.scss'
 
 const store = configStore()
 const getThemeMode = (state: RootState) => state.theme.themeMode
+const getLocale = (state: RootState) => state.theme.locale
 
 class App extends Component<PropsWithChildren> {
   componentDidMount() {
@@ -31,10 +33,15 @@ class App extends Component<PropsWithChildren> {
     // Fetch future boxes catalogue data on app load
     store.dispatch(fetchFutureBoxes())
 
-    // Apply theme to document root
-    const themeMode = getThemeMode(store.getState())
+    const initialState = store.getState()
+    let currentTheme = getThemeMode(initialState)
+    let currentLocale = getLocale(initialState)
+    setCurrentLocale(currentLocale)
+
+    // Apply theme/locale to document root
     if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', themeMode)
+      document.documentElement.setAttribute('data-theme', currentTheme)
+      document.documentElement.setAttribute('lang', currentLocale)
     }
     
     // Set initial navigation bar title - DISABLED
@@ -42,12 +49,25 @@ class App extends Component<PropsWithChildren> {
     //   title: isFlavie ? 'Flavie' : 'Mann'
     // })
 
-    // Subscribe to theme changes
+    // Subscribe to theme/locale changes
     store.subscribe(() => {
-      const currentTheme = getThemeMode(store.getState())
-      
-      if (typeof document !== 'undefined') {
-        document.documentElement.setAttribute('data-theme', currentTheme)
+      const state = store.getState()
+      const nextTheme = getThemeMode(state)
+      const nextLocale = getLocale(state)
+
+      if (nextTheme !== currentTheme) {
+        currentTheme = nextTheme
+        if (typeof document !== 'undefined') {
+          document.documentElement.setAttribute('data-theme', currentTheme)
+        }
+      }
+
+      if (nextLocale !== currentLocale) {
+        currentLocale = nextLocale
+        setCurrentLocale(currentLocale)
+        if (typeof document !== 'undefined') {
+          document.documentElement.setAttribute('lang', currentLocale)
+        }
       }
       
       // Update navigation bar title on change - DISABLED

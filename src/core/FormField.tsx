@@ -1,6 +1,6 @@
-import { View, Text, Input, ITouchEvent } from '@tarojs/components'
+import { View, Text, Input } from '@tarojs/components'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 
 // ─── Reusable Form Field ───
 // Styled text input with label, focus-only border, grey-900 background,
@@ -89,18 +89,6 @@ interface DropdownFieldProps {
 
 export function DropdownField({ label, value, placeholder, options, onSelect, error }: DropdownFieldProps) {
   const [open, setOpen] = useState(false)
-  const containerRef = useRef<HTMLElement | null>(null)
-
-  useEffect(() => {
-    if (!open) return
-    const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [open])
 
   const borderColor = error
     ? 'var(--error)'
@@ -109,7 +97,7 @@ export function DropdownField({ label, value, placeholder, options, onSelect, er
       : 'transparent'
 
   return (
-    <View ref={containerRef} style={{ flex: 1, position: 'relative' }}>
+    <View style={{ flex: 1, position: 'relative' }}>
       <Text
         style={{
           fontSize: '14px',
@@ -160,49 +148,61 @@ export function DropdownField({ label, value, placeholder, options, onSelect, er
 
       {/* Menu */}
       {open && (
-        <View
-          style={{
-            position: 'absolute',
-            top: '80px',
-            left: 0,
-            right: 0,
-            backgroundColor: '#1a1a1a',
-            border: '1px solid var(--border-secondary)',
-            zIndex: 100,
-            maxHeight: '200px',
-            overflowY: 'auto',
-          }}
-        >
-          {options.map((opt) => (
-            <View
-              key={opt}
-              onClick={(e: ITouchEvent) => {
-                e.stopPropagation()
-                onSelect(opt)
-                setOpen(false)
-              }}
-              style={{
-                padding: '2px 12px',
-                cursor: 'pointer',
-                backgroundColor: opt === value ? 'rgba(235, 158, 116, 0.15)' : 'transparent',
-                display: 'flex',
-                alignItems: 'center',
-                minHeight: '36px',
-              }}
-              className='active:opacity-70'
-            >
-              <Text
-                style={{
-                  fontSize: '14px',
-                  color: opt === value ? 'var(--primary)' : 'var(--text-primary)',
-                  fontFamily: 'var(--font-locale-body)',
+        <>
+          <View
+            onClick={() => setOpen(false)}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 99,
+            }}
+          />
+          <View
+            style={{
+              position: 'absolute',
+              top: '80px',
+              left: 0,
+              right: 0,
+              backgroundColor: '#1a1a1a',
+              border: '1px solid var(--border-secondary)',
+              zIndex: 100,
+              maxHeight: '200px',
+              overflowY: 'auto',
+            }}
+          >
+            {options.map((opt) => (
+              <View
+                key={opt}
+                onClick={() => {
+                  onSelect(opt)
+                  setOpen(false)
                 }}
+                style={{
+                  padding: '2px 12px',
+                  cursor: 'pointer',
+                  backgroundColor: opt === value ? 'rgba(235, 158, 116, 0.15)' : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  minHeight: '36px',
+                }}
+                className='active:opacity-70'
               >
-                {opt}
-              </Text>
-            </View>
-          ))}
-        </View>
+                <Text
+                  style={{
+                    fontSize: '14px',
+                    color: opt === value ? 'var(--primary)' : 'var(--text-primary)',
+                    fontFamily: 'var(--font-locale-body)',
+                  }}
+                >
+                  {opt}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </>
       )}
 
       {error && (

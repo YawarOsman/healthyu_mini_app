@@ -6,10 +6,11 @@ const locales: Record<string, Record<string, string>> = {
   ar,
 }
 
-let currentLocale = 'en'
+const DEFAULT_LOCALE = 'en'
+let currentLocale = DEFAULT_LOCALE
 
 export function setCurrentLocale(locale: string) {
-  currentLocale = locale
+  currentLocale = locale in locales ? locale : DEFAULT_LOCALE
 }
 
 export function getCurrentLocale(): string {
