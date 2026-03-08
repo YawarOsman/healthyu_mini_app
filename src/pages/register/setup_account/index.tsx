@@ -1,9 +1,8 @@
-import { View, Text, Input } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 
-import PaginationDots from '@/components/PaginationDots'
 import RefinedAppBar from '@/components/RefinedAppBar'
 import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
@@ -16,11 +15,6 @@ export default function SetupAccountScreen() {
       title: ''
     })
   })
-  const [loginMethod, setLoginMethod] = useState(0) // 0 = phone, 1 = email
-  const [phone, setPhone] = useState('')
-  const [email, setEmail] = useState('')
-  const [phoneError, setPhoneError] = useState('')
-  const [emailError, setEmailError] = useState('')
 
   const themeMode = useAppSelector((state) => state.theme.themeMode)
 
@@ -29,30 +23,18 @@ export default function SetupAccountScreen() {
   const appBarTotalHeight = statusBarHeight + 44
 
   const handleNext = useCallback(() => {
-    if (loginMethod === 0 && !phone.trim()) {
-      setPhoneError(t('please_enter_phone'))
-      return
-    }
-    if (loginMethod === 1 && !email.trim()) {
-      setEmailError(t('please_enter_email'))
-      return
-    }
-    setPhoneError('')
-    setEmailError('')
-    if (loginMethod === 0) {
-      navigateTo(`${ROUTES.REGISTER_OTP_VERIFICATION}?phone=${encodeURIComponent(phone)}`)
-    } else {
-      navigateTo(`${ROUTES.REGISTER_OTP_VERIFICATION}?email=${encodeURIComponent(email)}`)
-    }
-  }, [loginMethod, phone, email])
+
+    // TODO: Ideally put email register logic here and then route to home
+    Taro.setStorageSync('hasOnboarded', true)
+    
+    // Navigate to Home directly for now
+    navigateTo(ROUTES.HOME)
+  }, [])
 
   return (
     <View className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`} data-theme={themeMode}>
     <RefinedAppBar
-      showBack={false}
-      title={
-             <PaginationDots total={3} current={1} />
-           }
+      showBack
     />
       <View
         className='flex-1 flex flex-col px-page'
@@ -62,103 +44,7 @@ export default function SetupAccountScreen() {
           {/* Section Label */}
           <Text className='block text-section-label mb-2'>{t('registration')}</Text>
 
-          {/* Title */}
-          <Text className='block text-page-title mb-6'>{t('how_do_you_want_to_login')}</Text>
-
-          {/* Login Method Tabs */}
-          <View className='flex mb-5'>
-            <TabButton
-              label={t('phone_number')}
-              isSelected={loginMethod === 0}
-              onTap={() => setLoginMethod(0)}
-            />
-            <TabButton
-              label={t('email')}
-              isSelected={loginMethod === 1}
-              onTap={() => setLoginMethod(1)}
-            />
-          </View>
-
-          {/* Phone Number Section */}
-          {loginMethod === 0 && (
-            <View>
-              <Text className='block text-field-label mb-2'>{t('phone_number')}</Text>
-              <View className='input-field flex items-center'>
-                <Text
-                  style={{
-                    color: 'var(--text-primary)',
-                    fontSize: '16px',
-                    fontWeight: '500',
-                    marginRight: '12px',
-                    fontFamily: 'var(--font-locale-body)',
-                  }}
-                >
-                  +964
-                </Text>
-                <View
-                  style={{
-                    width: '1px',
-                    height: '24px',
-                    backgroundColor: 'rgba(255,255,255,0.15)',
-                    marginRight: '12px',
-                  }}
-                />
-                <Input
-                  className='flex-1'
-                  type='number'
-                  placeholder={t('phone_number_placeholder')}
-                  placeholderClass='input-field-placeholder'
-                  value={phone}
-                  onInput={(e) => {
-                  setPhone(e.detail.value)
-                  if (phoneError) setPhoneError('')
-                }}
-                  style={{
-                    fontSize: '16px',
-                    color: 'var(--text-primary)',
-                    fontFamily: 'var(--font-locale-body)',
-                    height: '100%',
-                    lineHeight: '52px',
-                    border: 'none',
-                    background: 'transparent',
-                  }}
-                />
-              </View>
-              {phoneError && <Text className='block text-error mt-1'>{phoneError}</Text>}
-            </View>
-          )}
-
-          {/* Email Section */}
-          {loginMethod === 1 && (
-            <View>
-              <Text className='block text-field-label mb-2'>{t('email')}</Text>
-              <Input
-                className='input-field'
-                placeholderClass='input-field-placeholder'
-                placeholder={t('enter_email')}
-                value={email}
-                onInput={(e) => {
-                  setEmail(e.detail.value)
-                  if (emailError) setEmailError('')
-                }}
-              />
-              {emailError && <Text className='block text-error mt-1'>{emailError}</Text>}
-            </View>
-          )}
-
-          {/* Or Divider */}
-          <View style={{ height: '24px' }} />
-          <Text
-            className='block text-center'
-            style={{
-              fontSize: '14px',
-              color: 'var(--icon-accent)',
-              fontFamily: 'var(--font-locale-body)',
-            }}
-          >
-            {t('or')}
-          </Text>
-          <View style={{ height: '24px' }} />
+          {/* Login Content Removed per user request */}
 
         
           </View>
@@ -170,36 +56,6 @@ export default function SetupAccountScreen() {
           </View>
         </View>
       </View>
-    </View>
-  )
-}
-
-// ─── Tab Button ───
-function TabButton({ label, isSelected, onTap }: { label: string; isSelected: boolean; onTap: () => void }) {
-  return (
-    <View
-      onClick={onTap}
-      style={{
-        height: '42px',
-        paddingLeft: '16px',
-        paddingRight: '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderBottom: isSelected ? '2px solid var(--primary)' : '2px solid transparent',
-      }}
-    >
-      <Text
-        style={{
-          fontSize: '16px',
-          fontWeight: '600',
-          color: isSelected ? 'var(--text-secondary)' : 'var(--text-inverse)',
-          fontFamily: 'var(--font-locale-body)',
-        }}
-      >
-        {label}
-      </Text>
     </View>
   )
 }

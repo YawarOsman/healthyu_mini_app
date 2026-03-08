@@ -78,7 +78,7 @@ export default function OtpVerificationScreen() {
   return (
     <View className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`} data-theme={themeMode}>
      <RefinedAppBar
-       showBack={false}
+       showBack
        title={
               <PaginationDots total={3} current={2} />
             }

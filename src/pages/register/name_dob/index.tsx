@@ -5,8 +5,6 @@ import { useMemo, useState } from 'react'
 
 import calendarIcon from '@/assets/svg/calendar.svg'
 import CustomDatePicker from '@/components/CustomDatePicker'
-import PaginationDots from '@/components/PaginationDots'
-import RefinedAppBar from '@/components/RefinedAppBar'
 import { ROUTES } from '@/constants/routes'
 import { setRegistrationData } from '@/features/registration/actions'
 import { t } from '@/i18n'
@@ -58,17 +56,13 @@ export default function NameAndDOBEntryScreen() {
     setDobError('')
     dispatch(setRegistrationData({ name, dob }))
 
-    navigateTo(ROUTES.REGISTER_SETUP_ACCOUNT)
+    Taro.setStorageSync('hasOnboarded', true)
+    navigateTo(ROUTES.HOME)
   }
 
   return (
     <View className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`} data-theme={themeMode}>
-      <RefinedAppBar
-        showBack={false}
-        title={
-          <PaginationDots total={3} current={0} />
-        }
-      />
+  
 
       <View
         className='flex-1 flex flex-col px-page'

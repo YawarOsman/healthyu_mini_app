@@ -1,3 +1,5 @@
+import Taro from '@tarojs/taro'
+
 import { Component, PropsWithChildren } from 'react'
 import { Provider } from 'react-redux'
 
@@ -18,6 +20,11 @@ const getLocale = (state: RootState) => state.theme.locale
 
 class App extends Component<PropsWithChildren> {
   componentDidMount() {
+    // Redirect to the non-tab page immediately
+    Taro.reLaunch({
+      url: '/pages/onboarding/index'
+    })
+
     // Fetch box data on app load
     store.dispatch(fetchBox())
 
@@ -44,11 +51,6 @@ class App extends Component<PropsWithChildren> {
       document.documentElement.setAttribute('lang', currentLocale)
     }
     
-    // Set initial navigation bar title - DISABLED
-    // Taro.setNavigationBarTitle({
-    //   title: isFlavie ? 'Flavie' : 'Mann'
-    // })
-
     // Subscribe to theme/locale changes
     store.subscribe(() => {
       const state = store.getState()
