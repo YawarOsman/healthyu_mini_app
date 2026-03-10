@@ -63,7 +63,11 @@ export default function WeeklyCalendar({ streaks, dateLabel }: WeeklyCalendarPro
       )}
 
       {/* 120px calendar strip */}
-      <View >
+      <View
+        style={{
+          background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 100%)',
+        }}
+      >
 
         {/* Dotted top line */}
         <View

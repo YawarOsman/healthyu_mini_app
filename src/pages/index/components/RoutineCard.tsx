@@ -45,8 +45,11 @@ export default function RoutineCard({ type, title, description, time, imgSrc }: 
           style={{
             width: '100%',
             height: '100%',
-            filter: isCompleted ? 'var(--filter-primary)'
-              : 'brightness(0) invert(0.9)',
+            filter: isCompleted 
+                ? 'var(--filter-primary)'
+                : type === 'overdue'
+                  ? 'var(--filter-error)'
+                  : 'brightness(0) invert(0.9)',
           }}
         />
       </View>

@@ -51,21 +51,6 @@ export default function DueRoutineCard({ routines }: {routines: RoutineEntity[]}
         paddingRight: '10px',
       }}
     >
-      {/* Blurred circular glow */}
-      <View
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '200px',
-          height: '200px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}
-      />
-
       {/* Swiper / Carousel */}
       <Swiper
         current={currentIndex}
@@ -81,6 +66,23 @@ export default function DueRoutineCard({ routines }: {routines: RoutineEntity[]}
           
           return (
             <SwiperItem key={routine.id || idx}>
+
+      {/* Blurred circular glow */}
+      <View
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '350px',
+          height: '200px',
+          filter: 'blur(20px)',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }}
+      />
+
               <View
                 style={{
                   display: 'flex',
@@ -114,7 +116,6 @@ export default function DueRoutineCard({ routines }: {routines: RoutineEntity[]}
                     color='var(--primary)'
                     borderPosition='inside'
                     style={{
-                      backgroundColor: 'rgba(0,0,0,0.3)',
                       marginBottom: '16px',
                     }}
                   >

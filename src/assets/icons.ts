@@ -23,6 +23,7 @@ import googleIcon from './svg/google_icon.svg'
 import home from './svg/home.svg'
 import logoutIcon from './svg/logout_icon.svg'
 import moon from './svg/moon.svg'
+import morning from './svg/morning.svg'
 import notificationsIcon from './svg/notifications_icon.svg'
 import onboarding from './svg/onboarding.svg'
 import orderConfirmed from './svg/order_confirmed.svg'
@@ -64,6 +65,7 @@ export const SvgIcons = {
   addressIcon,
   home,
   moon,
+  morning,
   notificationsIcon,
   onboarding,
   orderConfirmed,

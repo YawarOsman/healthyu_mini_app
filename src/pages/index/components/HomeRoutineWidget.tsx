@@ -1,5 +1,6 @@
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 
+import { SvgIcons } from '@/assets/icons';
 import {
   type RoutineEntity,
   getLocalizedProductName,
@@ -103,9 +104,22 @@ export default function HomeRoutineWidget({ routines }: HomeRoutineWidgetProps) 
         {/* ── Later today ── */}
         {laterItems.length > 0 && (
           <View style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <View style={{ paddingBottom: '6px' }}>
-              <Text style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-secondary)', display: 'block' }}>
-                {t('later_today')}
+            <View style={{ 
+              display: 'flex', 
+              flexDirection: 'row', 
+              alignItems: 'center', 
+              gap: '8px',
+              paddingLeft: '12px',
+              borderLeft: '2px solid var(--primary)',
+              marginBottom: '6px',
+              background: 'linear-gradient(to right, rgba(var(--primary-rgb), 0.15) 0%, transparent 100%)',
+              paddingTop: '8px',
+              paddingBottom: '8px'
+            }}
+            >
+              <Image src={SvgIcons.morning} style={{ width: '20px', height: '20px', filter: 'brightness(0) invert(1)' }} />
+              <Text style={{ fontSize: '16px', fontWeight: '500', color: 'var(--text-primary)', display: 'block' }}>
+                {t('later_this_morning')}
               </Text>
             </View>
             {laterItems.map((item, i) => (

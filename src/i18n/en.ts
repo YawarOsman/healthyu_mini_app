@@ -101,7 +101,7 @@ const en = {
   'start_using': 'Start Using',
   'interested': 'Interested',
   'overdue': 'Overdue',
-  'later_today': 'Later today',
+  'later_this_morning': 'Later this morning',
   'completed': 'Completed',
   'due_now': 'Due now',
   'start': 'Start',

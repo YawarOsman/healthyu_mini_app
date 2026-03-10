@@ -97,7 +97,7 @@ const ar = {
   'start_using': 'ابدأ بالاستخدام',
   'interested': 'مهتم',
   'overdue': 'متأخر',
-  'later_today': 'لاحقًا اليوم',
+  'later_this_morning': 'لاحقًا هذا الصباح',
   'completed': 'مكتمل',
   'due_now': 'مستحق الآن',
   'start': 'ابدأ',
