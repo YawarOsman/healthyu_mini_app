@@ -174,6 +174,13 @@ const en = {
   'confirm': 'Confirm',
 
   'link_copied_to_clipboard': 'Link copied to clipboard',
+  
+  // Gender Selection
+  'powered_by': 'Powered by',
+  'it_is_actually_just_one_question': "It's actually\njust one\nquestion",
+  'pick_your_gender': 'Pick your gender',
+  'continue_txt': 'Continue',
+  'selected_indicator': '[SELECTED]',
 }
 
 export default en

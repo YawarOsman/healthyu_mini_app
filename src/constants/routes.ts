@@ -4,6 +4,7 @@ const toMiniRoute = (path: string) => `${MINI_ROUTE_PREFIX}${path.replace(/^\//,
 const MINI_ROUTES = {
   HOME: toMiniRoute('pages/index/index'),
   ONBOARDING: toMiniRoute('pages/onboarding/index'),
+  REGISTER_GENDER_SELECTION: toMiniRoute('pages/register/gender_selection/index'),
   REGISTER_NAME_DOB: toMiniRoute('pages/register/name_dob/index'),
   REGISTER_SETUP_ACCOUNT: toMiniRoute('pages/register/setup_account/index'),
   REGISTER_OTP_VERIFICATION: toMiniRoute('pages/register/otp_verification/index'),

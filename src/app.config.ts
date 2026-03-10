@@ -6,6 +6,7 @@ export default defineAppConfig({
     'pages/discover/index',
     'pages/me/index',
     // ── Non-tab pages ────────────────────────────────────────────────────
+    'pages/register/gender_selection/index',
     'pages/register/name_dob/index',
     'pages/register/setup_account/index',
     'pages/register/otp_verification/index',
@@ -22,10 +23,10 @@ export default defineAppConfig({
     list: [
       // Keep labels non-empty so config is valid across Alipay versions.
       // Alipay runtime requires PNG paths here.
-      { pagePath: 'pages/index/index', text: 'Home', iconPath: 'assets/svg/care.svg', selectedIconPath: 'assets/svg/care.svg' },
-      { pagePath: 'pages/boxes/index', text: 'Boxes', iconPath: 'assets/svg/boxes.svg', selectedIconPath: 'assets/svg/boxes.svg' },
-      { pagePath: 'pages/discover/index', text: 'Discover', iconPath: 'assets/svg/discover.svg', selectedIconPath: 'assets/svg/discover.svg' },
-      { pagePath: 'pages/me/index', text: 'Me', iconPath: 'assets/svg/profile.svg', selectedIconPath: 'assets/svg/profile.svg' },
+      { pagePath: 'pages/index/index', text: 'Home', iconPath: '/assets/svg/care.svg', selectedIconPath: '/assets/svg/care.svg' },
+      { pagePath: 'pages/boxes/index', text: 'Boxes', iconPath: '/assets/svg/boxes.svg', selectedIconPath: '/assets/svg/boxes.svg' },
+      { pagePath: 'pages/discover/index', text: 'Discover', iconPath: '/assets/svg/discover.svg', selectedIconPath: '/assets/svg/discover.svg' },
+      { pagePath: 'pages/me/index', text: 'Me', iconPath: '/assets/svg/profile.svg', selectedIconPath: '/assets/svg/profile.svg' },
     ],
   },
   permission: {

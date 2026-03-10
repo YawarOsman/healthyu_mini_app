@@ -171,6 +171,13 @@ const ar = {
   
   
   'link_copied_to_clipboard': 'تم نسخ الرابط إلى الحافظة',
+
+  // Gender Selection
+  'powered_by': 'مدعوم من',
+  'it_is_actually_just_one_question': 'في الحقيقة\nهو مجرد\nسؤال واحد',
+  'pick_your_gender': 'اختر جنسك',
+  'continue_txt': 'استمرار',
+  'selected_indicator': '[مختار]',
 }
 
 export default ar

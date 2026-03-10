@@ -53,7 +53,7 @@ export function FormField({ label, value, placeholder, onInput, error }: FormFie
           fontSize: '16px',
           color: 'var(--text-primary)',
           fontFamily: 'var(--font-locale-body)',
-          backgroundColor: '#171717',
+          backgroundColor: 'var(--grey-900)',
           boxSizing: 'border-box',
           width: '100%',
         }}
@@ -119,7 +119,7 @@ export function DropdownField({ label, value, placeholder, options, onSelect, er
           alignItems: 'center',
           paddingLeft: '12px',
           paddingRight: '12px',
-          backgroundColor: '#171717',
+          backgroundColor: 'var(--grey-900)',
           cursor: 'pointer',
           boxSizing: 'border-box',
         }}

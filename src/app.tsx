@@ -22,7 +22,7 @@ class App extends Component<PropsWithChildren> {
   componentDidMount() {
     // Redirect to the non-tab page immediately
     Taro.reLaunch({
-      url: '/pages/onboarding/index'
+      url: '/pages/register/gender_selection/index'
     })
 
     // Fetch box data on app load

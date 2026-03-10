@@ -106,8 +106,8 @@ export default function Onboarding() {
                   mode='aspectFill'
                 />
               </View>
-              <Text className='text-32 font-normal leading-[1.2] text-text-primary mb-1 font-headline-lg whitespace-pre-wrap'>{t(slide.titleKey)}</Text>
-              <Text className='text-body-lg font-normal text-text-secondary mb-2 leading-[1.4] font-body-lg'>{t(slide.subtitleKey)}</Text>
+              <Text className='text-32 font-normal leading-[1.2] text-text-primary mb-1 font-headline-lg whitespace-pre-wrap' style={{ whiteSpace: 'pre-line' }}>{t(slide.titleKey)}</Text>
+              <Text className='text-body-lg font-normal text-text-secondary mb-2 leading-[1.4] font-body-lg' style={{ whiteSpace: 'pre-line' }}>{t(slide.subtitleKey)}</Text>
             </View>
           </SwiperItem>
         ))}
