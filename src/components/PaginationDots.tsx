@@ -20,7 +20,7 @@ export default function PaginationDots({
       {Array.apply(null, Array(total)).map((_, idx) => (
         <View
           key={idx}
-          className={`w-1 h-1 rounded-full transition-colors duration-300 ${
+          className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
             idx === current ? activeColor : inactiveColor
           }`}
         />

@@ -10,6 +10,7 @@ import flavie3 from '@/assets/images/flavie_onboarding_3.png'
 import mann1 from '@/assets/images/mann_onboarding_1.png'
 import mann2 from '@/assets/images/mann_onboarding_2.png'
 import mann3 from '@/assets/images/mann_onboarding_3.png'
+import arrowLeft from '@/assets/svg/arrow_left.svg'
 import PaginationDots from '@/components/PaginationDots'
 import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
@@ -59,11 +60,14 @@ export default function Onboarding() {
 
   const slides = isFlavie ? flavieSlides : mannSlides
   const isLastSlide = currentIndex === slides.length - 1
+  const headerTitle = isFlavie ? 'Flavie' : 'Mann'
+  const statusBarHeight = Taro.getSystemInfoSync().statusBarHeight || 0
+  const navBarHeight = 44
 
   const handleNext = useCallback(() => {
     if (isLastSlide) {
-      // Proceed to registration
-      navigateTo(ROUTES.REGISTER_NAME_DOB).catch(err => {
+      // Proceed to home
+      navigateTo(ROUTES.HOME).catch(err => {
         console.error('Navigation failed:', JSON.stringify(err))
         Taro.showToast({ title: `${t('navigation_failed')}: ${JSON.stringify(err)}`, icon: 'none', duration: 5000 })
       })
@@ -74,19 +78,53 @@ export default function Onboarding() {
 
   const handleSwiperChange = useCallback((e) => {
     const { current } = e.detail
-    setCurrentIndex(current)
+      setCurrentIndex(current)
+  }, [])
+
+  const handleBack = useCallback(() => {
+    const pages = Taro.getCurrentPages()
+    if (pages.length > 1) {
+      Taro.navigateBack()
+    }
   }, [])
 
   return (
     <View className={`w-screen h-screen bg-scaffold flex flex-col overflow-hidden relative ${themeMode}`} data-theme={themeMode}>
       {/* Header */}
-      <View 
-        className='flex items-center justify-center px-page pb-4 relative z-10 mb-6'
-        style={{ 
-          paddingTop: `${(Taro.getSystemInfoSync().statusBarHeight || 0) + 20}px`,
-        }}
+      <View
+        className='relative z-10 mb-4'
+        style={{ paddingTop: `${statusBarHeight}px` }}
       >
-        <PaginationDots total={slides.length} current={currentIndex} />
+        <View
+          className='relative w-full flex items-center px-page'
+          style={{ height: `${navBarHeight}px`, gap: '16px' }}
+        >
+          <View
+            className='h-full flex items-center justify-center'
+            onClick={handleBack}
+          >
+            <View
+              className='text-text-primary w-5 h-5'
+              style={{
+                backgroundColor: 'currentColor',
+                maskImage: `url(${arrowLeft})`,
+                WebkitMaskImage: `url(${arrowLeft})`,
+                maskSize: 'contain',
+                WebkitMaskSize: 'contain',
+                maskRepeat: 'no-repeat',
+                WebkitMaskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                WebkitMaskPosition: 'center',
+              }}
+            />
+          </View>
+          <Text className='text-24 font-headline-lg text-primary font-medium'>
+            {headerTitle}
+          </Text>
+          <View className='absolute left-1/2 -translate-x-1/2 flex items-center'>
+            <PaginationDots total={slides.length} current={currentIndex} />
+          </View>
+        </View>
       </View>
 
       {/* Swiper */}
