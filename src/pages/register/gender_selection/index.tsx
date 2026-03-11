@@ -9,7 +9,8 @@ import { ROUTES } from '@/constants/routes'
 import { setIsFlavie } from '@/features/theme/actions'
 import { t } from '@/i18n'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { navigateTo } from '@/utils/navigation'
+import { reLaunch } from '@/utils/navigation'
+import { hideHomeButtonSafely } from '@/utils/ui'
 
 export default function GenderSelectionScreen() {
   const dispatch = useAppDispatch()
@@ -22,6 +23,7 @@ export default function GenderSelectionScreen() {
     Taro.setNavigationBarTitle({
       title: ''
     })
+    void hideHomeButtonSafely()
   })
 
   const handleContinue = () => {
@@ -29,7 +31,7 @@ export default function GenderSelectionScreen() {
     dispatch(setIsFlavie(selectedGender === 'flavie'))
 
     // Navigate to Onboarding Next
-    navigateTo(ROUTES.ONBOARDING)
+    reLaunch(ROUTES.ONBOARDING)
   }
 
   const systemInfo = Taro.getSystemInfoSync()
@@ -40,7 +42,7 @@ export default function GenderSelectionScreen() {
     <View className={`w-screen h-screen bg-scaffold flex flex-col overflow-hidden ${themeMode}`} data-theme={themeMode}>
       {/* App Bar */}
       <View
-        className='flex items-center justify-center flex-shrink-0'
+        className='flex items-center justify-start flex-shrink-0 px-page'
         style={{
           paddingTop: `${statusBarHeight}px`,
           height: `${appBarTotalHeight}px`,
@@ -77,11 +79,17 @@ export default function GenderSelectionScreen() {
         style={{ paddingTop: '24px', paddingBottom: '32px' }}
       >
         {/* Header Texts */}
-        <View className='flex-1 w-full flex flex-col' style={{ gap: '8px' }}>
-          <Text className='text-text-primary font-headline-lg' style={{ fontSize: '40px', fontWeight: '500', lineHeight: '1.2', whiteSpace: 'pre-line' }}>
+        <View
+          className='flex-1 w-full flex flex-col'
+          style={{ gap: '8px', alignItems: 'flex-start' }}
+        >
+          <Text
+            className='text-text-primary font-headline-lg'
+            style={{ fontSize: '40px', fontWeight: '500', lineHeight: '1.2', whiteSpace: 'pre-line', textAlign: 'left' }}
+          >
             {t('it_is_actually_just_one_question')}
           </Text>
-          <Text className='text-text-secondary' style={{ fontSize: '20px', fontWeight: '400' }}>
+          <Text className='text-text-secondary' style={{ fontSize: '20px', fontWeight: '400', textAlign: 'left' }}>
             {t('pick_your_gender')}
           </Text>
         </View>

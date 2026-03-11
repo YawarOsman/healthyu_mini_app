@@ -1,5 +1,5 @@
 import { View, Swiper, SwiperItem, Image, Text } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 
 import { useCallback, useState } from 'react'
 
@@ -15,7 +15,8 @@ import PaginationDots from '@/components/PaginationDots'
 import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
-import { navigateTo } from '@/utils/navigation'
+import { navigateTo, reLaunch } from '@/utils/navigation'
+import { hideHomeButtonSafely } from '@/utils/ui'
 
 // Onboarding slide data
 const flavieSlides = [
@@ -58,6 +59,13 @@ export default function Onboarding() {
   const { isFlavie, themeMode } = useAppSelector((state) => state.theme)
   const [currentIndex, setCurrentIndex] = useState(0)
 
+  useDidShow(() => {
+    Taro.setNavigationBarTitle({
+      title: ''
+    })
+    void hideHomeButtonSafely()
+  })
+
   const slides = isFlavie ? flavieSlides : mannSlides
   const isLastSlide = currentIndex === slides.length - 1
   const headerTitle = isFlavie ? 'Flavie' : 'Mann'
@@ -82,10 +90,7 @@ export default function Onboarding() {
   }, [])
 
   const handleBack = useCallback(() => {
-    const pages = Taro.getCurrentPages()
-    if (pages.length > 1) {
-      Taro.navigateBack()
-    }
+    reLaunch(ROUTES.REGISTER_GENDER_SELECTION)
   }, [])
 
   return (
