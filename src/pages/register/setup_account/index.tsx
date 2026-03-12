@@ -7,7 +7,7 @@ import RefinedAppBar from '@/components/RefinedAppBar'
 import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
-import { navigateTo } from '@/utils/navigation'
+import { navigateSmart } from '@/utils/navigation'
 
 export default function SetupAccountScreen() {
   useDidShow(() => {
@@ -28,7 +28,7 @@ export default function SetupAccountScreen() {
     Taro.setStorageSync('hasOnboarded', true)
     
     // Navigate to Home directly for now
-    navigateTo(ROUTES.HOME)
+    navigateSmart(ROUTES.HOME)
   }, [])
 
   return (
@@ -59,5 +59,4 @@ export default function SetupAccountScreen() {
     </View>
   )
 }
-
 

@@ -15,7 +15,7 @@ import PaginationDots from '@/components/PaginationDots'
 import { ROUTES } from '@/constants/routes'
 import { t } from '@/i18n'
 import { useAppSelector } from '@/store/hooks'
-import { navigateTo, reLaunch } from '@/utils/navigation'
+import { navigateSmart, reLaunch } from '@/utils/navigation'
 import { hideHomeButtonSafely } from '@/utils/ui'
 
 // Onboarding slide data
@@ -57,9 +57,15 @@ const mannSlides = [
 
 export default function Onboarding() {
   const { isFlavie, themeMode } = useAppSelector((state) => state.theme)
+  const qiAuthToken = useAppSelector((state) => state.auth.qiAuthToken)
   const [currentIndex, setCurrentIndex] = useState(0)
 
   useDidShow(() => {
+    if (qiAuthToken) {
+      navigateSmart(ROUTES.HOME)
+      return
+    }
+
     Taro.setNavigationBarTitle({
       title: ''
     })
@@ -75,7 +81,7 @@ export default function Onboarding() {
   const handleNext = useCallback(() => {
     if (isLastSlide) {
       // Proceed to home
-      navigateTo(ROUTES.HOME).catch(err => {
+      navigateSmart(ROUTES.HOME).catch(err => {
         console.error('Navigation failed:', JSON.stringify(err))
         Taro.showToast({ title: `${t('navigation_failed')}: ${JSON.stringify(err)}`, icon: 'none', duration: 5000 })
       })

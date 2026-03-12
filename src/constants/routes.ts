@@ -5,8 +5,6 @@ const MINI_ROUTES = {
   HOME: toMiniRoute('pages/index/index'),
   ONBOARDING: toMiniRoute('pages/onboarding/index'),
   REGISTER_GENDER_SELECTION: toMiniRoute('pages/register/gender_selection/index'),
-  REGISTER_SETUP_ACCOUNT: toMiniRoute('pages/register/setup_account/index'),
-  REGISTER_OTP_VERIFICATION: toMiniRoute('pages/register/otp_verification/index'),
   ORDER: toMiniRoute('pages/order/index'),
   ORDER_SHIPPING: toMiniRoute('pages/order_shipping/index'),
   SCAN_BOX: toMiniRoute('pages/scan_box/index'),

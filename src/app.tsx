@@ -20,11 +20,7 @@ const getLocale = (state: RootState) => state.theme.locale
 
 class App extends Component<PropsWithChildren> {
   componentDidMount() {
-    // Redirect to the non-tab page immediately
-    Taro.reLaunch({
-      url: '/pages/register/gender_selection/index'
-    })
-
+  
     // Fetch box data on app load
     store.dispatch(fetchBox())
 

@@ -1,3 +1,4 @@
+import { Gender } from './../../core/types';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 import type { AuthState } from './types'
@@ -7,9 +8,10 @@ type UserInfoPatch = Partial<Pick<AuthState, 'name' | 'phone' | 'email'>>
 const INITIAL_STATE: AuthState = {
   name: '',
   phone: '+964 772 128 7272',
+  gender: Gender.male,
+  qiAuthToken: 'asdfasdf',
   email: '',
-  selfiePath: null,
-  isSelfieSaved: true, // Mock: assume selfie is saved for dev
+  selfiePath: 'https://stockcake.com/i/sunset-profile-portrait_1906287_1281672',
 }
 
 const authSlice = createSlice({
@@ -20,7 +22,6 @@ const authSlice = createSlice({
       Object.assign(state, action.payload)
     },
     setSelfieSaved: (state, action: PayloadAction<string>) => {
-      state.isSelfieSaved = true
       state.selfiePath = action.payload
     },
   },

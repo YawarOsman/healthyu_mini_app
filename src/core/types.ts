@@ -6,3 +6,7 @@ export interface ApiResponse<T> {
   data: T | null
   error: string | null
 }
+
+export enum Gender { male = 'male', female = 'female' }
+  
+  
