@@ -42,21 +42,18 @@ export default function RefinedAppBar({
 
   return (
     <View 
-      className={`w-full fixed top-0 left-0 z-50 transition-colors duration-300 ${backgroundColor} ${centerActions ? 'justify-center' : 'justify-start'}`}
+      className={`w-full fixed top-0 left-0 z-50 transition-colors duration-300 ${backgroundColor}`}
       style={{ paddingTop: `${statusBarHeight}px`, height: `${statusBarHeight + navBarHeight}px` }}
     >
-      <View className='relative w-full h-full flex items-center justify-center px-4'>
-        
+      <View className='relative w-full h-full flex items-center px-page' style={{ gap: '16px' }}>
         {/* Left: Back Button */}
         {showBack && (
           <View 
-            className='absolute left-2 h-full flex items-center justify-center cursor-pointer'
+            className='h-full flex items-center justify-center cursor-pointer'
             onClick={handleBack}
           >
-            {/* Simple Back Arrow SVG or Icon */}
-            {/* Back Arrow SVG */}
             <View
-              className={`${textColor} w-4 h-4`}
+              className={`${textColor} w-5 h-5`}
               style={{
                 backgroundColor: 'currentColor',
                 maskImage: `url(${arrowLeft})`,
@@ -72,21 +69,25 @@ export default function RefinedAppBar({
           </View>
         )}
 
-        {/* Center: Title and/or centered actions */}
-        <View className='flex items-center justify-center'>
-          {typeof title === 'string' ? (
-            <Text className={`font-headline-sm ${textColor} font-bold`}>
-              {title}
-            </Text>
-          ) : (
-            title
-          )}
-          {centerActions && actions}
-        </View>
+        {/* Title (left-aligned, same rhythm as onboarding) */}
+        {typeof title === 'string' ? (
+          <Text className={`font-headline-lg ${textColor} font-medium`}>
+            {title}
+          </Text>
+        ) : (
+          title
+        )}
+
+        {/* Center: actions */}
+        {centerActions && actions && (
+          <View className='absolute left-1/2 -translate-x-1/2 flex items-center'>
+            {actions}
+          </View>
+        )}
 
         {/* Right: Actions (only when not centered) */}
         {!centerActions && actions && (
-          <View className='absolute right-4 h-full flex items-center'>
+          <View className='absolute right-0 h-full flex items-center'>
             {actions}
           </View>
         )}

@@ -4,17 +4,17 @@ import Taro from '@tarojs/taro'
 import { SvgIcons } from '@/assets/icons'
 import DashedBox from '@/components/DashedBox'
 import { ROUTES } from '@/constants/routes'
-import { setIsFlavie } from '@/features/theme/actions'
+import { setUserHaveBox, setUserOrderedBox } from '@/features/auth/reducer'
 import { t } from '@/i18n'
 import { useAppDispatch } from '@/store/hooks'
-import { navigateTo } from '@/utils/navigation'
+import { redirectTo } from '@/utils/navigation'
 
 interface UserWithoutBoxWidgetProps {
   brandName: string
   isFlavie: boolean
 }
 
-export default function UserWithoutBoxWidget({ brandName, isFlavie }: UserWithoutBoxWidgetProps) {
+export default function UserWithoutBoxWidget({ brandName }: UserWithoutBoxWidgetProps) {
   const dispatch = useAppDispatch()
 
   return (
@@ -72,7 +72,7 @@ export default function UserWithoutBoxWidget({ brandName, isFlavie }: UserWithou
       <View style={{ width: '100%', marginBottom: '12px' }}>
         <View
           className='btn-filled active:opacity-85'
-          onClick={() => navigateTo(ROUTES.ORDER)}
+          onClick={() => redirectTo(ROUTES.ORDER)}
         >
           <Text className='btn-filled-text'>{t('start_my_experience')}</Text>
         </View>
@@ -99,9 +99,9 @@ export default function UserWithoutBoxWidget({ brandName, isFlavie }: UserWithou
             Taro.scanCode({
               onlyFromCamera: true,
               scanType: ['qrCode', 'barCode'],
-              success: (res) => {
-                const boxId = res.result
-                navigateTo(`${ROUTES.SCAN_BOX}?boxId=${boxId}`)
+              success: () => {
+                dispatch(setUserOrderedBox(true))
+                dispatch(setUserHaveBox(true))
               },
               fail: (err) => {
                 console.error('Scan failed', err)
@@ -123,20 +123,6 @@ export default function UserWithoutBoxWidget({ brandName, isFlavie }: UserWithou
         </View>
       </DashedBox>
 
-      {/* Debug buttons */}
-      <View style={{ marginTop: '40px', opacity: 0.3 }}>
-        <Text
-          onClick={() => dispatch(setIsFlavie(!isFlavie))}
-          style={{
-            fontSize: '12px',
-            color: 'var(--text-secondary)',
-            fontFamily: 'var(--font-locale-body)',
-            textDecoration: 'underline',
-          }}
-        >
-          {t('switch_to_brand').replace('{brand}', isFlavie ? t('onboarding.brandMann') : t('onboarding.brandFlavie'))}
-        </Text>
-      </View>
     </View>
   )
 }

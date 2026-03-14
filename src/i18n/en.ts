@@ -181,6 +181,11 @@ const en = {
   'pick_your_gender': 'Pick your gender',
   'continue_txt': 'Continue',
   'selected_indicator': '[SELECTED]',
+  'enter_phone_number': 'Enter phone number',
+  'order_confirmed': 'Order Confirmed',
+  'we_will_call_you_when_your_order_arrives': 'We will call you when your order arrives.',
+  'back_to_home': 'Back to Home',
+  'finish_order': "Finish Order"
 }
 
 export default en

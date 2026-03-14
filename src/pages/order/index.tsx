@@ -1,20 +1,41 @@
-import { View, Text, Image, ScrollView } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import { View, Text, Image, ScrollView, Video } from '@tarojs/components'
+import Taro, { useDidShow } from '@tarojs/taro'
+
+import { useState } from 'react'
 
 import flaskIcon from '@/assets/svg/boxes.svg'
+import PaginationDots from '@/components/PaginationDots'
 import RefinedAppBar from '@/components/RefinedAppBar'
 import { ROUTES } from '@/constants/routes'
 import { getLocalizedHeadline, getLocalizedName, type BoxItem } from '@/features/order/types'
 import { t } from '@/i18n'
 import { isArabicLocale } from '@/i18n/locale'
 import { useAppSelector } from '@/store/hooks'
-import { navigateTo } from '@/utils/navigation'
+import { navigateSmart, redirectTo } from '@/utils/navigation'
+import { hideHomeButtonSafely } from '@/utils/ui'
 
 
 export default function OrderPage() {
-  console.log('OrderPage: Rendering...')
+
+  const videoId = 'order-box-video'
   const { themeMode, locale } = useAppSelector((state) => state.theme)
   const { box, loading, error } = useAppSelector((state) => state.order)
+  const { phone } = useAppSelector((state) => state.auth)
+  const [isPlaying, setIsPlaying] = useState(true)
+
+  useDidShow(() => {
+    Taro.setNavigationBarTitle({ title: '' })
+    void hideHomeButtonSafely()
+    // Alipay shows an extra native back arrow; dismiss it explicitly
+    const tryHideBack = () => {
+      try {
+        const my = (globalThis as any).my
+        if (my && typeof my.hideBackHome === 'function') my.hideBackHome()
+      } catch (_) {}
+    }
+    tryHideBack()
+    setTimeout(tryHideBack, 300)
+  })
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
@@ -30,7 +51,9 @@ export default function OrderPage() {
         data-theme={themeMode}
       >
         <RefinedAppBar
-          actions={<ProgressDots current={0} total={3} />}
+          showBack
+          onBack={() => navigateSmart(ROUTES.HOME)}
+          actions={<PaginationDots total={phone ? 2 : 3} current={0} />}
         />
         <View
           className='flex-1 flex items-center justify-center'
@@ -51,7 +74,9 @@ export default function OrderPage() {
         data-theme={themeMode}
       >
         <RefinedAppBar
-          actions={<ProgressDots current={0} total={3} />}
+          showBack
+          onBack={() => navigateSmart(ROUTES.HOME)}
+          actions={<PaginationDots total={phone ? 2 : 3} current={0} />}
         />
         <View
           className='flex-1 flex items-center justify-center'
@@ -72,7 +97,9 @@ export default function OrderPage() {
         data-theme={themeMode}
       >
         <RefinedAppBar
-          actions={<ProgressDots current={0} total={3} />}
+          showBack
+          onBack={() => navigateSmart(ROUTES.HOME)}
+          actions={<PaginationDots total={phone ? 2 : 3} current={0} />}
         />
         <View
           className='flex-1 flex items-center justify-center'
@@ -96,7 +123,9 @@ export default function OrderPage() {
     >
       {/* App Bar with back + progress dots */}
       <RefinedAppBar
-        actions={<ProgressDots current={0} total={3} />}
+        showBack
+        onBack={() => navigateSmart(ROUTES.HOME)}
+        actions={<PaginationDots total={phone ? 2 : 3} current={0} />}
       />
 
       {/* Scrollable content */}
@@ -172,44 +201,65 @@ export default function OrderPage() {
           </View>
 
           {/* Video Banner */}
-          <View
-            style={{
-              width: '100%',
-              height: '200px',
-              backgroundColor: '#1a1a1a',
-              marginBottom: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-            }}
-          >
-            {/* Play button overlay */}
+          {box.videoUrl ? (
             <View
               style={{
-                width: '56px',
-                height: '56px',
-                borderRadius: '50%',
-                border: '2px solid rgba(235, 158, 116, 0.6)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                width: '100%',
+                height: '200px',
+                backgroundColor: '#1a1a1a',
+                marginBottom: '16px',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              <View
-                style={{
-                  width: '0',
-                  height: '0',
-                  borderLeft: '16px solid white',
-                  borderTop: '10px solid transparent',
-                  borderBottom: '10px solid transparent',
-                  marginLeft: '4px',
-                }}
+              <Video
+                id={videoId}
+                src={box.videoUrl}
+                poster={box.videoThumbnail ?? undefined}
+                autoplay
+                controls={isPlaying}
+                loop={false}
+                muted={false}
+                showMuteBtn={false}
+                objectFit='cover'
+                style={{ width: '100%', height: '200px', display: 'block' }}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onEnded={() => setIsPlaying(false)}
               />
+              {/* Tap-to-play overlay – hidden once playing */}
+              {!isPlaying && (
+                <View
+                  onClick={() => {
+                    const ctx = Taro.createVideoContext(videoId)
+                    ctx.play()
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: 'rgba(0,0,0,0.25)',
+                  }}
+                >
+                  
+                </View>
+              )}
             </View>
-          </View>
+          ) : (
+            <View
+              style={{
+                width: '100%',
+                height: '200px',
+                backgroundColor: '#1a1a1a',
+                marginBottom: '16px',
+              }}
+            />
+          )}
 
           {/* Contents label */}
           <Text
@@ -249,7 +299,7 @@ export default function OrderPage() {
         <View
           className='btn-filled active:opacity-85'
           onClick={() => {
-            navigateTo(ROUTES.ORDER_SHIPPING)
+            redirectTo(ROUTES.ORDER_SHIPPING)
           }}
         >
           <Text className='btn-filled-text'>{t('interested')}</Text>
@@ -260,26 +310,6 @@ export default function OrderPage() {
 }
 
 // ─── Progress Dots Component ───
-function ProgressDots({ current, total }: { current: number; total: number }) {
-  return (
-    <View className='flex items-center' style={{ gap: '6px' }}>
-      {[0, 1, 2].slice(0, total).map((i) => (
-        <View
-          key={i}
-          style={{
-            width: i === current ? '10px' : '8px',
-            height: i === current ? '10px' : '8px',
-            borderRadius: '50%',
-            backgroundColor: i === current ? 'var(--primary)' : 'var(--text-secondary)',
-            opacity: i === current ? 1 : 0.4,
-            transition: 'all 0.2s ease',
-          }}
-        />
-      ))}
-    </View>
-  )
-}
-
 // ─── Box Product Card Component ───
 function BoxProductCard({ item, locale }: { item: BoxItem; locale: string }) {
   const isAr = isArabicLocale(locale)

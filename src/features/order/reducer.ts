@@ -8,8 +8,6 @@ export interface OrderState {
   loading: boolean
   error: string | null
 
-  // User order tracking
-  isUserOrderedABox: boolean
   boxes: BoxEntity[]
   futureBoxes: BoxEntity[]
   estimatedDeliveryDate: string | null
@@ -30,7 +28,6 @@ const INITIAL_STATE: OrderState = {
   loading: false,
   error: null,
 
-  isUserOrderedABox: true,
   boxes: [],
   futureBoxes: [],
   estimatedDeliveryDate: null,
@@ -60,9 +57,6 @@ const orderSlice = createSlice({
     fetchBoxFailure: (state, action: PayloadAction<string>) => {
       state.loading = false
       state.error = action.payload
-    },
-    setUserOrderedBox: (state, action: PayloadAction<boolean>) => {
-      state.isUserOrderedABox = action.payload
     },
     setUserBoxes: (state, action: PayloadAction<BoxEntity[]>) => {
       state.boxes = action.payload
@@ -102,7 +96,6 @@ export const {
   fetchBoxRequest,
   fetchBoxSuccess,
   fetchBoxFailure,
-  setUserOrderedBox,
   setUserBoxes,
   setFutureBoxes,
   setEstimatedDelivery,

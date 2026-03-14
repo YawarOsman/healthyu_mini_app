@@ -1,24 +1,26 @@
 import { View, Text, Button } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
+import PaginationDots from '@/components/PaginationDots'
 import RefinedAppBar from '@/components/RefinedAppBar'
 import { ROUTES } from '@/constants/routes'
 import { FormField, DropdownField } from '@/core/FormField'
+import { setUserOrderedBox } from '@/features/auth/reducer'
 import {
   setCity,
   setStreetAddress,
   setFullAddress,
   submitShippingForm,
   fetchCities,
-  setUserOrderedBox,
   setEstimatedDelivery,
 } from '@/features/order/actions'
 import { t } from '@/i18n'
 import { getDateLocaleCode } from '@/i18n/locale'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { reLaunch } from '@/utils/navigation'
+import { navigateTo, reLaunch, redirectTo } from '@/utils/navigation'
+import { hideHomeButtonSafely } from '@/utils/ui'
 
 export default function OrderShippingPage() {
   const dispatch = useAppDispatch()
@@ -28,6 +30,19 @@ export default function OrderShippingPage() {
     (state) => state.order,
   )
   const { phone } = useAppSelector((state) => state.auth)
+
+  useDidShow(() => {
+    Taro.setNavigationBarTitle({ title: '' })
+    void hideHomeButtonSafely()
+    const tryHideBack = () => {
+      try {
+        const my = (globalThis as any).my
+        if (my && typeof my.hideBackHome === 'function') my.hideBackHome()
+      } catch (_) {}
+    }
+    tryHideBack()
+    setTimeout(tryHideBack, 300)
+  })
 
   useEffect(() => {
     if (cities.length === 0) {
@@ -39,27 +54,36 @@ export default function OrderShippingPage() {
   const statusBarHeight = systemInfo.statusBarHeight || 0
   const navBarHeight = 44
 
+  const [phoneNumber, setPhoneNumber] = useState(phone || '')
+  
   const handleCheckout = () => {
     console.log('handleCheckout called')
     Taro.showToast({ title: t('processing'), icon: 'loading' })
     dispatch(submitShippingForm())
-    console.log('Form submitted. City:', city, 'Street:', streetAddress)
     
-    if (city && streetAddress.trim()) {
-      console.log('Validation passed, proceeding to checkout')
-      // Mark box as ordered with estimated delivery
-      const deliveryDate = new Date()
-      deliveryDate.setDate(deliveryDate.getDate() + 7) // ~1 week
-      const dateStr = deliveryDate.toLocaleDateString(localeCode, { month: 'short', day: 'numeric' })
+    // Require phone number
+    if (!city || !streetAddress.trim() || !phoneNumber.trim()) {
+      console.log('Validation failed. City, Street, or Phone is missing.')
+      return
+    }
 
-      dispatch(setUserOrderedBox(true))
-      dispatch(setEstimatedDelivery(dateStr))
+    console.log('Validation passed, proceeding to checkout')
+    // Mark box as ordered with estimated delivery
+    const deliveryDate = new Date()
+    deliveryDate.setDate(deliveryDate.getDate() + 7) // ~1 week
+    const dateStr = deliveryDate.toLocaleDateString(localeCode, { month: 'short', day: 'numeric' })
 
-      // Go back to home
-      console.log('Navigating to home...')
-      reLaunch(ROUTES.HOME)
+    dispatch(setUserOrderedBox(true))
+    dispatch(setEstimatedDelivery(dateStr))
+
+    if (!phone) {
+      // Go to OTP Verification
+      console.log('Navigating to OTP verification...')
+      navigateTo(`${ROUTES.OTP_VERIFICATION}?phone=${encodeURIComponent(phoneNumber)}`)
     } else {
-      console.log('Validation failed. City or Street is missing.')
+      // Phone already exists, skip OTP
+      console.log('Phone exists, skipping OTP and navigating to Order Confirmed...')
+      reLaunch(ROUTES.ORDER_CONFIRMED)
     }
   }
 
@@ -70,7 +94,9 @@ export default function OrderShippingPage() {
     >
       {/* App Bar */}
       <RefinedAppBar
-        actions={<ProgressDots current={1} total={3} />}
+        showBack
+        onBack={() => redirectTo(ROUTES.ORDER)}
+        actions={<PaginationDots total={phone ? 2 : 3} current={1} />}
       />
 
       {/* Content */}
@@ -138,57 +164,56 @@ export default function OrderShippingPage() {
             onInput={(v) => dispatch(setFullAddress(v))}
           />
 
-          {/* Phone number notice */}
+          {/* Phone number notice or input */}
           <View style={{ marginTop: '24px' }}>
-            <Text
-              style={{
-                fontSize: '16px',
-                fontWeight: '500',
-                color: 'var(--text-secondary)',
-                fontFamily: 'var(--font-locale-body)',
-                lineHeight: '1.5',
-              }}
-            >
-              {t('we_will_call')}
-              {'  '}
-            </Text>
-            <Text
-              style={{
-                fontSize: '16px',
-                fontWeight: '500',
-                color: 'var(--text-primary)',
-                fontFamily: 'var(--font-locale-body)',
-              }}
-            >
-              {phone}
-            </Text>
-            <Text
-              style={{
-                fontSize: '16px',
-                fontWeight: '500',
-                color: 'var(--text-secondary)',
-                fontFamily: 'var(--font-locale-body)',
-              }}
-            >
-              {'  '}
-              {t('on_delivery')}
-            </Text>
+            {!phone ? (
+              <FormField
+                label={t('phone_number')}
+                value={phoneNumber}
+                placeholder={t('enter_phone_number')}
+                keyboardType='phone-pad'
+                onInput={(v) => setPhoneNumber(v)}
+                error={isFormSubmitted && !phoneNumber.trim() ? t('please_enter_phone') : null}
+              />
+            ) : (
+              <>
+                <Text
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: '500',
+                    color: 'var(--text-secondary)',
+                    fontFamily: 'var(--font-locale-body)',
+                    lineHeight: '1.5',
+                  }}
+                >
+                  {t('we_will_call')}
+                  {'  '}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: '500',
+                    color: 'var(--text-primary)',
+                    fontFamily: 'var(--font-locale-body)',
+                  }}
+                >
+                  {phone}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: '16px',
+                    fontWeight: '500',
+                    color: 'var(--text-secondary)',
+                    fontFamily: 'var(--font-locale-body)',
+                  }}
+                >
+                  {'  '}
+                  {t('on_delivery')}
+                </Text>
+              </>
+            )}
           </View>
 
-          <Text
-            style={{
-              fontSize: '16px',
-              fontWeight: '600',
-              color: 'var(--primary)',
-              fontFamily: 'var(--font-locale-body)',
-              marginTop: '8px',
-              display: 'block',
-              cursor: 'pointer',
-            }}
-            className='active:opacity-70'
-          >
-            {t('change_phone_number')}
-          </Text>
         </View>
 
         {/* Bottom Checkout Button */}
@@ -221,22 +246,3 @@ export default function OrderShippingPage() {
 }
 
 // ─── Progress Dots ───
-function ProgressDots({ current, total }: { current: number; total: number }) {
-  return (
-    <View className='flex items-center' style={{ gap: '6px' }}>
-      {[0, 1, 2].slice(0, total).map((i) => (
-        <View
-          key={i}
-          style={{
-            width: i === current ? '10px' : '8px',
-            height: i === current ? '10px' : '8px',
-            borderRadius: '50%',
-            backgroundColor: i === current ? 'var(--primary)' : 'var(--text-secondary)',
-            opacity: i === current ? 1 : 0.4,
-            transition: 'all 0.2s ease',
-          }}
-        />
-      ))}
-    </View>
-  )
-}

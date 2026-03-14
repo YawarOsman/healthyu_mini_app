@@ -178,6 +178,11 @@ const ar = {
   'pick_your_gender': 'اختر جنسك',
   'continue_txt': 'استمرار',
   'selected_indicator': '[مختار]',
+  'enter_phone_number': 'أدخل رقم الهاتف',
+  'order_confirmed': 'تم تأكيد الطلب',
+  'we_will_call_you_when_your_order_arrives': 'سنتصل بك عندما يصل طلبك.',
+  'back_to_home': 'العودة للرئيسية',
+  'finish_order': 'إتمام الطلب'
 }
 
 export default ar

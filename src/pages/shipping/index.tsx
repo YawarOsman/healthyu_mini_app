@@ -6,8 +6,9 @@ import { useState, useEffect, useCallback } from 'react'
 import PaginationDots from '@/components/PaginationDots'
 import RefinedAppBar from '@/components/RefinedAppBar'
 import { ROUTES } from '@/constants/routes'
+import { setUserOrderedBox } from '@/features/auth/reducer'
 import { t } from '@/i18n'
-import { useAppSelector } from '@/store/hooks'
+import { useAppSelector, useAppDispatch } from '@/store/hooks'
 import { reLaunch } from '@/utils/navigation'
 
 const OTP_LENGTH = 6
@@ -29,6 +30,7 @@ export default function OtpVerificationScreen() {
   const [otpError, setOtpError] = useState('')
 
   const themeMode = useAppSelector((state) => state.theme.themeMode)
+  const dispatch = useAppDispatch()
 
   const systemInfo = Taro.getSystemInfoSync()
   const statusBarHeight = systemInfo.statusBarHeight || 0
@@ -71,17 +73,18 @@ export default function OtpVerificationScreen() {
     // Set onboarding complete
     Taro.setStorageSync('hasOnboarded', true)
     
-    // Navigate to Home Screen (relaunch clears the stack)
-    reLaunch(ROUTES.HOME)
-  }, [otpValue])
+    // Set user ordered box to true
+    dispatch(setUserOrderedBox(true))
+    
+    // Navigate to Order Confirmed Screen
+    reLaunch(ROUTES.ORDER_CONFIRMED)
+  }, [otpValue, dispatch])
 
   return (
     <View className={`min-h-screen bg-scaffold flex flex-col ${themeMode}`} data-theme={themeMode}>
      <RefinedAppBar
        showBack
-       title={
-              <PaginationDots total={3} current={2} />
-            }
+       actions={<PaginationDots total={3} current={2} />}
      />
 
       <View
@@ -234,7 +237,7 @@ export default function OtpVerificationScreen() {
         {/* Finish Registration Button */}
         <View className='pb-8'>
           <View className='btn-filled active:opacity-85' onClick={handleFinish}>
-            <Text className='btn-filled-text'>{t('finish_registration')}</Text>
+            <Text className='btn-filled-text'>{t('finish_order')}</Text>
           </View>
         </View>
       </View>

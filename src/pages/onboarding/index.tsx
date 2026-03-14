@@ -13,8 +13,9 @@ import mann3 from '@/assets/images/mann_onboarding_3.png'
 import arrowLeft from '@/assets/svg/arrow_left.svg'
 import PaginationDots from '@/components/PaginationDots'
 import { ROUTES } from '@/constants/routes'
+import { setQiAuthToken } from '@/features/auth/reducer'
 import { t } from '@/i18n'
-import { useAppSelector } from '@/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { navigateSmart, reLaunch } from '@/utils/navigation'
 import { hideHomeButtonSafely } from '@/utils/ui'
 
@@ -58,6 +59,7 @@ const mannSlides = [
 export default function Onboarding() {
   const { isFlavie, themeMode } = useAppSelector((state) => state.theme)
   const qiAuthToken = useAppSelector((state) => state.auth.qiAuthToken)
+  const dispatch = useAppDispatch()
   const [currentIndex, setCurrentIndex] = useState(0)
 
   useDidShow(() => {
@@ -80,6 +82,8 @@ export default function Onboarding() {
 
   const handleNext = useCallback(() => {
     if (isLastSlide) {
+      // Set the mock token so the user is marked as logged in
+      dispatch(setQiAuthToken('mock_token_from_onboarding'))
       // Proceed to home
       navigateSmart(ROUTES.HOME).catch(err => {
         console.error('Navigation failed:', JSON.stringify(err))
@@ -88,7 +92,7 @@ export default function Onboarding() {
     } else {
       setCurrentIndex((prev) => Math.min(prev + 1, slides.length - 1))
     }
-  }, [isLastSlide, slides.length])
+  }, [dispatch, isLastSlide, slides.length])
 
   const handleSwiperChange = useCallback((e) => {
     const { current } = e.detail
@@ -163,7 +167,7 @@ export default function Onboarding() {
       </Swiper>
 
       {/* Bottom Button */}
-      <View className='px-page pb-0 flex-shrink-0 mb-8'>
+      <View className='px-page pb-0 flex-shrink-0 mb-6'>
         <View className='w-full h-btn border-none bg-button-bg text-button-text text-btn font-semibold flex items-center justify-center transition-opacity active:opacity-85 font-btn rounded-btn' onClick={handleNext}>
           <Text>{isLastSlide ? t('onboarding.finish') : t('onboarding.next')}</Text>
         </View>

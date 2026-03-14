@@ -4,15 +4,17 @@ import Taro from '@tarojs/taro'
 import { SvgIcons } from '@/assets/icons'
 import DashedBox from '@/components/DashedBox'
 import DottedCircle from '@/components/DottedCircle'
-import { ROUTES } from '@/constants/routes'
+import { setUserHaveBox } from '@/features/auth/reducer'
 import { t } from '@/i18n'
-import { navigateTo } from '@/utils/navigation'
+import { useAppDispatch } from '@/store/hooks'
 
 interface BoxOrderedWidgetProps {
   estimatedDeliveryDate: string | null
 }
 
 export default function BoxOrderedWidget({ estimatedDeliveryDate }: BoxOrderedWidgetProps) {
+  const dispatch = useAppDispatch()
+
   return (
     <View className='flex-1 flex flex-col px-page' style={{ paddingBottom: '24px' }}>
       {/* Status Cards */}
@@ -146,9 +148,8 @@ export default function BoxOrderedWidget({ estimatedDeliveryDate }: BoxOrderedWi
               Taro.scanCode({
                 onlyFromCamera: true,
                 scanType: ['qrCode', 'barCode'],
-                success: (res) => {
-                  const boxId = res.result
-                  navigateTo(`${ROUTES.SCAN_BOX}?boxId=${boxId}`)
+                success: () => {
+                  dispatch(setUserHaveBox(true))
                 },
                 fail: (err) => {
                   console.error('Scan failed', err)

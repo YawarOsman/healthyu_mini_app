@@ -9,22 +9,21 @@ import { ROUTES } from '@/constants/routes'
 import { setIsFlavie } from '@/features/theme/actions'
 import { t } from '@/i18n'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { navigateSmart, reLaunch } from '@/utils/navigation'
+import { reLaunch } from '@/utils/navigation'
 import { hideHomeButtonSafely } from '@/utils/ui'
 
 export default function GenderSelectionScreen() {
   const dispatch = useAppDispatch()
   const themeMode = useAppSelector((state) => state.theme.themeMode)
-  const qiAuthToken = useAppSelector((state) => state.auth.qiAuthToken)
 
   // Local state for the selected gender during the choosing process
   const [selectedGender, setSelectedGender] = useState<'flavie' | 'mann'>('flavie')
 
   useDidShow(() => {
-    if (qiAuthToken) {
-      navigateSmart(ROUTES.HOME)
-      return
-    }
+    // if (qiAuthToken) {
+    //   navigateSmart(ROUTES.HOME)
+    //   return
+    // }
 
     Taro.setNavigationBarTitle({
       title: ''
@@ -234,7 +233,7 @@ function GenderOptionCard({
               fontWeight: '600',
               fontFamily: 'var(--font-heading)',
               color: '#FFFFFF',
-              height: '30px'
+              height: '36px'
             }}
           >
             {name}

@@ -27,7 +27,7 @@ const MOCK_BOX: BoxEntity = {
       imageUrl: null,
     },
   ],
-  videoUrl: null,
+  videoUrl: 'https://cdn.pixabay.com/video/2025/09/06/302132_large.mp4',
   videoThumbnail: null,
   items: [
     {

@@ -1,7 +1,7 @@
 import { View } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 import BottomNavBar from '@/components/BottomNavBar'
 import { ROUTES } from '@/constants/routes'
@@ -239,12 +239,25 @@ export default function HomePage() {
   const [authInfoFetched, setAuthInfoFetched] = useState(false)
   
   const { themeMode, isFlavie } = useAppSelector((state) => state.theme)
-  const { isUserOrderedABox, boxes, estimatedDeliveryDate } = useAppSelector(
+  const { estimatedDeliveryDate } = useAppSelector(
     (state) => state.order,
+  )
+  const { isUserOrderedABox, isUserHaveBox } = useAppSelector(
+    (state) => state.auth,
   )
   const { todayRoutine, weeklyStreaks } = useAppSelector((state) => state.home)
   const { name } = useAppSelector((state) => state.auth)
   const dispatch = useAppDispatch()
+
+  const { qiAuthToken } = useAppSelector((state) => state.auth)
+
+  const checkOnboarding = useCallback(() => {
+    if (!qiAuthToken) {
+      Taro.reLaunch({ url: ROUTES.REGISTER_GENDER_SELECTION })
+      return
+    }
+    setChecking(false)
+  }, [qiAuthToken])
 
   useDidShow(() => {
     checkOnboarding()
@@ -260,11 +273,7 @@ export default function HomePage() {
 
   useEffect(() => {
     checkOnboarding()
-  }, [])
-
-  const checkOnboarding = () => {
-    setChecking(false) // Bypass onboarding for development
-  }
+  }, [checkOnboarding])
 
   const handleTabPress = (index: number) => {
     const tabRouteMap = [ROUTES.HOME, ROUTES.BOXES, ROUTES.DISCOVER, ROUTES.ME] as const
@@ -283,8 +292,9 @@ export default function HomePage() {
   }
 
   const brandName = isFlavie ? t('onboarding.brandFlavie') : t('onboarding.brandMann')
-  const hasOrderedButNotReceived = isUserOrderedABox && boxes.length === 0
-  const hasBoxes = boxes.length > 0
+  // We check `isUserHaveBox` because standard data checks `boxes.length === 0` which might be empty arrays for now while mocked.
+  const hasOrderedButNotReceived = isUserOrderedABox && !isUserHaveBox
+  const hasBoxes = isUserOrderedABox && isUserHaveBox
 
   return (
     <View
